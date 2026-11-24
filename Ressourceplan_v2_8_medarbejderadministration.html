@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="da"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ressourceplan · Samlet lokal prototype v2.5</title>
+<style>
+:root{--ocean:#1C2B54;--orange:#F04E23;--mint:#D5F0E9;--green:#21896e;--sand:#EFE1D6;--pink:#FCE3E3;--aub:#612141;--line:#e1e5ec;--muted:#64748b;--bg:#f6f7f8;--ink:#192339;--shadow:0 7px 28px #1c2b5410}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 'Segoe UI',Arial,sans-serif}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.42;cursor:not-allowed}.top{background:var(--ocean);color:#fff;border-bottom:5px solid var(--orange);padding:20px max(24px,calc((100vw - 1600px)/2));display:flex;align-items:center;gap:22px}.wordmark{font-weight:950;font-size:37px;letter-spacing:-3px;color:var(--orange);line-height:1}.top h1{font-size:23px;line-height:1.2;margin:0}.top p{opacity:.75;margin:4px 0 0}.pill{border:1px solid #ffffff60;border-radius:5px;padding:6px 9px;font-size:11px;margin-left:auto;font-weight:700}.shell{max-width:1600px;margin:auto;padding:22px 24px 60px}.strip{background:#fff5e8;border:1px solid #f3d7a9;padding:12px 15px;border-radius:7px;display:flex;gap:12px;align-items:start;color:#77520d;margin-bottom:18px}.strip strong{white-space:nowrap}.toolbar,.card{background:white;border:1px solid var(--line);border-radius:9px;box-shadow:var(--shadow)}.toolbar{padding:17px;display:flex;flex-wrap:wrap;align-items:end;gap:14px;margin-bottom:16px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.3px;color:#53627a}.field select,.field input, .dialog input,.dialog select{border:1px solid #cdd5e1;border-radius:5px;padding:10px 11px;background:#fff;min-height:39px;color:var(--ink)}.field select:focus,.field input:focus,.dialog input:focus,.dialog select:focus,input.hour:focus{outline:2px solid #f04e2355;border-color:var(--orange)}.push{margin-left:auto}.btn{border:1px solid #cbd5e1;background:white;color:var(--ocean);padding:10px 14px;border-radius:5px;font-weight:700;min-height:40px}.btn:hover:not(:disabled){border-color:var(--orange);background:#fff9f7}.btn.primary{background:var(--orange);border-color:var(--orange);color:white}.btn.primary:hover{background:#db401b}.btn.sm{padding:7px 10px;min-height:33px}.btn.danger{color:#b32735}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}.metric{padding:18px 18px 15px;background:white;border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:7px}.metric .lab{color:var(--muted);font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.45px}.metric .num{font-size:26px;color:var(--ocean);font-weight:800;margin-top:4px}.metric .foot{font-size:12px;color:var(--muted)}.panel{padding:18px;margin-bottom:16px}.panelhead{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:15px}.panelhead h2{margin:0;color:var(--ocean);font-size:19px}.panelhead p{margin:3px 0 0;color:var(--muted);font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.gridwrap{overflow:auto;border:1px solid var(--line);border-radius:6px;max-height:65vh}.plan{border-collapse:separate;border-spacing:0;min-width:100%;width:max-content;font-size:13px}.plan th,.plan td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px}.plan thead th{background:#f1f4f8;color:var(--ocean);position:sticky;top:0;z-index:4;text-align:center;font-size:11px}.plan th:first-child,.plan td:first-child{position:sticky;left:0;z-index:3;background:#fff;min-width:250px;max-width:310px}.plan thead th:first-child{z-index:5;background:#e8eef6;text-align:left}.plan tbody td:first-child{padding:8px 10px}.plan .projectname{font-weight:700}.plan .sub{font-size:11px;color:var(--muted);margin-top:2px}.plan .week{min-width:86px}.hour{width:70px;height:36px;padding:6px 4px;text-align:center;border:1px solid #d9e0e9;border-radius:4px;background:white}.hour:focus{background:#fffaf6}.plan .totalrow td{background:#f1f4f8!important;font-weight:800}.plan .capacityrow td{background:#fbfcfe!important;color:#64748b}.plan .over{background:#f9dadd!important;color:#9f2533!important}.plan .near{background:#fff1cf!important;color:#865d0b!important}.plan .good{background:#dff2e9!important;color:#216b52!important}.plan .empty{background:#eaf2fc!important;color:#26527a!important}.plan .special{background:#fff8e6}.rowbtn{border:0;background:none;color:#8d3244;font-weight:700;margin-left:7px;font-size:15px}.rowbtn:hover{color:#c22}.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:13px;color:#576479;font-size:12px}.dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}.secondary{color:var(--muted);font-size:12px}.footnote{margin-top:11px;color:var(--muted);font-size:12px}.dialog-back{position:fixed;inset:0;background:#152544a8;display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}.dialog{width:min(100%,480px);background:#fff;border-radius:10px;padding:23px;box-shadow:0 20px 60px #0004}.dialog h2{margin:0 0 6px;color:var(--ocean)}.dialog p{color:var(--muted);margin:0 0 18px}.dialog .field{margin:10px 0}.dialog .actions{justify-content:flex-end;margin-top:20px}.hidden{display:none!important}.toast{position:fixed;bottom:25px;right:25px;background:var(--ocean);color:#fff;padding:12px 17px;border-radius:7px;box-shadow:var(--shadow);z-index:110}.toggle{display:flex;align-items:center;gap:7px}.toggle input{accent-color:var(--orange)}.subbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:10px 0 16px}.note{border-left:4px solid #ccd8e7;padding:9px 13px;background:#fafbfd;font-size:12px;color:#53627a}.keyboard{padding:4px 8px;border:1px solid #ccd5df;border-radius:4px;background:white;font-size:11px}@media(max-width:840px){.top{padding:17px}.shell{padding:15px}.metrics{grid-template-columns:repeat(2,1fr)}.push{margin-left:0}.plan th:first-child,.plan td:first-child{min-width:190px;max-width:200px}.top h1{font-size:19px}}@media(max-width:480px){.metrics{gap:7px}.metric{padding:11px}.metric .num{font-size:21px}.toolbar{gap:9px}.panel{padding:10px}}
+
+/* v2.2: Explicit readable hour inputs, including Edge dark-mode overrides */
+:root { color-scheme: light; }
+input.hour, input.hour:hover, input.hour:focus, input.hour:active {
+  color: #172b4d !important;
+  -webkit-text-fill-color: #172b4d !important;
+  background-color: #ffffff !important;
+  caret-color: #172b4d !important;
+  opacity: 1 !important;
+  font-weight: 650;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+input.hour::placeholder { color: #8492a6 !important; -webkit-text-fill-color: #8492a6 !important; opacity: 1; }
+input.hour:focus { background-color: #fff8f3 !important; border-color: #f04e23 !important; outline: 2px solid #f04e2355; }
+input.hour::selection { background-color: #c8e4ff; color: #172b4d; -webkit-text-fill-color: #172b4d; }
+
+/* v2.4 – lederdashboard: læsbar årsoversigt, filtreret periode og kapacitetsprognose */
+.dash-help{font-size:12px;color:#64748b;margin:6px 0 10px}
+.dHeat td.inrange{box-shadow:inset 0 2px 0 #F04E23,inset 0 -2px 0 #F04E23}
+.dHeat th.inrange{box-shadow:inset 0 -3px 0 #F04E23}
+.dHeat td.cell{cursor:pointer;transition:filter .12s}
+.dHeat td.cell:hover{filter:brightness(.92);outline:2px solid #F04E23;outline-offset:-2px}
+.dHeat .cell:focus-visible{outline:3px solid #F04E23;outline-offset:-3px}
+.forecast-panel{margin:19px 0 21px;background:#fff;border:1px solid #e1e5ec;border-radius:8px;padding:17px 18px;box-shadow:0 5px 18px #1c2b5409}
+.forecast-header{display:flex;justify-content:space-between;align-items:start;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.forecast-header h3{color:#1C2B54;margin:0;font-size:18px}.forecast-header p{color:#64748b;font-size:12px;margin:4px 0 0}
+.forecast-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.forecast-actions label{font-size:12px;font-weight:700;color:#53627a}
+.forecast-actions select{background:#fff;color:#1C2B54;border:1px solid #cdd5e1;border-radius:5px;padding:8px;min-height:34px}
+.forecast-content{overflow:auto}.forecast-table{border-collapse:collapse;min-width:620px;width:100%;font-size:12px}
+.forecast-table th,.forecast-table td{border-bottom:1px solid #e6eaf0;padding:9px 10px;text-align:right;white-space:nowrap}
+.forecast-table th:first-child,.forecast-table td:first-child{text-align:left;position:sticky;left:0;background:#fff;min-width:125px}
+.forecast-table thead th{color:#1C2B54;background:#f1f4f8;text-align:right;font-size:11px}
+.forecast-table thead th:first-child{background:#f1f4f8}
+.forecast-table .summary{background:#f7f9fc;font-weight:750}.forecast-table .summary td:first-child{background:#f7f9fc}
+.forecast-table .free{color:#15775d}.forecast-table .excess{color:#b12f40}.forecast-table .fbar{display:block;height:6px;background:#dde6ee;border-radius:8px;margin-top:5px;overflow:hidden}
+.forecast-table .fbar i{display:block;height:100%;background:#31b18f;border-radius:8px}
+.dashproj span{display:flex;align-items:center;gap:6px}
+.dash-donutwrap{display:flex;gap:14px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid #e6eaf0}
+.dash-donut{flex:0 0 92px;height:92px;width:92px;border-radius:50%;position:relative}
+.dash-donut:after{content:'';position:absolute;inset:29px;border-radius:50%;background:#fff}
+.dash-donutempty{background:#e8edf4}
+.dash-donutwrap .dashprojs{flex:1;min-width:0;margin:0;padding:0;border:0}
+.dashcard-actions{display:flex;gap:8px;margin-top:10px}.dashcard-actions button{font-size:12px;min-height:30px}
+@media(max-width:650px){.forecast-panel{padding:12px}.dash-donut{width:72px;height:72px;flex-basis:72px}.dash-donut:after{inset:23px}}
+</style><style>
+.appnav{display:flex;align-items:center;gap:7px;background:#fff;padding:11px max(24px,calc((100vw - 1600px)/2));border-bottom:1px solid #dbe1ea}.navtab{border:1px solid #d4dce7;background:#fff;border-radius:5px;padding:10px 16px;color:#1C2B54;font-weight:750}.navtab.active{background:#1C2B54;color:#fff;border-color:#1C2B54}.navhint{font-size:12px;color:#64748b;margin-left:auto}.dash-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:17px}.dash-title h2{margin:0;color:#1C2B54;font-size:28px}.dash-title p{margin:2px 0;color:#64748b}.dashflag{font-size:11px;font-weight:800;background:#d5f0e9;color:#216b52;padding:7px;border-radius:4px}.dash-controls{position:sticky;top:0;z-index:10}.dash-kpis{display:grid;grid-template-columns:repeat(6,minmax(125px,1fr));gap:10px;margin-bottom:22px}.dash-kpi{background:#fff;border:1px solid #e1e5ec;border-left:4px solid #F04E23;border-radius:6px;padding:15px}.dash-kpi label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.3px;color:#66758a;font-weight:800}.dash-kpi strong{display:block;color:#1C2B54;font-size:24px;margin-top:5px}.dash-kpi small{color:#7b8797}.dash-section{font-size:20px;border-left:5px solid #F04E23;padding-left:12px;color:#1C2B54;font-weight:800;margin:22px 0 11px;display:flex;align-items:center;gap:13px;flex-wrap:wrap}.dashboard-table-wrap{background:white;border:1px solid #e1e5ec;padding:12px;border-radius:7px;overflow:auto;max-height:570px}.dHeat{border-collapse:separate;border-spacing:2px;font-size:11px;width:max-content;min-width:100%}.dHeat th{padding:6px 5px;background:#f2f5f8;white-space:nowrap;color:#1C2B54}.dHeat td{min-width:43px;padding:5px 4px;text-align:center;border-radius:2px;white-space:nowrap}.dHeat th:first-child,.dHeat td:first-child{position:sticky;left:0;z-index:2;min-width:205px;text-align:left;background:#fff}.dHeat thead th:first-child{z-index:4;background:#e9eff7}.dHeat .groupRow th{position:sticky;left:0;text-align:left;background:#f0f3f8;color:#1C2B54;font-weight:800}.dHeat .offerRow td{background:#fce3e3;color:#612141;font-weight:650}.dHeat .offerRow td:first-child{background:#fce3e3}.dHeat button{padding:0;border:none;background:none;font-size:inherit;cursor:pointer;color:inherit;font-weight:600}.dHeat button:hover{text-decoration:underline}.dHeat .cell{cursor:pointer}.dHeat .cell:hover{outline:2px solid #F04E23}.dHeat .q0{background:#d2eaf7}.dHeat .q1{background:#d5f0e9}.dHeat .q2{background:#efe1d6}.dHeat .q3{background:#fce3e3}.dHeat .qover{background:#f9cbd0!important;color:#862333}.dHeat .qnear{background:#ffedc7!important;color:#8b6118}.dHeat .qgood{background:#d5f0e9!important;color:#1b6553}.dHeat .qempty{background:#edf3fa!important;color:#58748d}.dashcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}.dashcard{background:#fff;border:1px solid #e1e5ec;border-left:5px solid #31B18F;border-radius:6px;padding:16px}.dashcardheader{display:flex;justify-content:space-between;gap:12px}.dashcardheader strong{color:#1C2B54;font-size:16px}.dashpct{font-size:22px;color:#1C2B54;font-weight:850}.dashbar{height:8px;border-radius:4px;background:#e7ebf0;overflow:hidden;margin:13px 0 6px}.dashfill{height:100%;background:#31B18F}.dash-meta{font-size:12px;color:#64748b;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.dashprojs{border-top:1px solid #eef0f4;margin-top:12px;padding-top:9px}.dashproj{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:12px}.dashproj span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.dash-swatch{width:9px;height:9px;display:inline-block;border-radius:2px;margin-right:6px;background:#31B18F}.dash-offer{border-left-color:#cc6386;background:#fffafb}.dash-noresults{padding:22px;background:white;border:1px solid #e1e5ec;border-radius:6px;color:#64748b}@media(max-width:1100px){.dash-kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.dash-kpis{grid-template-columns:repeat(2,1fr)}.appnav{padding:10px;flex-wrap:wrap}.navhint{margin:0}.dash-title h2{font-size:21px}.dashflag{display:none}}
+</style><style>
+.project-filter{display:flex;align-items:center;gap:12px;padding:10px 0 12px;flex-wrap:wrap}.project-filter label{font-size:12px;font-weight:750;color:#1c2b54}.project-filter input{min-width:245px;max-width:420px;flex:1;min-height:36px;border:1px solid #ced7e3;border-radius:5px;padding:8px 11px;background:#fff;color:#172b4d;-webkit-text-fill-color:#172b4d}.project-filter input:focus{outline:2px solid #f04e2360}.project-filter .secondary{font-size:12px}.modal-help{font-size:12px;color:#64748b;margin:4px 0 8px}.plan .search-hidden{display:none}.plan .week small{font-size:10px;font-weight:500}
+</style><style>
+#registryView{padding:22px 0}.registry-head{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}.registry-head h2{color:#1c2b54;margin:0}.registry-tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.registry-tools input{min-width:260px;max-width:460px;flex:1;padding:10px;border:1px solid #cbd5e1;border-radius:5px;color:#172b4d;background:white;-webkit-text-fill-color:#172b4d}.registry-table{width:100%;border-collapse:collapse}.registry-table th,.registry-table td{padding:12px 10px;border-bottom:1px solid #e5e7eb;text-align:left}.registry-table th{color:#1c2b54;background:#eff3f8}.registry-table td{color:#253756}.registry-table .code{font-weight:750}.registry-note{color:#64748b;font-size:13px}.registry-table .smallbtn{min-height:30px;padding:5px 10px}.choose-grid{display:grid;grid-template-columns:1fr;gap:9px}.choose-grid input,.choose-grid select{width:100%;min-height:39px;padding:8px;color:#172b4d!important;background:#fff!important;-webkit-text-fill-color:#172b4d!important;border:1px solid #cbd5e1;border-radius:5px}.choose-result{padding:11px 12px;background:#f4f7fb;border:1px solid #e0e6ef;border-radius:5px;color:#172b4d!important;-webkit-text-fill-color:#172b4d!important}.choose-result:hover{border-color:#f04e23;background:#fff9f7}.choose-result .code{display:block;color:#1c2b54;font-weight:800;font-size:18px;line-height:1.1}.choose-result .name{display:block;color:#334155;font-size:14px;margin-top:3px}.choose-result .inline{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.choose-result .inline .code{display:inline;color:#1c2b54;font-weight:800;font-size:18px}.choose-result .inline .name{display:inline;color:#334155;font-size:14px;margin-top:0}.registry-divider{border:0;border-top:1px solid #d9e0ea;margin:14px 0}.registry-hint{font-size:12px;color:#64748b}.registry-bad{font-size:12px;color:#a62739}
+
+/* V2.7: project staffing report */
+#projectView .pr-head{display:flex;justify-content:space-between;gap:14px;align-items:start;flex-wrap:wrap}
+#projectView .pr-head h2{margin:0;color:var(--ocean);font-size:23px}
+#projectView .pr-head p{margin:3px 0 0;color:var(--muted);font-size:13px}
+#projectView .pr-picker{flex:2 1 280px;max-width:500px}
+#projectView .pr-picker select{width:100%;max-width:100%}
+#projectView .pr-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}
+#projectView .pr-kpi{border:1px solid var(--line);border-left:4px solid var(--orange);border-radius:7px;padding:15px;background:white}
+#projectView .pr-kpi span{display:block;font-size:11px;font-weight:750;color:var(--muted);text-transform:uppercase}
+#projectView .pr-kpi strong{display:block;margin-top:6px;font-size:25px;color:var(--ocean)}
+#projectView .pr-grid{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:650px}
+#projectView .pr-grid th,#projectView .pr-grid td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 8px;text-align:right;white-space:nowrap}
+#projectView .pr-grid th{position:sticky;top:0;background:#e8eef6;color:var(--ocean);font-weight:750;z-index:2}
+#projectView .pr-grid th:first-child,#projectView .pr-grid td:first-child{position:sticky;left:0;text-align:left;min-width:210px;background:white;z-index:1}
+#projectView .pr-grid th:first-child{z-index:3;background:#e8eef6}
+#projectView .pr-grid td:last-child,#projectView .pr-grid th:last-child{background:#f0f4fa;font-weight:750}
+#projectView .pr-grid tr:last-child td{background:#e6f1ec;font-weight:800;color:#205d4d}
+#projectView .pr-grid .pr-person{color:var(--ocean);border:0;background:transparent;text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-weight:700;padding:0;text-align:left}
+#projectView .pr-empty{padding:20px;color:var(--muted);background:#f8fafc;border-radius:6px}
+#projectView .pr-num{display:inline-block;border-radius:4px;background:#eef2f8;color:#23365b;padding:3px 7px;font-weight:750;margin-right:6px}
+#projectView .pr-note{margin-top:12px;font-size:12px;color:var(--muted)}
+@media(max-width:800px){#projectView .pr-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* v2.8 Medarbejderadministration */
+#employeeAdminView .ea-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:15px}
+#employeeAdminView .ea-head h2{color:var(--ocean);margin:0;font-size:23px}
+#employeeAdminView .ea-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+#employeeAdminView .ea-tools input{width:min(100%,360px);padding:10px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;color:#1c2b54;-webkit-text-fill-color:#1c2b54}
+#employeeAdminView .ea-table{width:100%;border-collapse:collapse;min-width:750px}
+#employeeAdminView .ea-table th,#employeeAdminView .ea-table td{padding:11px 9px;border-bottom:1px solid #e3e8ef;text-align:left}
+#employeeAdminView .ea-table th{background:#eef2f8;color:#1c2b54;font-size:12px}
+#employeeAdminView .ea-table td{color:#253756}
+#employeeAdminView .ea-table .ea-id{font-size:11px;color:#64748b;display:block}
+#employeeAdminView .ea-buttons{display:flex;gap:6px;flex-wrap:wrap}
+#employeeAdminView .ea-summary{color:#64748b;font-size:12px}
+.ea-form-help{font-size:12px;color:#64748b;margin:8px 0}
+</style></head>
+<body><header class="top"><div class="wordmark">COWI</div><div><h1>Ressourceplan · Medarbejder og leder</h1><p>Planlagte timer · projekter · kapacitet</p></div><div class="pill">LOKAL TEST · v2.7</div></header>
+<div class="appnav"><button id="tabPlan" class="navtab active" type="button">▦ Min planlægning</button><button id="tabDash" class="navtab" type="button">▥ Ressourceoverblik</button><button id="tabRegistry" class="navtab" type="button">▤ Projektregister</button><button id="tabProject" class="navtab" type="button">▣ Projektoversigt</button><button id="tabEmployees" class="navtab" type="button">♙ Medarbejdere</button><span class="navhint">Nye tests starter med 0 timer · ændringer vises i begge faner</span></div><main class="shell"><div id="portalView"><div class="strip"><strong>Kun prototype</strong><span>Alle medarbejdere og projekter er opdigtede. Projektlisten er forudfyldt, men alle timer starter på 0. Ingen login eller netværkssynkronisering. Data gemmes kun i denne browsers lokale lager på denne PC. Brug ikke fortrolige COWI-data i testen.</span></div>
+<section class="toolbar"><div class="field"><label for="employee">Testmedarbejder</label><select id="employee"></select></div><div class="field"><label for="year">Planår</label><select id="year"></select></div><div class="field"><label for="startWeek">Startuge</label><select id="startWeek"></select></div><div class="field"><label for="count">Vis uger</label><select id="count"><option value="4">4 uger</option><option value="8" selected>8 uger</option><option value="12">12 uger</option><option value="26">26 uger</option><option value="53">Hele året</option></select></div><div class="field push"><label>Data</label><div class="actions"><button class="btn sm" id="export">Eksportér JSON</button><button class="btn sm" id="import">Importér JSON</button><button class="btn sm" id="csv">Eksportér CSV</button><button class="btn sm danger" id="clearHours">Nulstil testtimer</button></div></div></section>
+<section class="metrics" aria-label="Kapacitet"><article class="metric"><div class="lab">Medarbejder</div><div class="num" style="font-size:19px" id="employeeName">—</div><div class="foot" id="empMeta">—</div></article><article class="metric"><div class="lab">Ugentlig normtid</div><div class="num" id="capacity">—</div><div class="foot">Timer pr. uge</div></article><article class="metric"><div class="lab">Planlagt i viste uger</div><div class="num" id="planned">—</div><div class="foot" id="plansub">Kun projekttimer</div></article><article class="metric"><div class="lab">Overbelastede uger</div><div class="num" id="overloads">—</div><div class="foot">Projektbelastning over tilgængelig kapacitet</div></article></section>
+<section class="card panel"><div class="panelhead"><div><h2>Min ugeplan</h2><p>Indtast forventede timer direkte i felterne. Ændringer gemmes automatisk på denne PC.</p></div><div class="actions"><button class="btn primary" id="addProject">+ Tilføj projekt / aktivitet</button><button class="btn" id="bulk">Udfyld flere uger</button></div></div><div class="subbar"><div class="actions"><button class="btn sm" id="prev">← Forrige uger</button><button class="btn sm" id="next">Næste uger →</button><button class="btn sm" id="copy">Kopiér viste uger frem</button></div><span class="secondary" id="saveState">Alt gemt lokalt</span></div><div class="project-filter"><label for="projectFilter">Find i mine projekter</label><input id="projectFilter" type="search" placeholder="Søg projektnavn eller sagsnummer..." autocomplete="off"><span id="projectFilterCount" class="secondary"></span></div><div class="gridwrap"><table class="plan" id="table" aria-label="Ugeplan"></table></div><div class="legend"><span><span class="dot" style="background:#dff2e9"></span>Under 85 %</span><span><span class="dot" style="background:#fff1cf"></span>85–100 %</span><span><span class="dot" style="background:#f9dadd"></span>Over 100 %</span><span><span class="dot" style="background:#eaf2fc"></span>Ingen projekttimer</span></div><p class="footnote">Ugerne fortsætter automatisk over nytår. Masseindtastning kan også gå på tværs af år. Brug JSON-eksport til backup.</p><p class="footnote">Ferie, fravær og kursus reducerer tilgængelig kapacitet. Tallene er forventede timer – ikke registreret tidsforbrug. Året følger ISO-uger; nogle år har 53 uger.</p></section>
+<div class="note"><strong>Til lokal test:</strong> Skift mellem testmedarbejdere, tilføj et projekt, udfyld timer på flere uger og eksportér data. JSON-eksporten er en sikkerhedskopi. Lederdashboardet ovenfor viser data fra samme lokale lager uden Excel.</div>
+</div><section id="dashboardView" class="hidden">
+  <div class="dash-title"><div><h2>Ressourceoverblik</h2><p>Kapacitet · pipeline · Øst og Vest · årsoversigt</p></div><span class="dashflag">LIVE FRA LOKAL PLANLÆGNING</span></div>
+  <section class="toolbar dash-controls">
+  <div class="field"><label for="dRegion">Område</label><select id="dRegion"><option value="Alle">Alle områder</option><option>Øst</option><option>Vest</option></select></div>
+  <div class="field"><label for="dGroup">Faggruppe</label><select id="dGroup"><option value="Alle">Alle</option><option>EL</option><option>Belysning</option><option>BMS/CTS</option><option>Sikring</option></select></div>
+  <div class="field"><label for="dDepartment">Afdeling</label><select id="dDepartment"><option value="Alle">Alle</option></select></div>
+  <div class="field"><label for="dYear">Planår</label><select id="dYear"></select></div>
+  <div class="field"><label for="dWeek">Startuge</label><select id="dWeek"></select></div>
+  <div class="field"><label for="dPeriod">Vis periode</label><select id="dPeriod"><option value="1">1 uge</option><option value="2">2 uger</option><option value="4" selected>4 uger</option><option value="8">8 uger</option><option value="12">12 uger</option><option value="Q1">Q1</option><option value="Q2">Q2</option><option value="Q3">Q3</option><option value="Q4">Q4</option></select></div>
+  <div class="field"><label for="dMode">Årsmatrix</label><select id="dMode"><option value="pct">Belastning %</option><option value="hours">Timer</option><option value="ratio">Timer / kapacitet</option></select></div>
+  <div class="field"><label for="dOffer">Tilbud</label><select id="dOffer"><option value="gross">Brutto</option><option value="weighted">Vægtet</option></select></div>
+  <button class="btn sm" id="dRefresh">Opdater</button></section>
+  <section class="dash-kpis" id="dKpis"></section>
+  <div class="dash-section">52/53-ugers årsoversigt · klik for at åbne medarbejderplanen <span class="secondary">Klik på en medarbejders celle for at åbne planen</span></div>
+  <p class="dash-help" id="dRangeLabel">Valgt periode markeres med orange kant i årsoversigten.</p><div class="dashboard-table-wrap"><table class="dHeat" id="dHeat"></table></div>
+  <section class="forecast-panel"><div class="forecast-header"><div><h3>Kapacitetsprognose · valgte uger</h3><p>Ledige timer og overbelastning vises separat. Prognosen er fordelt på faggruppe og område.</p></div><div class="forecast-actions"><label for="dForecastGroup">Fordeling</label><select id="dForecastGroup"><option value="group">Faggruppe</option><option value="region">Område</option><option value="department">Afdeling</option></select><button type="button" id="dExport" class="btn sm">Eksportér prognose (CSV)</button></div></div><div id="dForecast" class="forecast-content"></div></section><div class="dash-section" id="dDetailsTitle">Medarbejdere i den valgte periode</div>
+  <div class="dashcards" id="dCards"></div>
+  <p class="footnote">Tilbud vises separat og tæller ikke som bookede projekttimer. Sandsynlighed er 50 % for tilbud uden angivet sandsynlighed. Ledig kapacitet og overbelastning vises særskilt, så de ikke udligner hinanden.</p>
+</section></main>
+<section id="registryView" class="hidden shell"><div class="strip"><strong>Lokalt projektregister</strong><span>Samme projekt bruges af alle testmedarbejdere. Projektnummer er unikt. Ændringer gemmes lokalt og indgår i JSON-backup. Der er endnu ingen fælles server.</span></div><div class="card panel"><div class="registry-head"><div><h2>Fælles projektregister</h2><p class="registry-note">Søg, opret og omdøb projekter. Ændringer i navne slår igennem på eksisterende planer.</p></div><button class="btn primary" id="registryCreate">+ Opret nyt projekt</button></div><div class="registry-tools"><input id="registrySearch" type="search" placeholder="Søg efter projektnummer eller projektnavn"><span class="secondary" id="registryCount"></span></div><div class="gridwrap"><table class="registry-table"><thead><tr><th>Projektnummer</th><th>Projektnavn</th><th>Medarbejdere</th><th>Handling</th></tr></thead><tbody id="registryRows"></tbody></table></div><p class="registry-note">Aktiviteter som Ferie, Fravær og Kursus ligger uden for projektregistret. Projektnumre kan ikke ændres efter oprettelsen, da de identificerer projektet.</p></div></section>
+<section id="projectView" class="hidden shell">
+  <div class="strip"><strong>Projektoversigt · lokal test</strong><span>Samler timer fra alle fiktive medarbejdere på projektnummer. Viser kun data i denne browser. Klik på medarbejdernavnet for at åbne ugeplanen.</span></div>
+  <section class="card panel">
+    <div class="pr-head"><div><h2>Bemanding og timer pr. projekt</h2><p>Find et projekt og se, hvem der er planlagt på det, uge for uge.</p></div><button id="prCsv" class="btn sm" type="button">Eksportér projekt (CSV)</button></div>
+    <div class="toolbar" style="margin-top:16px;box-shadow:none">
+      <div class="field pr-picker"><label for="prProject">Projekt</label><select id="prProject"></select></div>
+      <div class="field"><label for="prYear">Planår</label><select id="prYear"></select></div>
+      <div class="field"><label for="prStart">Startuge</label><select id="prStart"></select></div>
+      <div class="field"><label for="prPeriod">Vis periode</label><select id="prPeriod"><option value="4">4 uger</option><option value="8">8 uger</option><option value="12" selected>12 uger</option><option value="26">26 uger</option><option value="53">52/53 uger</option></select></div>
+    </div>
+    <div id="prTitle" class="secondary"></div>
+    <div class="pr-kpis"><div class="pr-kpi"><span>Medarbejdere i perioden</span><strong id="prPeople">0</strong></div><div class="pr-kpi"><span>Timer på projektet</span><strong id="prHours">0 t</strong></div><div class="pr-kpi"><span>Uger med planlagt arbejde</span><strong id="prWeeks">0</strong></div><div class="pr-kpi"><span>Gennemsnit pr. uge</span><strong id="prAverage">0 t</strong></div></div>
+    <div id="prTableWrap" class="gridwrap"></div>
+    <p class="pr-note">Projekter er samlet efter projektnummer. Tilbud vises kun som planlagt tilbudsarbejde og ikke som sandsynlighedsvægtede timer. Der er endnu ikke knyttet et samlet projektbudget til denne oversigt.</p>
+  </section>
+</section>
+<section id="employeeAdminView" class="hidden shell">
+ <div class="strip"><strong>Medarbejderadministration · lokal test</strong><span>Opret og vedligehold fiktive medarbejdere. Alle ændringer gemmes kun på denne PC, og indgår i JSON-backup. Medarbejder-ID forbliver uændret ved navneskift, så planlagte timer bevares.</span></div>
+ <div class="card panel">
+  <div class="ea-head"><div><h2>Medarbejdere</h2><p class="secondary">Vedligehold område, faggruppe, afdeling og ugentlig normtid.</p></div><button type="button" class="btn primary" id="eaCreate">+ Tilføj medarbejder</button></div>
+  <div class="ea-tools"><input type="search" id="eaSearch" placeholder="Søg navn, afdeling eller faggruppe …" autocomplete="off"><span id="eaCount" class="ea-summary"></span></div>
+  <div class="gridwrap"><table class="ea-table"><thead><tr><th>Medarbejder</th><th>Område</th><th>Faggruppe</th><th>Afdeling</th><th>Normtid</th><th>Projekt-/aktivitetsrækker</th><th>Handlinger</th></tr></thead><tbody id="eaRows"></tbody></table></div>
+  <p class="footnote">Sletning er kun mulig, hvis medarbejderen ikke har projekter eller timer i systemet. Ellers kan du beholde medarbejderen til historik. Dette er endnu ikke adgangsstyret – alle testmedarbejdere kan vælges.</p>
+ </div>
+</section>
+<div class="dialog-back hidden" id="modal" role="dialog" aria-modal="true"><div class="dialog"><h2 id="modalTitle">Tilføj projekt</h2><p id="modalDescription"></p><div id="modalFields"></div><div class="actions"><button class="btn" id="cancel">Annullér</button><button class="btn primary" id="confirm">Gem</button></div></div></div><div class="toast hidden" id="toast" role="status"></div><input type="file" accept="application/json,.json" id="file" hidden>
+<script>
+'use strict';
+const KEY='cowi-ressource-samlet-v21';const $=id=>document.getElementById(id);const DAYS=86400000;
+const fakePeople=[{id:'p1',name:'Medarbejder 1',region:'Øst',group:'EL',department:'7134.03',hours:37},{id:'p2',name:'Medarbejder 2',region:'Øst',group:'Belysning',department:'7134.01',hours:37},{id:'p3',name:'Medarbejder 3',region:'Øst',group:'BMS/CTS',department:'7134.02',hours:37},{id:'p4',name:'Medarbejder 4',region:'Vest',group:'Sikring',department:'7134.03',hours:37},{id:'p5',name:'Medarbejder 5',region:'Vest',group:'EL',department:'7134.01',hours:30}];
+function mondayISO(year,w){let jan4=new Date(Date.UTC(year,0,4));let dow=jan4.getUTCDay()||7;return new Date(jan4.getTime()+(1-dow+7*(w-1))*DAYS)}
+function isoWeekCount(y){return Math.round((mondayISO(y+1,1)-mondayISO(y,1))/(7*DAYS))}function isoWeekOf(d){let t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));t.setUTCDate(t.getUTCDate()+4-(t.getUTCDay()||7));let y=t.getUTCFullYear();return {year:y,week:Math.ceil(((t-new Date(Date.UTC(y,0,1)))/DAYS+1)/7)}}
+function nextISO(y,w){return w>=isoWeekCount(y)?{year:y+1,week:1}:{year:y,week:w+1}}function prevISO(y,w){return w<=1?{year:y-1,week:isoWeekCount(y-1)}:{year:y,week:w-1}}function shiftISO(y,w,d){let t={year:y,week:w};for(let i=0;i<Math.abs(d);i++)t=d>=0?nextISO(t.year,t.week):prevISO(t.year,t.week);return t}function weekKey(y,w){return String(y)+'-W'+String(w).padStart(2,'0')}function fmt(n){return (+n||0).toLocaleString('da-DK',{maximumFractionDigits:1})}function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function initialState(){return {version:1,people:fakePeople,rows:[{id:'r1',personId:'p1',name:'Hospital Nord',code:'24015',type:'Sag',hours:{}},{id:'r2',personId:'p1',name:'Datacenter',code:'24022',type:'Sag',hours:{}},{id:'r3',personId:'p1',name:'Kontorhus A',code:'24031',type:'Sag',hours:{}},{id:'r4',personId:'p2',name:'Belysningsprojekt',code:'24048',type:'Sag',hours:{}},{id:'r5',personId:'p3',name:'Kursus',code:'',type:'Kursus',hours:{}},{id:'r6',personId:'p4',name:'Sikringsprojekt',code:'24051',type:'Sag',hours:{}},{id:'r7',personId:'p5',name:'Ferie',code:'',type:'Ferie',hours:{}}]}}
+let data;try{const s=localStorage.getItem(KEY);data=s?JSON.parse(s):initialState();if(!Array.isArray(data.people)||!Array.isArray(data.rows))throw Error('Invalid');}catch(e){data=initialState();alert('Lokale data kunne ikke indlæses. Demoen er startet forfra.');}
+// V2.6: migrate existing local registrations into a single shared project register.
+function cleanCode(v){return String(v??'').trim()}
+function codeKey(v){return cleanCode(v).toLocaleLowerCase('da-DK')}
+function isProjectType(type){return type==='Sag'||type==='Tilbud'}
+function ensureRegistry(){
+ if(!Array.isArray(data.projects))data.projects=[];
+ const byCode=new Map();
+ for(const p of data.projects){if(p&&p.code&&p.name&&!byCode.has(codeKey(p.code)))byCode.set(codeKey(p.code),{code:cleanCode(p.code),name:String(p.name).trim()});}
+ // Preserve old records and reuse their existing project numbers and names.
+ for(const r of data.rows){if(!isProjectType(r.type))continue;let code=cleanCode(r.code);if(!code){
+   const known=[...byCode.values()].filter(p=>p.name.toLocaleLowerCase('da-DK')===String(r.name).trim().toLocaleLowerCase('da-DK'));
+   if(known.length===1){code=known[0].code;r.code=code;}else continue;
+ }
+ if(!byCode.has(codeKey(code)))byCode.set(codeKey(code),{code,name:String(r.name).trim()||code});
+ }
+ data.projects=[...byCode.values()];
+ // Unify names on existing rows while preserving planned hours.
+ for(const r of data.rows){if(!isProjectType(r.type))continue;const p=byCode.get(codeKey(r.code));if(p)r.name=p.name;}
+}
+ensureRegistry();
+let selected='p1';let now=isoWeekOf(new Date());let year=now.year,week=now.week;let pending=null;const types=['Sag','Tilbud','Ferie','Fravær','Kursus','Andet'];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));$('saveState').textContent='✓ Gemt lokalt '+new Date().toLocaleTimeString('da-DK')}catch(e){$('saveState').textContent='⚠ Kunne ikke gemme';toast('Browserens lager er fyldt eller blokeret. Eksportér en backup.')}}
+function toast(msg){$('toast').textContent=msg;$('toast').classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.add('hidden'),3500)}
+function employee(){return data.people.find(p=>p.id===selected)||data.people[0]}function rows(){return data.rows.filter(r=>r.personId===selected)}function visibleWeeks(){return Array.from({length:Number($('count').value)},(_,i)=>shiftISO(year,week,i))}
+function refreshSelectors(){const current=selected;$('employee').innerHTML=data.people.map(p=>`<option value="${esc(p.id)}">${esc(p.name)} · ${esc(p.group)} · ${esc(p.region)}</option>`).join('');if(data.people.some(p=>p.id===current))$('employee').value=current;else selected=data.people[0].id,$('employee').value=selected;let yrs=[2025,2026,2027,2028,2029,2030,...data.rows.flatMap(r=>Object.keys(r.hours||{}).map(x=>Number(x.slice(0,4)))).filter(Number.isInteger)];yrs=[...new Set(yrs)];if(!yrs.includes(year))yrs.push(year);yrs.sort();$('year').innerHTML=yrs.map(y=>`<option value="${y}">${y}</option>`).join('');$('year').value=year;refreshWeeks()}
+function refreshWeeks(){const count=isoWeekCount(year);week=Math.max(1,Math.min(week,count));$('startWeek').innerHTML=Array.from({length:count},(_,i)=>`<option value="${i+1}">Uge ${i+1}</option>`).join('');$('startWeek').value=week}
+function perWeek(w){const key=weekKey(w.year,w.week);let project=0,absence=0,offer=0;rows().forEach(r=>{let n=Number(r.hours?.[key]||0);if(r.type==='Ferie'||r.type==='Fravær'||r.type==='Kursus')absence+=n;else if(r.type==='Tilbud')offer+=n;else project+=n});let available=Math.max(0,employee().hours-absence),pct=available?project/available:(project?Infinity:0);return {project,absence,offer,available,pct}}
+function updateStats(){const p=employee(),ws=visibleWeeks(),values=ws.map(perWeek),sum=values.reduce((s,x)=>s+x.project,0),over=values.filter(x=>x.pct>1).length;$('employeeName').textContent=p.name;$('empMeta').textContent=p.region+' · '+p.group+' · '+(p.department||'Ingen afdeling');$('capacity').textContent=fmt(p.hours)+' t';$('planned').textContent=fmt(sum)+' t';$('plansub').textContent=`${ws.length} viste uger · ekskl. tilbud og fravær`;$('overloads').textContent=over;$('prev').disabled=false;$('next').disabled=false;}
+function render(){updateStats();let ws=visibleWeeks(),arr=rows(),html='<thead><tr><th>Projekt / aktivitet</th>'+ws.map(w=>{let d=mondayISO(w.year,w.week).toLocaleDateString('da-DK',{timeZone:'UTC',day:'2-digit',month:'2-digit'});return `<th class="week">Uge ${w.week}<div class="sub">${d} · ${w.year}</div></th>`}).join('')+'</tr></thead><tbody>';
+if(!arr.length)html+=`<tr><td>Ingen projekter endnu.<div class="sub">Klik på ”Tilføj projekt / aktivitet”.</div></td><td colspan="${ws.length}">Start din planlægning her.</td></tr>`;
+for(const r of arr){const isAbs=['Ferie','Fravær','Kursus'].includes(r.type);html+=`<tr data-filter="${esc((r.name+' '+(r.code||'')).toLocaleLowerCase('da-DK'))}"><td class="${isAbs?'special':''}"><div class="projectname">${esc(r.name)} <button class="rowbtn" aria-label="Fjern ${esc(r.name)}" title="Fjern projekt/aktivitet" data-delete="${esc(r.id)}">×</button></div><div class="sub">${esc(r.type)}${r.code?' · '+esc(r.code):''}</div></td>`;for(const w of ws){const k=weekKey(w.year,w.week),v=r.hours?.[k];html+=`<td class="${isAbs?'special':''}"><input class="hour" inputmode="decimal" type="number" min="0" max="80" step="0.5" aria-label="${esc(r.name)} uge ${w.week} ${w.year}" data-id="${esc(r.id)}" data-week="${esc(k)}" value="${v===undefined?'':esc(v)}" placeholder="–"></td>`}html+='</tr>'}
+const stat=w=>perWeek(w);html+=`<tr class="totalrow"><td>Projektbelastning</td>${ws.map(w=>{let x=stat(w),cls=x.pct>1?'over':x.pct>=.85?'near':x.project?'good':'empty';return `<td class="${cls}">${fmt(x.project)} t<br><small>${x.available?Math.round(x.pct*100)+' %':x.project?'Overbelagt':'—'}</small></td>`}).join('')}</tr>`;html+=`<tr class="capacityrow"><td>Tilgængelig kapacitet</td>${ws.map(w=>`<td>${fmt(stat(w).available)} t</td>`).join('')}</tr>`;html+=`<tr class="capacityrow"><td>Tilbud (ikke booket)</td>${ws.map(w=>`<td>${fmt(stat(w).offer)} t</td>`).join('')}</tr>`;html+='</tbody>';$('table').innerHTML=html;applyProjectFilter();
+}
+function showModal(title,description,fields,onConfirm){pending=onConfirm;$('modalTitle').textContent=title;$('modalDescription').textContent=description;$('modalFields').innerHTML=fields;$('modal').classList.remove('hidden');$('modalFields').querySelector('input,select')?.focus()}
+function closeModal(){$('modal').classList.add('hidden');pending=null}
+$('modalFields').addEventListener('input',e=>{if(e.target.id!=='newName')return;const matches=data.rows.filter(r=>r.name.toLowerCase()===e.target.value.trim().toLowerCase()&&r.code);const codes=[...new Set(matches.map(r=>r.code))];if(codes.length===1)$('newCode').value=codes[0]});
+function applyProjectFilter(){const q=($('projectFilter').value||'').trim().toLocaleLowerCase('da-DK');let n=0;document.querySelectorAll('#table tbody tr[data-filter]').forEach(tr=>{const visible=!q||tr.dataset.filter.includes(q);tr.classList.toggle('search-hidden',!visible);if(visible)n++});$('projectFilterCount').textContent=q?n+' projekter fundet':''}
+$('projectFilter').addEventListener('input',applyProjectFilter);
+$('cancel').onclick=closeModal;$('modal').addEventListener('click',e=>{if(e.target===$('modal'))closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});$('confirm').onclick=()=>{if(pending)pending()};
+function findProject(code){return data.projects.find(p=>codeKey(p.code)===codeKey(code))}
+function projectAlreadyAdded(code,type){return rows().some(r=>isProjectType(r.type)&&codeKey(r.code)===codeKey(code)&&r.type===type)}
+function addPersonProject(p,type='Sag',probability=50){
+ if(projectAlreadyAdded(p.code,type)){toast('Dette projekt er allerede tilføjet til medarbejderen.');return false}
+ data.rows.push({id:'r'+Date.now()+'-'+Math.random().toString(36).slice(2,7),personId:selected,name:p.name,code:p.code,type,probability,hours:{}});
+ save();closeModal();render();toast('Projekt tilføjet: '+p.code+' · '+p.name);return true;
+}
+function projectChoices(q){const term=q.trim().toLocaleLowerCase('da-DK');return data.projects.filter(p=>!term||`${p.code} ${p.name}`.toLocaleLowerCase('da-DK').includes(term)).sort((a,b)=>a.code.localeCompare(b.code,'da')).slice(0,50)}
+function updateProjectChoices(){
+ const container=$('projectSearchResults');if(!container)return;
+ const list=projectChoices($('projectSearch').value);
+ container.innerHTML=list.length?list.map(p=>`<button type="button" class="choose-result" data-choose-code="${esc(p.code)}" style="text-align:left;display:block;width:100%"><span class="inline"><span class="code">${esc(p.code)}</span><span class="name">${esc(p.name)}</span></span></button>`).join(''):'<p class="registry-hint">Intet match. Brug knappen “Opret nyt projekt”, hvis projektet ikke findes.</p>';
+}
+function openAddProject(){showModal('Tilføj projekt eller aktivitet','Vælg et projekt fra det fælles register, eller tilføj en særlig aktivitet.',`<div class="choose-grid"><div class="field"><label for="projectSearch">Find projekt på navn eller nummer</label><input id="projectSearch" type="search" placeholder="Søg blandt eksisterende projekter" autocomplete="off"></div><div id="projectSearchResults" style="max-height:240px;overflow:auto;display:grid;gap:6px"></div><hr class="registry-divider"><div class="registry-hint">Vil du oprette et nyt projekt? Brug fanen Projektregister eller knappen herunder.</div><button class="btn" type="button" id="createFromPicker">+ Opret projekt</button><hr class="registry-divider"><div class="field"><label for="activityType">Særlig aktivitet</label><select id="activityType"><option value="">Vælg aktivitet …</option><option>Ferie</option><option>Fravær</option><option>Kursus</option><option>Andet</option></select></div></div>`,()=>{
+ const type=$('activityType').value;if(!type){toast('Vælg et projekt ovenfor eller en aktivitet.');return}
+ if(rows().some(r=>r.type===type&&r.name===type)){toast('Aktiviteten findes allerede hos medarbejderen.');return}
+ data.rows.push({id:'r'+Date.now()+'-'+Math.random().toString(36).slice(2,7),personId:selected,name:type,code:'',type,hours:{}});save();closeModal();render();toast('Aktivitet tilføjet.');
+ });
+ updateProjectChoices();
+ $('projectSearch').addEventListener('input',updateProjectChoices);
+ $('projectSearchResults').addEventListener('click',e=>{const btn=e.target.closest('[data-choose-code]');if(!btn)return;const p=findProject(btn.dataset.chooseCode);if(p)addPersonProject(p)});
+ $('createFromPicker').onclick=()=>openNewRegistryProject(true);
+}
+$('addProject').onclick=openAddProject;
+function openNewRegistryProject(addToPerson=false){showModal('Opret nyt projekt','Projektnummeret skal være unikt i hele registret. Opret kun testprojekter.',`<div class="choose-grid"><div class="field"><label for="regCode">Projektnummer *</label><input id="regCode" maxlength="45" placeholder="Fx 24099" autocomplete="off"></div><div class="field"><label for="regName">Projektnavn *</label><input id="regName" maxlength="100" placeholder="Fx Nyt kontorbyggeri" autocomplete="off"></div><div class="field"><label for="regType">Type ved tilføjelse</label><select id="regType"><option>Sag</option><option>Tilbud</option></select></div><div class="field"><label for="regProb">Tilbudssandsynlighed (kun tilbud)</label><input id="regProb" type="number" min="0" max="100" value="50"></div></div>`,()=>{
+ const code=cleanCode($('regCode').value),name=$('regName').value.trim(),type=$('regType').value;
+ if(!code||!name){toast('Projektnummer og projektnavn er påkrævet.');return}
+ if(findProject(code)){toast('Projektnummeret findes allerede. Vælg det eksisterende projekt.');return}
+ const p={code,name};data.projects.push(p);if(addToPerson){addPersonProject(p,type,Math.max(0,Math.min(100,Number($('regProb').value)||0)))}else{save();closeModal();renderRegistry();toast('Nyt projekt oprettet.');}
+ });}
+function renderRegistry(){const target=$('registryRows');if(!target)return;const term=($('registrySearch').value||'').trim().toLocaleLowerCase('da-DK');const ps=data.projects.filter(p=>`${p.code} ${p.name}`.toLocaleLowerCase('da-DK').includes(term)).sort((a,b)=>a.code.localeCompare(b.code,'da'));$('registryCount').textContent=`${ps.length} af ${data.projects.length} projekter`;
+ target.innerHTML=ps.map(p=>{const n=new Set(data.rows.filter(r=>isProjectType(r.type)&&codeKey(r.code)===codeKey(p.code)).map(r=>r.personId)).size;return `<tr><td class="code">${esc(p.code)}</td><td>${esc(p.name)}</td><td>${n}</td><td><button type="button" class="btn sm smallbtn" data-edit-code="${esc(p.code)}">Ret navn</button></td></tr>`}).join('')||'<tr><td colspan="4">Ingen projekter matcher søgningen.</td></tr>';
+}
+$('registryCreate').onclick=()=>openNewRegistryProject(false);
+$('registrySearch').addEventListener('input',renderRegistry);
+$('registryRows').addEventListener('click',e=>{const btn=e.target.closest('[data-edit-code]');if(!btn)return;const p=findProject(btn.dataset.editCode);if(!p)return;
+ showModal('Ret projektnavn',`Projektnummer ${p.code} ændres ikke. Navnet rettes på alle medarbejdernes eksisterende registreringer.`,`<div class="field"><label for="editProjectName">Projektnavn *</label><input id="editProjectName" maxlength="100" value="${esc(p.name)}"></div>`,()=>{const name=$('editProjectName').value.trim();if(!name){toast('Angiv projektnavn.');return}p.name=name;data.rows.filter(r=>isProjectType(r.type)&&codeKey(r.code)===codeKey(p.code)).forEach(r=>r.name=name);save();closeModal();render();renderRegistry();toast('Projektnavnet er rettet alle steder.');});
+});
+$('table').addEventListener('change',e=>{const el=e.target;if(!el.matches('input.hour'))return;const row=data.rows.find(r=>r.id===el.dataset.id);if(!row)return;const raw=el.value.trim();if(raw!==''&&(!Number.isFinite(Number(raw))||Number(raw)<0||Number(raw)>80)){toast('Angiv 0–80 timer.');render();return}if(raw==='')delete row.hours[el.dataset.week];else row.hours[el.dataset.week]=Number(raw);save();render()});
+$('table').addEventListener('click',e=>{const el=e.target.closest('[data-delete]');if(!el)return;const r=data.rows.find(x=>x.id===el.dataset.delete);if(!r)return;showModal('Fjern projekt?',`Du er ved at fjerne “${r.name}” og alle tilhørende ugetimer for den valgte medarbejder. Dette kan ikke fortrydes.`,`<p>Eksportér eventuelt en JSON-sikkerhedskopi først.</p>`,()=>{data.rows=data.rows.filter(x=>x.id!==r.id);save();closeModal();render();toast('Projekt fjernet.')})});
+$('bulk').onclick=()=>{if(!rows().length){toast('Tilføj et projekt først.');return}const end=shiftISO(year,week,7);showModal('Udfyld flere uger','Udfyld samme antal timer hver uge, også over nytår. Eksisterende timetal i perioden overskrives.',`<div class="field"><label for="bulkProject">Projekt / aktivitet</label><select id="bulkProject">${rows().map(r=>`<option value="${esc(r.id)}">${esc(r.name)}${r.code?' · '+esc(r.code):''}</option>`).join('')}</select></div><div class="field"><label for="bulkFromYear">Fra år</label><input id="bulkFromYear" type="number" min="2020" max="2100" value="${year}"></div><div class="field"><label for="bulkFrom">Fra uge</label><input id="bulkFrom" type="number" min="1" max="53" value="${week}"></div><div class="field"><label for="bulkToYear">Til år</label><input id="bulkToYear" type="number" min="2020" max="2100" value="${end.year}"></div><div class="field"><label for="bulkTo">Til uge</label><input id="bulkTo" type="number" min="1" max="53" value="${end.week}"></div><div class="field"><label for="bulkHours">Timer pr. uge</label><input id="bulkHours" type="number" min="0" max="80" step="0.5" value="15"></div>`,()=>{const fy=Number($('bulkFromYear').value),a=Number($('bulkFrom').value),ty=Number($('bulkToYear').value),b=Number($('bulkTo').value),h=Number($('bulkHours').value),r=data.rows.find(x=>x.id===$('bulkProject').value);if(!r||!Number.isInteger(fy)||!Number.isInteger(ty)||fy<2020||ty>2100||!Number.isInteger(a)||!Number.isInteger(b)||a<1||a>isoWeekCount(fy)||b<1||b>isoWeekCount(ty)||!Number.isFinite(h)||h<0||h>80){toast('Kontrollér år, uger og timetal.');return}const start=mondayISO(fy,a),finish=mondayISO(ty,b),count=Math.round((finish-start)/(7*DAYS))+1;if(count<=0||count>104){toast('Perioden skal være mellem 1 og 104 uger.');return}for(let i=0;i<count;i++){const t=shiftISO(fy,a,i);r.hours[weekKey(t.year,t.week)]=h}save();closeModal();render();toast(`${count} uger udfyldt.`)})};
+$('copy').onclick=()=>{const ws=visibleWeeks(),last=ws.at(-1),target=nextISO(last.year,last.week),lastTarget=shiftISO(target.year,target.week,ws.length-1);showModal('Kopiér viste uger frem',`Kopiér ${ws.length} viste uger til uge ${target.week}/${target.year} – uge ${lastTarget.week}/${lastTarget.year}. Eksisterende timer i målperioden overskrives.`,`<p>Omfatter alle den valgte medarbejders projekter og aktiviteter.</p>`,()=>{for(const r of rows()){const src=ws.map(w=>r.hours?.[weekKey(w.year,w.week)]);src.forEach((v,i)=>{const t=shiftISO(target.year,target.week,i),k=weekKey(t.year,t.week);if(v===undefined)delete r.hours[k];else r.hours[k]=v})}save();closeModal();render();toast('Uger kopieret – også på tværs af år.')})};
+$('employee').onchange=e=>{selected=e.target.value;render()};$('year').onchange=e=>{year=Number(e.target.value);week=1;refreshWeeks();render()};$('startWeek').onchange=e=>{week=Number(e.target.value);render()};$('count').onchange=render;
+$('prev').onclick=()=>{const t=shiftISO(year,week,-Number($('count').value));year=t.year;week=t.week;refreshSelectors();render()};$('next').onclick=()=>{const t=shiftISO(year,week,Number($('count').value));year=t.year;week=t.week;refreshSelectors();render()};
+function download(name,content,mime){let blob=new Blob([content],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+$('export').onclick=()=>{download('ressourceplan-test-backup-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(data,null,2),'application/json');toast('JSON-sikkerhedskopi eksporteret.')};
+$('csv').onclick=()=>{let lines=[['MedarbejderID','Medarbejder','Område','Faggruppe','Afdeling','Normtid','År','Uge','Type','Projektnavn','Sagsnr','Timer'].join(';')];const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"';for(const r of data.rows){const p=data.people.find(x=>x.id===r.personId);if(!p)continue;for(const [wk,h] of Object.entries(r.hours||{})){if(!/^\d{4}-W\d{2}$/.test(wk))continue;let y=wk.slice(0,4),w=Number(wk.slice(6));lines.push([p.id,p.name,p.region,p.group,p.department,p.hours,y,w,r.type,r.name,r.code,h].map(q).join(';'))}}download('ressourceplan-testdata.csv','\ufeff'+lines.join('\r\n'),'text/csv;charset=utf-8');toast('CSV eksporteret.')};
+$('clearHours').onclick=()=>{if(!confirm('Slet ALLE planlagte timer for alle testmedarbejdere? Projekter og medarbejdere bevares. Eksportér først JSON, hvis du vil gemme planen.'))return;data.rows.forEach(r=>r.hours={});save();render();if(typeof renderDashboard==='function')renderDashboard();toast('Alle testtimer er nulstillet. Belastningen er nu 0 % i uger uden timer.');};
+$('import').onclick=()=>$('file').click();$('file').addEventListener('change',async e=>{const f=e.target.files?.[0];e.target.value='';if(!f)return;try{const obj=JSON.parse(await f.text());if(obj.version!==1||!Array.isArray(obj.people)||!Array.isArray(obj.rows)||!obj.people.length||obj.people.some(p=>typeof p.id!=='string'||typeof p.name!=='string'||!Number.isFinite(Number(p.hours)))||obj.rows.some(r=>typeof r.id!=='string'||typeof r.personId!=='string'||typeof r.name!=='string'||!types.includes(r.type)||typeof r.hours!=='object'||r.hours===null||Object.values(r.hours).some(h=>typeof h!=='number'||!Number.isFinite(h)||h<0||h>80)))throw Error('Forkert format eller ugyldige værdier');if(!confirm('Erstat ALLE lokale testdata med den valgte backup? Eksportér gerne en kopi først.'))return;data={version:1,people:obj.people,rows:obj.rows,projectColors:(obj.projectColors&&typeof obj.projectColors==='object'&&!Array.isArray(obj.projectColors)?obj.projectColors:{}),projects:Array.isArray(obj.projects)?obj.projects:[]};ensureRegistry();selected=data.people[0].id;save();refreshSelectors();render();toast('Backup importeret.')}catch(err){alert('Import mislykkedes: '+err.message)}});
+refreshSelectors();render();save();
+</script><script> 'use strict';
+// Én fælles lokal datakilde. Ingen ændringer af medarbejderportalens datamodel eller lagernøgle.
+let dashYear=year,dashWeek=week,activeTab='plan';
+const dashIds=['dRegion','dGroup','dDepartment','dYear','dWeek','dPeriod','dMode','dOffer','dForecastGroup'];
+function toggleTab(tab){
+ activeTab=tab; $('portalView').classList.toggle('hidden',tab!=='plan');$('dashboardView').classList.toggle('hidden',tab!=='dash');$('registryView').classList.toggle('hidden',tab!=='registry');$('projectView').classList.toggle('hidden',tab!=='project');$('employeeAdminView').classList.toggle('hidden',tab!=='employees');
+ $('tabPlan').classList.toggle('active',tab==='plan');$('tabDash').classList.toggle('active',tab==='dash');$('tabRegistry').classList.toggle('active',tab==='registry');$('tabProject').classList.toggle('active',tab==='project');$('tabEmployees').classList.toggle('active',tab==='employees');
+ if(tab==='dash')renderDashboard();if(tab==='registry')renderRegistry();if(tab==='project')renderProjectView();if(tab==='employees')renderEmployeeAdmin();
+}
+$('tabPlan').onclick=()=>toggleTab('plan');$('tabDash').onclick=()=>toggleTab('dash');$('tabRegistry').onclick=()=>toggleTab('registry');$('tabProject').onclick=()=>toggleTab('project');$('tabEmployees').onclick=()=>toggleTab('employees');
+function dashWeekStats(person,yearNum,weekNum){
+ const key=weekKey(yearNum,weekNum), rr=data.rows.filter(r=>r.personId===person.id);
+ let project=0,absence=0,offers=0,weighted=0;const breakdown=[];
+ for(const r of rr){const h=Number(r.hours?.[key]||0);if(!Number.isFinite(h)||h<=0)continue;
+  if(['Ferie','Fravær','Kursus'].includes(r.type))absence+=h;
+  else if(r.type==='Tilbud'){offers+=h;const raw=Number(r.probability);weighted+=h*(Number.isFinite(raw)?Math.max(0,Math.min(100,raw)):50)/100;}
+  else project+=h;
+  breakdown.push({...r,value:h});
+ }
+ const capacity=Math.max(0,Number(person.hours||0)-absence);
+ return {project,absence,offers,weighted,capacity,pct:capacity?project/capacity:project?Infinity:0,breakdown};
+}
+function dashSelectedWeeks(){const choice=$('dPeriod').value,n=isoWeekCount(dashYear);
+ if(/^Q/.test(choice)){const q=Number(choice.slice(1));return Array.from({length:n},(_,i)=>i+1).filter(w=>Math.floor(mondayISO(dashYear,w).getUTCMonth()/3)+1===q).map(w=>({year:dashYear,week:w}));}
+ let t={year:dashYear,week:dashWeek};const arr=[];for(let i=0;i<Number(choice);i++){arr.push(t);t=nextISO(t.year,t.week)}return arr;
+}
+function dashPeople(){return data.people.filter(p=>($('dRegion').value==='Alle'||p.region===$('dRegion').value)&&($('dGroup').value==='Alle'||p.group===$('dGroup').value)&&($('dDepartment').value==='Alle'||p.department===$('dDepartment').value));}
+function dashColor(s){return s.pct>1?'qover':s.pct>=.85?'qnear':s.project?'qgood':'qempty'}
+// Én farve pr. unikt projekt – samme sagsnummer får samme farve på tværs af medarbejdere.
+// Farver gemmes sammen med lokale testdata og kommer derfor med i JSON-backup.
+const dashColorPalette=[
+ '#2563EB','#E07B16','#159B70','#A34DB8','#D64B63','#0891B2',
+ '#8B6BCB','#A17816','#197E52','#C13F9A','#5A77BF','#D45B2B',
+ '#788B22','#B15A86','#247A91','#7B633B','#C44C40','#587C35',
+ '#7354A5','#1E9A8A','#B37A42','#7D76BD','#B45D4D','#457FA9'
+];
+function dashProjectKey(p){
+ const code=String(p.code||'').trim().toLocaleLowerCase('da-DK');
+ const name=String(p.name||'').trim().toLocaleLowerCase('da-DK');
+ return code?'sag:'+code:'navn:'+name;
+}
+function dashColorForIndex(i){
+ if(i<dashColorPalette.length)return dashColorPalette[i];
+ // Ekstra projekter: nye farvenuancer uden at genbruge de eksisterende farvekoder.
+ const hue=(i-dashColorPalette.length)*137.508%360;
+ const sat=65+((i%3)*5),light=37+((i%4)*5);
+ return `hsl(${hue.toFixed(2)},${sat}%,${light}%)`;
+}
+function dashEnsureProjectColors(){
+ if(!data.projectColors||typeof data.projectColors!=='object'||Array.isArray(data.projectColors))data.projectColors={};
+ const projects=[...new Map(data.rows.filter(r=>!['Ferie','Fravær','Kursus','Tilbud'].includes(r.type)).map(r=>[dashProjectKey(r),r])).keys()].sort((a,b)=>a.localeCompare(b,'da'));
+ const used=new Set(Object.values(data.projectColors));
+ let next=0,changed=false;
+ for(const key of projects){
+  if(data.projectColors[key])continue;
+  while(used.has(dashColorForIndex(next)))next++;
+  const color=dashColorForIndex(next++);
+  data.projectColors[key]=color;used.add(color);changed=true;
+ }
+ if(changed)save();
+}
+function dashProjectColor(project){
+ const key=typeof project==='string'?'navn:'+project.trim().toLocaleLowerCase('da-DK'):dashProjectKey(project);
+ return data.projectColors?.[key]||'#64748b';
+}
+function renderDashSelectors(){
+ const deps=[...new Set(data.people.map(p=>p.department).filter(Boolean))].sort();const chosen=$('dDepartment').value;
+ $('dDepartment').innerHTML='<option value="Alle">Alle</option>'+deps.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');$('dDepartment').value=deps.includes(chosen)?chosen:'Alle';
+ const years=[...new Set([2025,2026,2027,2028,2029,2030,year,dashYear,...data.rows.flatMap(r=>Object.keys(r.hours||{}).map(x=>Number(x.slice(0,4)))).filter(Number.isInteger)])].sort((a,b)=>a-b);
+ $('dYear').innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');$('dYear').value=dashYear;
+ dashWeek=Math.min(dashWeek,isoWeekCount(dashYear));
+ $('dWeek').innerHTML=Array.from({length:isoWeekCount(dashYear)},(_,i)=>`<option value="${i+1}">Uge ${i+1}</option>`).join('');$('dWeek').value=dashWeek;
+ $('dWeek').disabled=/^Q/.test($('dPeriod').value);
+}
+function dashBuildStats(persons,weeks){return persons.map(p=>{
+ const chosen=weeks.map(w=>dashWeekStats(p,w.year,w.week));
+ const sum=k=>chosen.reduce((s,v)=>s+v[k],0);
+ return {...p,chosen,project:sum('project'),capacity:sum('capacity'),offers:sum('offers'),weighted:sum('weighted'),absence:sum('absence'),overWeeks:chosen.filter(v=>v.project>v.capacity).length};
+});}
+function dashDonut(parts){const tot=parts.reduce((s,x)=>s+x.hours,0);if(!tot)return '<div class="dash-donut dash-donutempty"></div>';
+ let pos=0;const stops=parts.map(p=>{const start=pos;pos+=p.hours/tot*100;return `${dashProjectColor(p)} ${start.toFixed(3)}% ${pos.toFixed(3)}%`});
+ return `<div class="dash-donut" aria-label="Projektfordeling" style="background:conic-gradient(${stops.join(',')})"></div>`;
+}
+let dashForecastCSV='';
+function dashRenderForecast(stats,weeks){
+ const field=$('dForecastGroup').value;
+ const names=[...new Set(stats.map(p=>String(p[field]||'Ukendt')))].sort((a,b)=>a.localeCompare(b,'da'));
+ const wk=weeks.map((w,i)=>({label:`${w.year}-U${String(w.week).padStart(2,'0')}`,items:stats.map(p=>({person:p,week:p.chosen[i]}))}));
+ const vals=(subset)=>subset.reduce((a,x)=>{a.project+=x.week.project;a.capacity+=x.week.capacity;a.free+=Math.max(0,x.week.capacity-x.week.project);a.excess+=Math.max(0,x.week.project-x.week.capacity);return a},{project:0,capacity:0,free:0,excess:0});
+ const totals=wk.map(w=>vals(w.items));const sum=vals(wk.flatMap(w=>w.items));
+ const cols=['Enhed','Planlagt (t)','Kapacitet (t)','Ledig (t)','Overbelastning (t)','Belastning (%)'];
+ const csv=[cols];
+ let html=`<table class="forecast-table"><thead><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>`;
+ const makeRow=(name,v,cls='')=>{
+  const pct=v.capacity?(v.project/v.capacity*100):v.project?null:0;
+  csv.push([name,v.project,v.capacity,v.free,v.excess,pct===null?'Uden kapacitet':Math.round(pct)]);
+  return `<tr class="${cls}"><td>${esc(name)}</td><td>${fmt(v.project)}</td><td>${fmt(v.capacity)}</td><td class="free">${fmt(v.free)}</td><td class="excess">${fmt(v.excess)}</td><td>${pct===null?'∞':Math.round(pct)+'%'}<span class="fbar"><i style="width:${pct===null?100:Math.min(100,pct)}%"></i></span></td></tr>`;
+ };
+ for(const name of names)html+=makeRow(name,vals(wk.flatMap(w=>w.items.filter(x=>String(x.person[field]||'Ukendt')===name))));
+ html+=makeRow('I ALT',sum,'summary');
+ html+='</tbody></table>';
+ html+='<p class="footnote">Belastning er planlagte projekttimer / disponibel kapacitet. Ledig og overbelastet tid beregnes pr. medarbejder pr. uge, så uger og medarbejdere ikke udligner hinanden.</p>';
+ html+='<div class="secondary" style="margin-top:8px">Ugevis udvikling: '+wk.map((w,i)=>`${esc(w.label)}: ${fmt(totals[i].project)} / ${fmt(totals[i].capacity)} t`).join(' · ')+'</div>';
+ $('dForecast').innerHTML=html;
+ const q=v=>'"'+String(v).replace(/"/g,'""')+'"';dashForecastCSV='\uFEFF'+csv.map(r=>r.map(q).join(';')).join('\r\n');
+}
+function renderDashboard(){dashEnsureProjectColors();renderDashSelectors();const persons=dashPeople(),weeks=dashSelectedWeeks(),allWeeks=Array.from({length:isoWeekCount(dashYear)},(_,i)=>i+1);
+ const stats=dashBuildStats(persons,weeks),sum=(key)=>stats.reduce((s,p)=>s+p[key],0);
+ const flat=stats.flatMap(p=>p.chosen),over=stats.filter(p=>p.overWeeks>0).length;
+ const free=flat.reduce((s,v)=>s+Math.max(0,v.capacity-v.project),0),excess=flat.reduce((s,v)=>s+Math.max(0,v.project-v.capacity),0);
+ const kpis=[['Medarbejdere',persons.length,'i det valgte filter'],['Planlagte timer',fmt(sum('project'))+' t',weeks.length+' uger'],['Over 100 %',over,'medarbejdere i mindst én uge'],['Ledig kapacitet',fmt(free)+' t','medarbejder/uge'],['Overbelastning',fmt(excess)+' t','medarbejder/uge'],['Brutto tilbud',fmt(sum('offers'))+' t','Vægtet: '+fmt(sum('weighted'))+' t']];
+ $('dKpis').innerHTML=kpis.map(k=>`<article class="dash-kpi"><label>${esc(k[0])}</label><strong>${esc(k[1])}</strong><small>${esc(k[2])}</small></article>`).join('');
+ const selected=new Set(weeks.filter(w=>w.year===dashYear).map(w=>w.week));
+ $('dRangeLabel').textContent=`Valgt periode: ${weeks[0]?`uge ${weeks[0].week}/${weeks[0].year} – uge ${weeks.at(-1).week}/${weeks.at(-1).year}`:'ingen uger'} · Orange markering viser de valgte uger i årsoversigten.`;
+ const hm=$('dMode').value,om=$('dOffer').value;
+ const display=s=>hm==='hours'?fmt(s.project)+' t':hm==='ratio'?fmt(s.project)+' / '+fmt(s.capacity):s.capacity?Math.round(s.pct*100)+'%':s.project?'∞':'0%';
+ const head='<thead><tr><th>Kvartal</th>'+allWeeks.map(w=>`<th class="q${Math.min(3,Math.floor(mondayISO(dashYear,w).getUTCMonth()/3))}">Q${Math.floor(mondayISO(dashYear,w).getUTCMonth()/3)+1}</th>`).join('')+'</tr><tr><th>Ugestart</th>'+allWeeks.map(w=>`<th>${mondayISO(dashYear,w).toLocaleDateString('da-DK',{day:'2-digit',month:'2-digit',timeZone:'UTC'})}</th>`).join('')+'</tr><tr><th>Medarbejder / tilbud</th>'+allWeeks.map(w=>`<th class="${selected.has(w)?'inrange':''}">Uge ${w}</th>`).join('')+'</tr></thead>';
+ let body='<tbody>';
+ const regions=[...new Set(persons.map(p=>p.region))].sort((a,b)=>a.localeCompare(b,'da'));
+ for(const region of regions){
+  const subset=persons.filter(p=>p.region===region);if(!subset.length)continue;
+  body+=`<tr class="groupRow"><th colspan="${allWeeks.length+1}">${esc(region)}</th></tr>`;
+  const groups=['EL','Belysning','BMS/CTS','Sikring',...new Set(subset.map(p=>p.group).filter(g=>!['EL','Belysning','BMS/CTS','Sikring'].includes(g)))];
+  for(const group of groups){const arr=subset.filter(p=>p.group===group);if(!arr.length)continue;
+   body+=`<tr class="groupRow"><th colspan="${allWeeks.length+1}">${esc(group)}</th></tr>`;
+   for(const p of arr){body+=`<tr><td><button data-person="${esc(p.id)}" data-year="${dashYear}" data-week="${dashWeek}">${esc(p.name)}</button> <span class="secondary">${esc(p.department||'')}</span></td>`;
+    for(const w of allWeeks){const s=dashWeekStats(p,dashYear,w);body+=`<td tabindex="0" role="button" aria-label="${esc(p.name)} uge ${w} ${display(s)}" class="cell ${dashColor(s)} ${selected.has(w)?'inrange':''}" data-person="${esc(p.id)}" data-year="${dashYear}" data-week="${w}" title="${esc(p.name)} · Uge ${w} · ${fmt(s.project)} / ${fmt(s.capacity)} t">${display(s)}</td>`}body+='</tr>';
+   }
+   const offers=data.rows.filter(r=>r.type==='Tilbud'&&arr.some(p=>p.id===r.personId));
+   for(const r of offers){const probability=Number(r.probability),prob=Number.isFinite(probability)?Math.max(0,Math.min(100,probability)):50;
+    body+=`<tr class="offerRow"><td>${esc(r.name)} <span class="secondary">${fmt(prob)}% · tilbud</span></td>`;
+    body+=allWeeks.map(w=>{const h=Number(r.hours?.[weekKey(dashYear,w)]||0),v=om==='weighted'?h*prob/100:h;return `<td class="${selected.has(w)?'inrange':''}">${h?fmt(v)+' t':'—'}</td>`}).join('')+'</tr>';
+   }
+  }
+ }
+ body+='</tbody>';$('dHeat').innerHTML=head+body;
+ renderForecastAndCards(stats,weeks);
+}
+function renderForecastAndCards(stats,weeks){
+ dashRenderForecast(stats,weeks);
+ $('dDetailsTitle').textContent='Medarbejdere i den valgte periode · '+(weeks.length?`uge ${weeks[0].week}/${weeks[0].year} – ${weeks.at(-1).week}/${weeks.at(-1).year}`:'ingen uger');
+ const cards=[];
+ for(const p of stats.sort((a,b)=>(b.capacity?b.project/b.capacity:0)-(a.capacity?a.project/a.capacity:0))){
+  const pct=p.capacity?p.project/p.capacity:p.project?Infinity:0,color=p.overWeeks?'#cc5265':pct>=.85?'#d3a137':'#31b18f';
+  const counts=new Map();for(const stat of p.chosen){for(const r of stat.breakdown){if(['Ferie','Fravær','Kursus','Tilbud'].includes(r.type))continue;const id=dashProjectKey(r),v=counts.get(id)||{name:r.name,code:r.code,hours:0};v.hours+=r.value;counts.set(id,v)}}
+  const projects=[...counts.values()].sort((a,b)=>b.hours-a.hours);
+  const items=projects.map(v=>`<div class="dashproj"><span><i class="dash-swatch" style="background:${dashProjectColor(v)}"></i>${esc(v.name)} ${v.code?'· '+esc(v.code):''}</span><b>${fmt(v.hours)} t</b></div>`).join('');
+  const donut=dashDonut(projects);
+  cards.push(`<article class="dashcard" style="border-left-color:${color}"><div class="dashcardheader"><div><strong>${esc(p.name)}</strong><div class="secondary">${esc(p.region)} · ${esc(p.group)} · ${esc(p.department||'')}</div></div><span class="dashpct">${Number.isFinite(pct)?Math.round(pct*100)+'%':p.project?'∞':'0%'}</span></div><div class="dashbar"><div class="dashfill" style="width:${Math.min(100,Number.isFinite(pct)?pct*100:100)}%;background:${color}"></div></div><div class="dash-meta"><span>${fmt(p.project)} t planlagt</span><span>${fmt(p.capacity)} t kapacitet${p.absence?' · '+fmt(p.absence)+' t fravær':''}</span></div><div class="secondary">${p.overWeeks?`Over 100 % i ${p.overWeeks} uge(r)`:'Ingen uger over 100 %'}</div><div class="dash-donutwrap">${donut}<div class="dashprojs">${items||'<span class="secondary">Ingen projekttimer i perioden</span>'}</div></div><div class="dashcard-actions"><button class="btn sm" data-person="${esc(p.id)}" data-year="${weeks[0]?.year||dashYear}" data-week="${weeks[0]?.week||dashWeek}">Åbn ugeplan</button></div></article>`);
+ }
+ $('dCards').innerHTML=cards.length?cards.join(''):'<p class="dash-noresults">Ingen medarbejdere matcher filtrene.</p>';
+}
+function dashOpenPerson(el){selected=el.dataset.person;year=Number(el.dataset.year||dashYear);week=Number(el.dataset.week||dashWeek);refreshSelectors();render();toggleTab('plan');window.scrollTo(0,0)}
+for(const id of ['dHeat','dCards']){
+ $(id).addEventListener('click',e=>{const el=e.target.closest('[data-person]');if(el)dashOpenPerson(el)});
+ $(id).addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const el=e.target.closest('[data-person]');if(el){e.preventDefault();dashOpenPerson(el)}}});
+}
+for(const id of dashIds){$(id).addEventListener('change',()=>{if(id==='dYear')dashYear=Number($('dYear').value);if(id==='dWeek')dashWeek=Number($('dWeek').value);renderDashboard()})}
+$('dRefresh').onclick=renderDashboard;
+$('dExport').onclick=()=>{const blob=new Blob([dashForecastCSV],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`kapacitetsprognose_${dashYear}_uge${dashWeek}.csv`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),300)};
+const previousSave=save;save=function(){previousSave();if(activeTab==='dash')renderDashboard()};
+const previousRender=render;render=function(){previousRender();if(activeTab==='dash')renderDashboard()};
+renderDashboard();
+</script><script>
+'use strict';
+// Version 2.7 - project overview. Reads the same local data, without changing its schema.
+let prSelectedCode='',prYear=year,prStart=week,prCsvText='';
+function prWeeks(){let t={year:prYear,week:prStart},res=[];for(let i=0;i<Number($('prPeriod').value);i++){res.push({...t,label:`${t.week}/${String(t.year).slice(2)}`});t=nextISO(t.year,t.week)}return res}
+function prRefreshSelectors(){
+ const opts=[...data.projects].sort((a,b)=>a.code.localeCompare(b.code,'da',{numeric:true}));
+ const existing=prSelectedCode;
+ $('prProject').innerHTML=opts.map(p=>`<option value="${esc(p.code)}">${esc(p.code)} · ${esc(p.name)}</option>`).join('');
+ prSelectedCode=opts.some(p=>p.code===existing)?existing:(opts[0]?.code||'');$('prProject').value=prSelectedCode;
+ const yNow=new Date().getFullYear(),years=new Set([yNow-1,yNow,yNow+1,prYear]);
+ for(const r of data.rows)for(const k of Object.keys(r.hours||{})){if(/^\d{4}-W\d{2}$/.test(k))years.add(Number(k.slice(0,4)))}
+ const yr=[...years].filter(y=>y>=2020&&y<=2100).sort((a,b)=>a-b);
+ $('prYear').innerHTML=yr.map(y=>`<option value="${y}">${y}</option>`).join('');$('prYear').value=String(prYear);
+ const n=isoWeekCount(prYear);if(prStart>n)prStart=n;
+ $('prStart').innerHTML=Array.from({length:n},(_,i)=>`<option value="${i+1}">Uge ${i+1}</option>`).join('');$('prStart').value=String(prStart);
+}
+function prReport(){
+ const w=prWeeks(),code=codeKey(prSelectedCode);
+ const matching=data.rows.filter(r=>isProjectType(r.type)&&codeKey(r.code)===code);
+ const personRows=data.people.map(p=>{
+  const rr=matching.filter(r=>r.personId===p.id);
+  return {...p,values:w.map(wk=>rr.reduce((sum,r)=>sum+(Number(r.hours?.[weekKey(wk.year,wk.week)])||0),0))};
+ }).filter(p=>p.values.some(v=>v>0));
+ const totals=w.map((_,i)=>personRows.reduce((sum,p)=>sum+p.values[i],0));
+ return {w,personRows,totals,hours:totals.reduce((sum,n)=>sum+n,0)};
+}
+function renderProjectView(){
+ prRefreshSelectors();
+ const project=data.projects.find(p=>codeKey(p.code)===codeKey(prSelectedCode));
+ const r=prReport();
+ $('prTitle').innerHTML=project?`<span class="pr-num">${esc(project.code)}</span><strong>${esc(project.name)}</strong>`:'Der er ingen projekter i registret endnu.';
+ $('prPeople').textContent=r.personRows.length;$('prHours').textContent=fmt(r.hours)+' t';$('prWeeks').textContent=r.totals.filter(x=>x>0).length;
+ $('prAverage').textContent=fmt(r.hours/r.w.length)+' t';
+ if(!project){$('prTableWrap').innerHTML='<div class="pr-empty">Opret først et projekt i Projektregister.</div>';prCsvText='';return}
+ let h='<table class="pr-grid"><thead><tr><th>Medarbejder</th>'+r.w.map(w=>`<th>Uge ${w.week}<div style="font-size:10px;font-weight:400">${w.year}</div></th>`).join('')+'<th>I alt</th></tr></thead><tbody>';
+ h+=r.personRows.map(p=>`<tr><td><button type="button" class="pr-person" data-person="${esc(p.id)}">${esc(p.name)}</button><div class="secondary">${esc(p.region)} · ${esc(p.group)} · ${esc(p.department||'')}</div></td>${p.values.map(v=>`<td>${v?fmt(v)+' t':'–'}</td>`).join('')}<td>${fmt(p.values.reduce((a,b)=>a+b,0))} t</td></tr>`).join('');
+ if(!r.personRows.length)h+=`<tr><td colspan="${r.w.length+2}" style="text-align:left;color:#64748b">Ingen medarbejdere har planlagt timer på dette projekt i perioden.</td></tr>`;
+ h+='<tr><td>Samlet projekttid</td>'+r.totals.map(v=>`<td>${fmt(v)} t</td>`).join('')+`<td>${fmt(r.hours)} t</td></tr></tbody></table>`;
+ $('prTableWrap').innerHTML=h;
+ const q=s=>'"'+String(s??'').replace(/"/g,'""')+'"';
+ const csv=[['Projektnummer','Projektnavn','Medarbejder','Område','Faggruppe','Afdeling',...r.w.map(w=>weekKey(w.year,w.week)),'I alt'].map(q).join(';')];
+ for(const p of r.personRows)csv.push([project.code,project.name,p.name,p.region,p.group,p.department,...p.values,p.values.reduce((a,b)=>a+b,0)].map(q).join(';'));
+ csv.push([project.code,project.name,'TOTAL','','','',...r.totals,r.hours].map(q).join(';'));
+ prCsvText='\ufeff'+csv.join('\r\n');
+}
+$('prProject').addEventListener('change',e=>{prSelectedCode=e.target.value;renderProjectView()});
+$('prYear').addEventListener('change',e=>{prYear=Number(e.target.value);renderProjectView()});
+$('prStart').addEventListener('change',e=>{prStart=Number(e.target.value);renderProjectView()});
+$('prPeriod').addEventListener('change',renderProjectView);
+$('prTableWrap').addEventListener('click',e=>{const b=e.target.closest('[data-person]');if(!b)return;selected=b.dataset.person;year=prYear;week=prStart;refreshSelectors();render();toggleTab('plan');window.scrollTo(0,0)});
+$('prCsv').addEventListener('click',()=>{if(!prCsvText){toast('Vælg et projekt først.');return}download(`projekt_${prSelectedCode}_${prYear}_uge${prStart}.csv`,prCsvText,'text/csv;charset=utf-8')});
+
+</script><script>
+'use strict';
+// v2.8: Medarbejderadministration. Existing employee ID is immutable.
+const eaGroups=['EL','Belysning','BMS/CTS','Sikring'];
+function renderEmployeeAdmin(){
+ const q=($('eaSearch').value||'').trim().toLocaleLowerCase('da-DK');
+ const matches=data.people.filter(p=>!q||[p.name,p.region,p.group,p.department,p.id].some(v=>String(v||'').toLocaleLowerCase('da-DK').includes(q))).sort((a,b)=>a.name.localeCompare(b.name,'da'));
+ $('eaCount').textContent=`${matches.length} af ${data.people.length} medarbejdere`;
+ $('eaRows').innerHTML=matches.map(p=>{
+   const records=data.rows.filter(r=>r.personId===p.id).length;
+   return `<tr><td><strong>${esc(p.name)}</strong><span class="ea-id">ID: ${esc(p.id)}</span></td><td>${esc(p.region)}</td><td>${esc(p.group)}</td><td>${esc(p.department||'–')}</td><td>${fmt(p.hours)} t</td><td>${records}</td><td><div class="ea-buttons"><button class="btn sm" type="button" data-ea-edit="${esc(p.id)}">Rediger</button><button class="btn sm danger" type="button" data-ea-delete="${esc(p.id)}" ${records?'disabled title="Medarbejderen har projekter eller aktiviteter"':''}>Slet</button></div></td></tr>`;
+ }).join('')||'<tr><td colspan="7">Ingen medarbejdere matcher søgningen.</td></tr>';
+}
+function eaNewId(){
+ // Stable ID (not name-derived), distinct even in local prototype.
+ let id;do{id='emp-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9)}while(data.people.some(p=>p.id===id));return id;
+}
+function eaEdit(id){
+ const existing=id?data.people.find(p=>p.id===id):null;
+ if(id&&!existing){toast('Medarbejderen blev ikke fundet.');return}
+ const p=existing||{name:'',region:'Øst',group:'EL',department:'',hours:37};
+ const groupOpts=[...new Set([...eaGroups,...data.people.map(p=>p.group).filter(Boolean)])];
+ const options=(items,selected)=>items.map(v=>`<option value="${esc(v)}" ${v===selected?'selected':''}>${esc(v)}</option>`).join('');
+ showModal(existing?'Rediger medarbejder':'Opret medarbejder',existing?`ID ${p.id} forbliver uændret. Planlagte timer og projekter bevares.`:'Medarbejderen får et automatisk, unikt ID. Brug kun fiktive testdata.',
+ `<div class="choose-grid"><div class="field"><label for="eaName">Navn *</label><input id="eaName" maxlength="100" value="${esc(p.name)}" autocomplete="off"></div><div class="field"><label for="eaRegion">Område</label><select id="eaRegion">${options(['Øst','Vest',...new Set(data.people.map(p=>p.region).filter(v=>v!=='Øst'&&v!=='Vest'))],p.region)}</select></div><div class="field"><label for="eaGroup">Faggruppe</label><select id="eaGroup">${options(groupOpts,p.group)}</select></div><div class="field"><label for="eaDepartment">Afdeling</label><input id="eaDepartment" maxlength="60" value="${esc(p.department||'')}" placeholder="Fx 7134.03"></div><div class="field"><label for="eaHours">Ugentlig normtid (timer) *</label><input id="eaHours" type="number" min="1" max="60" step="0.5" value="${esc(p.hours)}"></div><div class="ea-form-help">Normtiden bruges i belastningsberegningerne for alle uger. Kapacitetsændringer på bestemte uger er ikke en del af denne version.</div></div>`,()=>{
+   const name=$('eaName').value.trim(),region=$('eaRegion').value,group=$('eaGroup').value,department=$('eaDepartment').value.trim(),raw=$('eaHours').value.trim().replace(',','.'),hours=Number(raw);
+   if(!name){toast('Angiv medarbejderens navn.');$('eaName').focus();return}
+   if(!raw||!Number.isFinite(hours)||hours<=0||hours>60||hours*2!==Math.round(hours*2)){toast('Normtid skal være 0,5–60 timer, i hele eller halve timer.');$('eaHours').focus();return}
+   if(existing){Object.assign(existing,{name,region,group,department,hours})}
+   else data.people.push({id:eaNewId(),name,region,group,department,hours});
+   save();closeModal();refreshSelectors();render();renderEmployeeAdmin();toast(existing?'Medarbejderen er opdateret.':'Medarbejderen er oprettet.');
+ });
+ $('eaName').focus();
+}
+$('eaCreate').addEventListener('click',()=>eaEdit(null));
+$('eaSearch').addEventListener('input',renderEmployeeAdmin);
+$('eaRows').addEventListener('click',e=>{
+ const edit=e.target.closest('[data-ea-edit]');if(edit){eaEdit(edit.dataset.eaEdit);return}
+ const del=e.target.closest('[data-ea-delete]');if(!del)return;
+ const id=del.dataset.eaDelete,p=data.people.find(x=>x.id===id);
+ if(!p)return;
+ if(data.rows.some(r=>r.personId===id)){toast('Kan ikke slette: Medarbejderen har projekter eller aktiviteter.');return}
+ if(data.people.length<=1){toast('Den sidste testmedarbejder kan ikke slettes.');return}
+ if(!confirm(`Slet medarbejderen "${p.name}"? Handlingen kan ikke fortrydes uden backup.`))return;
+ data.people=data.people.filter(x=>x.id!==id);
+ save();refreshSelectors();render();renderEmployeeAdmin();toast('Medarbejderen blev slettet.');
+});
+</script></body></html>

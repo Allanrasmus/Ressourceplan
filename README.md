@@ -1,2 +1,2 @@
 # Ressourceplan
-Excel-based resource planning tool for employees and managers
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference; Excel v3.2 er senest leverede baseline, ikke fuldt valideret. Første mål: version 3.3 med aftalte rettelser. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Originalfiler skal uploades separat eller fra overdragelsespakken. Brug kun fiktive data og godkendte tjenester.
