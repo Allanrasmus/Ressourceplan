@@ -65,3 +65,18 @@ Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud v
 - Behold Planstart skjult som administrativ reserve, indtil scripts er
   manuelt godkendt. Indfør først kvartals- og medarbejdergruppering efter
   stabilitetstest med Excel og delte projektmapper.
+
+## Version 3.6.1 – sikre valg, medarbejderpladser og prototyper
+
+- Vælg den første sikkert ledige plads. Brug en genkendelig reserveret kode,
+  når pladsen er ubrugt og koden ikke findes i planhistorikken.
+  Eksisterende ID'er og historiske rækker bevares.
+- Sag gemmer ingen tilbudsprocent. Tilbud accepterer 0–100 som tekst,
+  herunder 0, og bruger 50 % ved tom tekst.
+- Undgå delt input til scripts. Brug registeropslag og en valideret enkelt
+  celle i PlanTimer eller Projektregister til kontekst. Uændret manuel
+  timeindtastning bruger tabellens dynamiske dropdowns.
+- Bevar Planstart skjult og uge 53 afgrænset til den eksisterende tabel.
+  Scriptkoderne kan opdateres på et kompatibelt 3.6-dokument uden at migrere timers data.
+- Kvartals- og medarbejdergrupper leveres separat, indtil filtre, årsændringer
+  og samtidige brugeres visning er afprøvet i Microsoft Excel.

@@ -81,3 +81,52 @@ og resultater efter genåbning. Grupperingen er derfor endnu en prototype.
 [Range](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.range?view=office-scripts)
 [Worksheet](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.worksheet?view=office-scripts)
 [NamedSheetView](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.namedsheetview?view=office-scripts)
+
+## Outline-prototype i 3.6.1
+
+Prøv `Ressourceplan_3_6_1_Gruppeprototype.xlsx` som særskilt arbejdskopi.
+Driftsfilen bevarer det oprindelige layout og de kompakte filtre. Prototypen
+tilføjer to prøveark med native outline.
+
+- **Kvartalsprototype:** Har redigerbare kopier af planrækker for et
+  bestemt år og en Excel-tabel, der kan filtreres. De fastlåste felter til
+  medarbejder, type og projekt ligger uden for grupperne. Hver
+  sammenhængende kvartalsblok af uger har en separat, synlig sumkolonne.
+  Det holder to tilstødende native kolonnegrupper adskilt og bevarer den
+  kvartalsvise sum, når ugerne skjules. Indtastning i prøvearket ændrer
+  kun kopien. De oprindelige planrækker og oversigter er bevaret i
+  prototypefilen.
+- **Medarbejderprototype:** Én belægningsrække pr. medarbejder med
+  foldbare detaljer direkte under. Detaljerne indeholder normtid,
+  disponibel kapacitet, Sag og Tilbud pr. projekt, Ferie, Fravær, Kursus,
+  Andet, booket, ledig kapacitet og overbelastning. Tilbud står separat
+  fra bookede timer. Belægningsfarver og orange periodeoverskrifter er
+  synlige. Niveau 1 viser belægningsrækkerne. Niveau 2 viser alle
+  medarbejderdetaljer. Totalen ligger direkte under de viste blokke.
+
+Medarbejdergruppernes medlemskab og projektetiketter vælges ved bygning.
+Detaljetimerne genberegnes fra PlanTimer i samme prototypefil via
+medarbejder-ID, planår, aktivitetstype og sagsnummer. De følger derfor
+samme person, uanset hvilke data der filtreres frem i kildetabellen.
+Ny projektfordeling, nyt planår eller et andet medarbejderudsnit kræver
+at prototypen genbygges, så hver fysiske gruppe svarer til det nye udsnit.
+Brug f.eks. `python prototype_outline_3_6_1.py --year 2027 --region Vest --output Vest_2027.xlsx`.
+`--group` og `--department` kan kombineres med `--region`.
+
+Kvartaler afledes af ugernes mandage med grupper for 52 eller 53 uger.
+Uge 1 i planår 2026 starter i december 2025, så den får en særskilt Q4
+2025-blok. En Office Script-vedligeholdelse kan bygge de fysiske intervaller
+med `Range.group` og `Range.ungroup` og vise niveauer med
+`Worksheet.showOutlineLevels`. Den bør kun køre på en lokal visning med
+et entydigt planår og verificerede summary-kolonner. Det skal afprøves,
+om ind-/udfoldning eller ombygning påvirker en anden brugers visning i
+Teams/SharePoint. Personlige arkvisninger adskiller filtre, men
+outline-strukturen lagres på arket. De nuværende produktionsscripts
+lader både gruppeopbygning og filtrering være brugerens egne valg.
+[Microsofts outline-metoder](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.worksheet?view=office-scripts)
+
+De reserverede ID'er fra tidligere udgivelser kan på sigt undværes i et
+nyt register med tomme kapacitetsrækker. Automatisk ID-tildeling skal
+fortsat se efter både registrerede koder og planhistorik. Eksisterende
+identiteter må ikke omnummereres. Brugte ID'er bør forblive reserverede
+i historikken, også hvis personen ikke længere er aktiv.

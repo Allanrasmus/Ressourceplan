@@ -79,3 +79,15 @@
   år med 52 uger. Validering og sumlogik er bevaret.
 - Undersøgt native række- og kolonnegrupper. Se DESIGN.md for
   prototype og resterende testpunkter før en frigivelse.
+
+## Excel 3.6.1
+
+- Medarbejderoprettelse vælger første sikkert ledige plads. Reserverede ID'er
+  med historik springes over. Eksisterende ID'er bevares.
+- Tilføj projekt ignorerer tilbudsprocent på Sag. Tilbud skelner mellem tom
+  tekst, 0 % og øvrige gyldige procenter.
+- Projekt og planår kan bruge en valideret markering. Et entydigt navn kan
+  bruges i stedet for en teknisk kode. Fælles inputfelter er undgået.
+- Tilføjet opdateringsvejledning for eksisterende Office Scripts og knapper.
+- Leveret separat outline-prototype med kvartaler og medarbejderdetaljer.
+  Driftsfilen bevarer de kompakte oversigter og direkte timeindtastning.

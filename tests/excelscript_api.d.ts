@@ -4,9 +4,11 @@ declare namespace ExcelScript {
   interface Workbook {
     getTable(key: string): Table | undefined;
     getWorksheet(key: string): Worksheet | undefined;
+    getSelectedRange(): Range;
   }
   interface Worksheet {
     getRange(address?: string): Range;
+    getName(): string;
   }
   interface Table {
     getHeaderRowRange(): Range;
@@ -19,6 +21,11 @@ declare namespace ExcelScript {
     getValue(): string | number | boolean;
     getRowIndex(): number;
     getColumnIndex(): number;
+    getRowCount(): number;
+    getColumnCount(): number;
+    getRowHidden(): boolean;
+    getWorksheet(): Worksheet;
+    getRow(row: number): Range;
     getCell(row: number, column: number): Range;
     getColumn(column: number): Range;
     getResizedRange(deltaRows: number, deltaColumns: number): Range;

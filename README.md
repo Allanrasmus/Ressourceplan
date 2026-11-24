@@ -1,9 +1,9 @@
 # Ressourceplan
-Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.6 introducerer Office Scripts på grundlag af 3.5.1. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.6.1 retter Office Scripts og leverer gruppering som en særskilt prototype. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
-## Brug version 3.6
+## Brug version 3.6.1
 
-Åbn `Ressourceplan_3_6.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
+Åbn `Ressourceplan_3_6_1.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
 du en personlig arkvisning via **Vis → Arkvisning → Ny**, før du ændrer filtrene.
 Filtre styrer visningen og giver alle med adgang til filen mulighed for at se data.
 Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpilene i
@@ -46,7 +46,7 @@ fortsætter over årsskiftet, når næste planår findes i filen. Kvartaler og
 Knyt de tre scripts til projektmappen i Excel. Brug derefter knapperne, eller
 kør scripts fra **Automatiser**. De markerede pladser i udgivelsesfilen bliver
 først aktive, når knapperne er tilføjet i Microsoft 365.
-[Installation, parametre og brugervejledning](office-scripts/README.md)
+[Opdatering, installation og brugervejledning](office-scripts/3.6.1/README.md)
 
 - **Opret medarbejder** på fanen Medarbejdere registrerer navn, område,
   faggruppe, afdeling og normtid, tildeler ID og opretter standardrækker
@@ -57,8 +57,9 @@ først aktive, når knapperne er tilføjet i Microsoft 365.
 - **Opret nyt planår** på Min ressourceplan tilføjer kun de standardrækker,
   der mangler for medarbejderen og året. Nye planår kommer med i årslisten.
 
-Brug medarbejder-ID og sagsnummer som input, når navne kan være ens. Rækker
-tilføjes også, når de ligger uden for din aktuelle filtrering. Vælg derefter
+Markér en celle under Medarbejder for at genbruge navn og planår, eller angiv et
+entydigt navn. Ved ens navne kan du markere den rigtige række eller bruge hele
+etiketten med kode. Rækker tilføjes også, når de ligger uden for din aktuelle filtrering. Vælg derefter
 medarbejderen og året i din personlige arkvisning. Tabelfilteret viser
 eksisterende tabelværdier og kan være begrænset af andre aktive filtre.
 
@@ -67,7 +68,7 @@ eksisterende tabelværdier og kan være begrænset af andre aktive filtre.
 **Planstart** er bevaret som skjult ark. Ved behov kan en administrator vise
 arket og bruge den manuelle vejledning fra [3.5.1](https://github.com/Allanrasmus/Ressourceplan/blob/ressourceplan-3.5.1/README.md)
 til at indsætte standardrækker som værdier. Arket indeholder årslisten og
-3.6-formelskabelonen. Skjul det igen efter brug.
+formelskabelonen til Office Scripts. Skjul det igen efter brug.
 
 Manuel indsættelse af en enkelt projektrække fungerer gennem
 **Indsæt → Tabelrækker ovenfor**. Hvis Excel ikke tilbyder indsættelse under
@@ -92,6 +93,13 @@ historiske timer. Ændringer af normtid og øvrige medarbejderoplysninger slår
 igennem på historiske visninger, da de læses fra det aktuelle register.
 Indsætning via udklipsholderen kan omgå Excels datavalidering.
 
+## Gruppeprototype
+
+Åbn gruppeprototypen separat og prøv kvartaler og detaljer med Excels plus- og
+minusknapper. Ugefelterne på Kvartalsprototype er redigerbare kopier til
+afprøvning. Medarbejderprototype viser et udsnit, der vælges ved bygning.
+[Forudsætninger og afprøvning](DESIGN.md#outline-prototype-i-361)
+
 ## Byg og test
 
 Kør fra projektmappen med Python 3.12. Brug et nyt outputfilnavn ved genbygning.
@@ -101,8 +109,9 @@ python -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 build_dir=$(mktemp -d)
-python migrate_3_6.py --source Ressourceplan_3_5_1.xlsx --output "$build_dir/Ressourceplan_3_6.xlsx"
-python office-scripts/build.py
+python migrate_3_6_1.py --source Ressourceplan_3_6.xlsx --output "$build_dir/Ressourceplan_3_6_1.xlsx"
+python office-scripts/3.6.1/build.py
+python prototype_outline_3_6_1.py --source "$build_dir/Ressourceplan_3_6_1.xlsx" --output "$build_dir/Gruppeprototype.xlsx" --year 2026
 python -m unittest discover -s tests -v
 ```
 

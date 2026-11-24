@@ -294,3 +294,62 @@ beregningstesten.
 
 Simulatoren og Calc verificerer kode og beregninger. Excel-værten afgør
 installation, knapper, filtreret rækkeindsættelse og delte arkvisninger.
+
+## Testjournal for 3.6.1
+
+Den 24. november 2026 bestod 48 automatiske tests, heraf 6 nye og 42
+tidligere. Alle tre scripts blev kompileret separat med TypeScript 4.0.3
+mod signaturer fra Microsofts ExcelScript-reference. Separate Calc-kopier
+bekræftede scriptresultater og grupperede beregninger uden formelfejl.
+Apache POI og XMLBeans skemavaliderede 11 dele i driftsfilen og 14 i
+prototypen. Begge filer kunne genbygges med samme indhold.
+
+COWI bekræftede i Excel Desktop for version 3.6, at alle tre scripts
+kunne tilknyttes. Medarbejderoprettelse, standardaktiviteter og
+planårsinitialisering fungerede. Tilføj projekt fungerede efter en
+manuel rettelse af Sag-valideringen. Denne accept gælder 3.6.
+
+### Automatiske kontroller
+
+- Kør `python -m unittest discover -s tests -v` med Node, TypeScript 4.0.3
+  og LibreOffice Calc. Sæt `TSC` til kompilerens sti ved behov.
+- Simulér første ledige p06, p06 med historik, en allerede oprettet p31,
+  medarbejdervalg med ens navne, en samtidig registerændring og genkørsel
+  efter indsættelsesfejl. Kontrollér, at eksisterende ID'er og timer bevares.
+- Simulér Sag med og uden tilbudsprocent. Tilbud testes med
+  tom tekst, manglende værdi, null, 0, 25, 50 og 100 samt ugyldige værdier.
+  Afprøv projektnavn, sagsnummer med foranstillet nul, nye registerposter,
+  forskellige markeringer, år fra planrække og gentagen initialisering.
+- Genberegn en separat kopi med scriptresultaterne i Calc og kontrollér
+  de faktiske oversigtssummer. Kontrollér 3.6's uændrede indhold og
+  den afgrænsede uge 53-regel.
+- Kontrollér native outline-segmenter for 2026 og 2027 og et kompakt
+  Vest-udsnit. Fold uger med faktiske timer, filtrér prøveplanen og
+  kildetabellen på en anden medarbejder, og genberegn med skjulte
+  uger og detaljer. Kontrollér, at første medarbejders detaljer
+  fortsat viser korrekt belægning, kapacitet og bookede timer.
+
+### Manuel accept efter opdatering
+
+1. Opdatér de samme tre scripts på en prøvekopi af jeres eksisterende
+   arbejdsfil. Prøv knapperne og **Automatiser** i Excel Desktop og Online.
+   Bekræft valgfri tekst i planår/procent, tom procent, 0 % og den
+   validerede markering. Afprøv også ny 3.6.1-fil med tilknytning til
+   samme scriptidentiteter. [Opdateringsvejledning](office-scripts/3.6.1/README.md)
+2. Opret en person på første sikre plads. Prøv et ubrugt reserveret ID,
+   et med historik og en eksisterende p31 på testdata. Tilføj Sag,
+   Tilbud og nyt planår under aktive filtre, og kontrollér summer og
+   timeindtastning.
+3. Brug to konti i hver sin arkvisning i Teams/SharePoint. Bekræft
+   personlige filtre før og efter kontrollerede samtidige forsøg på
+   medarbejder- og projektoprettelse. Sammenlign dubletter, ændrede
+   celler og versionshistorik. Kontrollér AutoSave og genåbning.
+4. Prøv plus/minus for ét kvartal og alle kvartaler i separate
+   52- og 53-ugers prototypekopier. Prøv én medarbejder og alle
+   medarbejdere på niveau 1 og 2. Kontrollér tid, sortering, filtre,
+   farver og detaljer efter genåbning. Prøv fra to særskilte
+   arkvisninger og registrér, om den anden konto ser gruppeændringen.
+
+Automatiske tests verificerer kode, beregninger og OOXML. Microsoft 365's
+dialoger, knapper, AutoSave og samtidige outline-visninger kræver
+manuel accept før fælles drift med de nye funktioner.
