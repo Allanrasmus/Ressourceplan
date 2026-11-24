@@ -30,3 +30,54 @@ tabeller i Min ressourceplan bruger de eksisterende medarbejder-ID'er.
 Projektregister leverer en navngiven dropdown-liste med `Projektnavn · Sagsnr.`.
 Rapporten bruger sagsnummeret internt. **Aktuelt projekt** afspejler navneskift
 med det samme, mens Excels gemte dropdown-tekst opdateres ved genvalg.
+
+## Undersøgelse af Excel-gruppering i 3.6
+
+En separat prototype gemte native kolonnegrupper i Min ressourceplan og
+Ressourceoverblik og en rækkegruppe under en opsummering på et prøveark.
+Ugekolonnerne kunne samles uden at medtage medarbejder- og projektfelter.
+OOXML viste outline-niveauer, skjulte kolonner/rækker og bevarede
+tabelreferencer og filtre. Ved genberegning i Calc bevarede den sammenfoldede
+prototype 37 synlige plantimer, 20 bookede timer og projekttotalen på 20 timer.
+Prøvearkets skjulte detaljer summerede fortsat til 27 timer. Prototypen
+brugte tekstbeskrivelsen af plus- og minusknapperne. Skærmbilledet var ikke
+tilgængeligt i denne opgave.
+
+### Kvartalsgrupper
+
+Excel gemmer gruppen på fysiske kolonner. Vores kvartaler følger mandagens
+dato i det valgte planår. I 2026 svarer Q2 til uge 15–27, mens det svarer
+til uge 14–26 i 2027. I 2026 tilhører uge 1 Q4 fra december 2025, og
+Q4 optræder igen i uge 41–53. Derfor kræver korrekte grupper, at de
+opdateres for et kendt planår. Opret grupper kun på ugekolonnerne,
+og test både 52/53 uger, årsfilter, synligheden af de fastlåste felter og
+direkte redigering efter udvidelse. Ved visning af flere år har grupperne
+ingen entydig kvartalsbetydning.
+
+### Medarbejdergrupper
+
+Ressourceoverblikket viser allerede én ugentlig belægningsprocent pr.
+medarbejder. En native rækkegruppe kræver et sammenhængende sæt eksplicitte
+detaljerækker under hver summeringsrække. En senere prototype kan samle
+projekt- og aktivitetsrækker via medarbejder-ID, år og uge, vise kapacitet
+og bookede timer og bevare den eksisterende belægningsrække som
+gruppehoved. Grupper skal bygges for det aktuelle filter og følge
+medarbejder-ID, når den kompakte liste ændrer rækkefølge. Test gruppevis
+foldning og foldning af alle uden at ændre nøgletal eller skjule en anden
+medarbejders rækker.
+
+### Office Scripts og arkvisninger
+
+ExcelScript har `Range.group` og `Range.ungroup` for rækker og kolonner.
+`Worksheet.showOutlineLevels` kan folde niveauer ud og ind.
+`Worksheet.enterTemporaryNamedSheetView` giver en midlertidig arkvisning.
+Gruppeopbygningen gemmes i selve arkets OOXML. API-dokumentationen for
+`NamedSheetView` beskriver sorterings- og filterregler, men fastslår ikke,
+at opbygning eller ændring af outline-grupper er isoleret pr. bruger.
+Inden frigivelse skal to brugere i Excel Online og Excel Desktop kontrollere,
+om den ene kan skifte år, gengruppere og folde ind/ud uden at ændre den andens
+visning. Kontrollér samtidig filtre, sortering, direkte timeindtastning
+og resultater efter genåbning. Grupperingen er derfor endnu en prototype.
+[Range](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.range?view=office-scripts)
+[Worksheet](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.worksheet?view=office-scripts)
+[NamedSheetView](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.namedsheetview?view=office-scripts)

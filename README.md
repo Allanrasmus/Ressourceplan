@@ -1,9 +1,9 @@
 # Ressourceplan
-Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.5.1 retter fejl fra den manuelle accepttest af 3.5. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.6 introducerer Office Scripts på grundlag af 3.5.1. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
-## Brug version 3.5.1
+## Brug version 3.6
 
-Åbn `Ressourceplan_3_5_1.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
+Åbn `Ressourceplan_3_6.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
 du en personlig arkvisning via **Vis → Arkvisning → Ny**, før du ændrer filtrene.
 Filtre styrer visningen og giver alle med adgang til filen mulighed for at se data.
 Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpilene i
@@ -41,50 +41,39 @@ afkorter perioden ved udgangen af planåret. Projektoversigtens faste ugeperiode
 fortsætter over årsskiftet, når næste planår findes i filen. Kvartaler og
 **Hele året** følger de uger, der hører til det valgte ISO-planår.
 
-### Opret medarbejder og første ressourceplan
+### Opret og planlæg via Office Scripts
 
-1. Åbn **Medarbejdere**. Udfyld en ledig række med navn, område, faggruppe,
-   afdeling og normtid. Behold pladsens forudfyldte ID, eller angiv et nyt,
-   entydigt ID i en række uden ID, f.eks. `p31`.
-2. Åbn **Planstart** og vælg **Planår** og **Medarbejder**. Registerets dropdown
-   viser også personer, der endnu ikke har planrækker. Koden efter navnet
-   gør medarbejdere med samme navn entydige.
-3. Planstart viser kun manglende rækker blandt en ledig **Sag**, **Ferie**,
-   **Fravær**, **Kursus** og **Andet**. **Tilbud** oprettes efter behov.
-   Formlerne viser et forslag. Følg trinnene nedenfor for at oprette de
-   redigerbare rækker. I en delt fil er Planstarts valg fælles, så kontrollér
-   år og medarbejder i de viste rækker, før du kopierer dem.
+Knyt de tre scripts til projektmappen i Excel. Brug derefter knapperne, eller
+kør scripts fra **Automatiser**. De markerede pladser i udgivelsesfilen bliver
+først aktive, når knapperne er tilføjet i Microsoft 365.
+[Installation, parametre og brugervejledning](office-scripts/README.md)
 
-### Indsæt standardrækker eller opret et nyt planår
+- **Opret medarbejder** på fanen Medarbejdere registrerer navn, område,
+  faggruppe, afdeling og normtid, tildeler ID og opretter standardrækker
+  for det angivne planår.
+- **Tilføj projekt** på Min ressourceplan tilføjer én Sag eller ét Tilbud
+  for den valgte medarbejder, det angivne år og det valgte sagsnummer.
+  Skriv timerne direkte i den nye række.
+- **Opret nyt planår** på Min ressourceplan tilføjer kun de standardrækker,
+  der mangler for medarbejderen og året. Nye planår kommer med i årslisten.
 
-1. Gør plads til det viste antal tomme datarækker **inde i** `PlanTimer`.
-   Ryd om nødvendigt planens filtre midlertidigt i din egen arkvisning.
-   Højreklik i en datarække og vælg **Indsæt → Tabelrækker ovenfor**.
-2. Kopiér kun de udfyldte **A:B**-celler i Planstarts resultattabel.
-   Indsæt **som værdier** i A:B i de nye planrækker.
-3. Kopiér **D** for de samme hjælperækker. Indsæt **som værdier** i D i
-   de samme planrækker. Lad den skjulte kolonne C være urørt. Planstart
-   viser nu, at standardrækkerne findes.
-4. Genanvend filteret på det valgte planår og medarbejder i planen.
-   Ved et helt nyt år, f.eks. 2032, skal du først tilføje året i en
-   ledig celle under **Tilgængelige planår** på Planstart. Gentag
-   for de medarbejdere, der skal have planen for det nye år.
+Brug medarbejder-ID og sagsnummer som input, når navne kan være ens. Rækker
+tilføjes også, når de ligger uden for din aktuelle filtrering. Vælg derefter
+medarbejderen og året i din personlige arkvisning. Tabelfilteret viser
+eksisterende tabelværdier og kan være begrænset af andre aktive filtre.
 
-### Tilføj en ekstra projektrække under filter
+### Administrativ reserve
 
-Højreklik i en synlig datarække i `PlanTimer` og vælg **Indsæt → Tabelrækker
-ovenfor**, hvis Excel tilbyder valget under de aktive filtre. Angiv **Planår**,
-**Medarbejder** og **Type** udtrykkeligt, vælg **Projektvalg**, og indtast
-timerne. Hvis der vises nul rækker eller indsættelse er utilgængelig, ryd
-filtrene i din egen arkvisning. Indsæt i tabellen og filtrér igen bagefter.
-Du kan også bruge **Tabeldesign → Tilpas størrelse på tabel** til at medtage
-næste datarække på tværs af tabellens fulde bredde til kolonne BM.
+**Planstart** er bevaret som skjult ark. Ved behov kan en administrator vise
+arket og bruge den manuelle vejledning fra [3.5.1](https://github.com/Allanrasmus/Ressourceplan/blob/ressourceplan-3.5.1/README.md)
+til at indsætte standardrækker som værdier. Arket indeholder årslisten og
+3.6-formelskabelonen. Skjul det igen efter brug.
 
-Filterpilen viser værdier, der allerede findes i tabelrækkerne. Andre aktive
-filtre kan begrænse listen. Ryd medarbejder- og eventuelle øvrige filtre, og
-behold planåret, når du vil se alle personer med rækker for året. Brug Planstart
-til personer, som endnu ikke har rækker. Sortér hele tabellen fra en tabelpil,
-så medarbejder, projekt og timer følges ad.
+Manuel indsættelse af en enkelt projektrække fungerer gennem
+**Indsæt → Tabelrækker ovenfor**. Hvis Excel ikke tilbyder indsættelse under
+filter, ryd filtrene midlertidigt i din egen arkvisning, indsæt en række inde i
+tabellen og genanvend filtrene bagefter. Angiv planår, medarbejder og type
+før projekttimerne. Sortér hele tabellen med en tabelpil.
 
 ### Omdøb medarbejdere og projekter
 
@@ -112,7 +101,8 @@ python -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 build_dir=$(mktemp -d)
-python migrate_3_5_1.py --source Ressourceplan_3_5.xlsx --output "$build_dir/Ressourceplan_3_5_1.xlsx"
+python migrate_3_6.py --source Ressourceplan_3_5_1.xlsx --output "$build_dir/Ressourceplan_3_6.xlsx"
+python office-scripts/build.py
 python -m unittest discover -s tests -v
 ```
 
@@ -124,4 +114,5 @@ tidsstempler og forskelle i, hvordan ens XML skrives. På Windows kan du bruge
 LibreOffice Calc på PATH (`soffice` eller `libreoffice`) bruges til
 beregningstestene. Disse springes tydeligt over, når motoren mangler. Calc kører
 kun på midlertidige testkopier. Den udgivne fil skrives med openpyxl og
-genberegnes ved åbning. Slutbrugere behøver kun Excel.
+genberegnes ved åbning. Slutbrugere behøver Excel med Office Scripts til
+automatiseringen. Beregninger og direkte timeindtastning kører i regnearket.

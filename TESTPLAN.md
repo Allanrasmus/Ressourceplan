@@ -240,3 +240,57 @@ Læs om betingelserne for AutoSave hos Microsoft.
 
 De automatiske kontroller kan påvise strukturelle fejl og regnefejl.
 Excels dialoger, dropdown-interaktion og AutoSave kræver den manuelle accept.
+
+## Testjournal for 3.6
+
+Den 24. november 2026 bestod 42 automatiske tests, heraf 5 nye og
+37 tidligere. De anvendte API-signaturer blev afstemt med Microsofts
+reference. Apache POI og XMLBeans skemavaliderede 11 centrale OOXML-dele.
+Version 3.5.1's SHA-256 er uændret.
+
+Byg Excel-filen med `python migrate_3_6.py` og de selvstændige scripts med
+`python office-scripts/build.py`. Brug nyt outputfilnavn, hvis filen allerede
+findes. Kør `python -m unittest discover -s tests -v`. Office Scripts-testene
+kræver Node og TypeScript 4.0.3 på PATH eller via `TSC`. Calc er påkrævet til
+beregningstesten.
+
+- De tre scripts kompileres separat med TypeScript i streng tilstand.
+  Testens ExcelScript-typer er et udsnit af Microsofts offentliggjorte
+  API-signaturer fra `office-scripts-docs-reference`, commit
+  `97f8f415842e13e004d7c53c1d24fe45653e50c0`.
+- En lokal simulator bruger en kopi af udgivelsesfilens tabeller og
+  indstillinger. Den kontrollerer p31, ledige ID-reserver, identiske navne,
+  standardaktiviteter, nyt år, gentagen kørsel, projekt- og tilbudsrækker,
+  standard/0 %/25 %, inputfejl og genkørsel efter en indsættelsesfejl.
+- Scriptændringerne anvendes på en særskilt Excel-testkopi, derefter
+  genberegnes den i Calc. Testen kontrollerer begge oversigter, uændrede
+  historiske rækker og 53-uges beregning. Den grå regel er sand for en
+  52-ugers tabelrække og falsk for en 53-ugers tabelrække, en tom række
+  og et år indtastet neden for tabellen.
+- Den gamle uge 53-regel testede ISO-spændet over hele formateringsområdet.
+  Den nye regel kræver et årstal og en række inden for tabellens aktuelle
+  slutrække. Uge 53-valideringen og timerne i beregningerne er uændret.
+- Outline er afprøvet separat, herunder kolonne- og rækkegrupper i OOXML
+  og genberegning af prototypen i Calc. [Resultater og udestående kontroller](DESIGN.md#undersøgelse-af-excel-gruppering-i-36)
+
+### Manuel accept i Microsoft 365
+
+1. Åbn en acceptkopi i Excel Desktop og Excel Online, og kontrollér åbning
+   uden reparation, især de bevarede registervalideringer.
+2. Installér, tilknyt og placér de tre knapper efter
+   [installationsvejledningen](office-scripts/README.md). Kontrollér
+   dialoger og inputfelter ved kørsel fra både knap og Automatiser.
+3. Opret en medarbejder og et nyt planår med aktivt medarbejder- og årsfilter.
+   Genkør, og kontrollér ingen dubletter. Tilføj et projekt og et tilbud.
+   Kontrollér valideringer, formler, direkte timeindtastning og farver
+   på de faktisk indsatte rækker. Kontrollér uge 53 i 2026 og 2027.
+4. Prøv to brugere med hver sin arkvisning i Teams/SharePoint. Kontrollér
+   at scriptet ikke ændrer filtervalget, og at rækkerne vises efter
+   genanvendelse af de relevante filtre. Afprøv fejlsituationen på en
+   testkopi, herunder kontrolleret genkørsel.
+5. Kontrollér AutoSave og genåbning i Teams/SharePoint. Ved en senere
+   outline-prototype skal samtidig ind- og udfoldning også afprøves
+   med to brugere, før gruppestrukturen kan frigives.
+
+Simulatoren og Calc verificerer kode og beregninger. Excel-værten afgør
+installation, knapper, filtreret rækkeindsættelse og delte arkvisninger.

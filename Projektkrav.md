@@ -47,3 +47,21 @@ Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud v
   i den dynamiske plan, uden at ændre historikken.
 - Bevar de godkendte funktioner og kapaciteten fra 3.5. Afprøv åbning,
   registervalidering og AutoSave i Microsoft Excel med filen i SharePoint.
+
+## Version 3.6 – Office Scripts
+
+- Arbejdsbogen er fortsat .xlsx og uden VBA. Office Scripts må anvendes
+  via Excel Desktop og Excel Online, hvor de understøttes. Scriptkørsler
+  bruger projektmappen i Microsoft 365, og beregningerne kræver ingen
+  eksterne databaser eller tjenester.
+- Lever selvstændige TypeScript-scripts til oprettelse af medarbejder,
+  tilføjelse af projekt og initialisering af planår. Brug scriptparametre,
+  bevar stabile nøgler, og kontrollér input og dubletter før indsættelse.
+- Bevar direkte indtastning, dynamisk plantabel, oversigter og filtre.
+  Scriptkørsler må ikke rydde eller ændre filtre globalt. Brugeren
+  tilknytter selv scripts og knapper i Microsoft Excel.
+- Afgræns uge 53-markeringen til de relevante tabelrækker. Validering og
+  beregning følger fortsat årets faktiske antal ISO-uger.
+- Behold Planstart skjult som administrativ reserve, indtil scripts er
+  manuelt godkendt. Indfør først kvartals- og medarbejdergruppering efter
+  stabilitetstest med Excel og delte projektmapper.

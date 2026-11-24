@@ -68,3 +68,14 @@
   medarbejdere eller nye planår.
 - Nye planår tilføjes i Planstart. Alle tidligere planår og den dynamiske
   plantabel bevares, sammen med projekt- og ressourceoversigterne.
+
+## Excel 3.6
+
+- Indført selvstændige Office Scripts til oprettelse af medarbejder,
+  tilføjelse af projekt og initialisering af planår.
+- Klargjort tre knappladser. Tilknytning og knapper installeres i Excel.
+  Planstart er skjult som administrativ reserve.
+- Grå markering i uge 53 er afgrænset til tabellens relevante rækker i
+  år med 52 uger. Validering og sumlogik er bevaret.
+- Undersøgt native række- og kolonnegrupper. Se DESIGN.md for
+  prototype og resterende testpunkter før en frigivelse.
