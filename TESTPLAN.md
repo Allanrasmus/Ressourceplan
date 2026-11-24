@@ -99,3 +99,42 @@ Calc-kopierne bruges til at læse beregnede resultater.
 De automatiske resultater dokumenterer pakkestruktur, beregnede værdier og
 betingelsesudtryk. Visuel gengivelse og åbning uden reparationsdialog
 kræver manuel accept i Microsoft Excel.
+
+## Testjournal for 3.4
+
+Den 24. november 2026 bestod alle 22 automatiske tests: 6 for 3.4 og de
+16 tidligere tests. De fem nye scenarier blev genberegnet på separate
+LibreOffice Calc 26.8-kopier uden formelfejl. Apache POI 5.4.1 og XMLBeans
+5.3.0 skemavaliderede 10 SpreadsheetML-dele i udgivelsesfilen. Layoutet på
+alle fem faner blev gennemgået i PDF-forhåndsvisninger fra separate Calc-kopier.
+
+Build med `python migrate_3_4.py --source Ressourceplan_3_3_1.xlsx --output <ny-fil>`.
+Kør `python -m unittest discover -s tests -v` for at teste 3.4 og de tidligere
+versioner. Version 3.3.1 er manuelt testet af brugeren i Excel Desktop med
+39 af 40 testpunkter godkendt. Det sidste punkt om overskrifter blev ikke
+testet. Den accept gælder referencefilen.
+
+| Kontrol | Dækning |
+| --- | --- |
+| Filtrering og total | Medarbejder 1, 5 og 9 samles fra første datarække. Nul, ét og 30 match kontrolleres i begge oversigter. I ALT placeres lige efter de synlige medarbejdere. |
+| Kapacitet og projekt | Nøgletal, timer pr. række og uge, periodetotal, ledig kapacitet og overbelastning kontrolleres. Perioden over et ISO-årsskifte har fortsat korrekt år, uge og timer. |
+| Projektregister | Listeværdier med navn og sagsnummer, omdøbning med bevaret valg og projekttimer samt oprettelse og valg af projekt efter tomme registerrækker. |
+| Databevarelse | SHA-256 af 3.3.1, sammenligning af alle plan- og registerdata samt kontrol af aktive planfiltre, tabeller og datavalidering. |
+| Excel-pakke | ZIP, XML, differentialfarver, prioritet, kanter, skjulte hjælperækker, opdaterbart navngivet dropdown-område og reproducerbar byggeproces. Kompakt visning bruger almindelige cellereferencer og formler. Der er ingen dynamiske matrixudvidelser i Excel-pakken. |
+
+### Manuel accept i Excel Desktop og Excel Online
+
+1. Åbn 3.4, og kontrollér åbning uden reparation, og at alle fem faner er
+   læsbare ved almindelig zoom. Gennemgå feltbredder, ombrydning,
+   dropdown-pile, kanter, aktive farver og totalrækker.
+2. Filtrér på område, faggruppe og afdeling med nul, ét og flere match.
+   Kontrollér, at I ALT står direkte efter sidste medarbejder, og at nøgletallene
+   stemmer. Kontrollér belægningsfarver og orange ugeoverskrifter.
+3. Omdøb et projekt og tilføj et nyt i en ledig registerrække. Kontrollér, at
+   begge vises med navn og sagsnummer i dropdown-listen. Kontrollér det aktuelle
+   navn og timetallet ved et eksisterende valg, genvælg projektet, og rul vandret.
+4. Kontrollér de oprindelige filtre, timeregistrering, typeskift og uge 53 i
+   Min ressourceplan. Gentag relevant afprøvning med flere brugere i Teams.
+
+LibreOffice-kopierne bruges til formelkontrol. Visuel gengivelse,
+dropdown-interaktion og åbning uden reparation for 3.4 skal bekræftes i Excel.

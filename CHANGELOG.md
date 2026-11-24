@@ -30,3 +30,16 @@
   Fastlåst projektvalg og totaler pr. medarbejder, uge og periode.
 - Tidligere versionsfiler og plan-/registerdata bevares. Se TESTPLAN.md for
   automatiske kontroller og manuel accept i Microsoft Excel.
+
+## Excel 3.4
+
+- Fælles COWI-layout på alle fem faner, med tydelige valgfelter og adskilte
+  nøgletal. Tekniske beregningsfelter er skjult.
+- Ressourceoverblik samler filtrerede medarbejdere, viser antal og har I ALT
+  direkte efter sidste række. Projektoversigt bruger den samme totalplacering.
+- Projektlisten viser projektnavn før sagsnummer og følger oprettelser og
+  navneændringer i Projektregister. Sagsnummeret er fortsat beregningsnøglen.
+- Ensartede tabelkanter, striber og mintfarvede totalfelter. Aktivitets-,
+  kvartals- og belægningsfarver er bevaret.
+- Version 3.3.1 bevares som stabil reference. Dens inputdata og
+  beregningsregler er videreført.
