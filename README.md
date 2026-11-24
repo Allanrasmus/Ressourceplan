@@ -1,9 +1,9 @@
 # Ressourceplan
-Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference; Excel v3.2 er senest leverede baseline, ikke fuldt valideret. Første mål: version 3.3 med aftalte rettelser. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Originalfiler skal uploades separat eller fra overdragelsespakken. Brug kun fiktive data og godkendte tjenester.
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Excel 3.3.1 retter de rapporterede problemer fra accepttesten af 3.3. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
-## Brug version 3.3
+## Brug version 3.3.1
 
-Åbn `Ressourceplan_3_3.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
+Åbn `Ressourceplan_3_3_1.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
 du en personlig arkvisning via **Vis → Arkvisning → Ny**, før du ændrer filtrene.
 Filtre styrer visningen og giver alle med adgang til filen mulighed for at se data.
 Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpilene i
@@ -27,17 +27,20 @@ planår for at se kvartaler og mandagsdatoer. Uge 53 er grå og udeladt af summe
 - **Ressourceoverblik** har år, startuge, periode, område, faggruppe og afdeling som
   valg. Rækken øverst viser periodens bookede, disponible, ledige og overbelastede
   timer samt tilbud brutto/vægtet og belægning. Årsoversigten viser hver persons
-  belastning pr. uge og markerer periodeugerne med orange. Ledige timer og
-  overbelastning summeres hver for sig pr. medarbejder og uge.
-- **Projektoversigt** vælger projekt med sagsnummer og viser projektnavnet lige
-  under valget. Ugefelter og periodetotal viser planlagte timer for Sag og Tilbud,
-  uden sandsynlighedsvægtning. Årstotalen viser hele det valgte planår. Redigér
-  et projektnavn i Projektregister, og behold sagsnummeret som nøgle.
+  belastning pr. uge og markerer periodeugerne med orange. **I ALT** viser
+  periodetimer i timekolonnerne og samlet belægning i ugekolonnerne. Ledige timer
+  og overbelastning summeres hver for sig pr. medarbejder og uge.
+- **Projektoversigt** har sagsnummer og projektnavn i det fastlåste område øverst
+  til venstre. Perioden starter i første ugekolonne, og medarbejdere med timer
+  står samlet øverst. Timerne omfatter Sag og Tilbud. Kolonnen **Periodetimer (t)**
+  viser totalen pr. medarbejder og samlet. Ugekolonnerne viser ugetotalerne i
+  **I ALT**. Redigér projektnavnet i Projektregister, og behold sagsnummeret.
 
 Et kvartal følger mandagens måned. Derfor hører uge 1 i nogle ISO-år til Q4,
-eksempelvis uge 1 i 2026, som starter 29. december 2025. Ugeperioder afkortes ved
-det valgte planårs afslutning. Vælg næste planår for at fortsætte oversigten over
-årsskiftet.
+eksempelvis uge 1 i 2026, som starter 29. december 2025. Ressourceoverblikket
+afkorter perioden ved udgangen af planåret. Projektoversigtens faste ugeperioder
+fortsætter over årsskiftet, når næste planår findes i filen. Kvartaler og
+**Hele året** følger de uger, der hører til det valgte ISO-planår.
 
 ### Rækker, historik og udvidelse
 
@@ -73,7 +76,7 @@ python -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 build_dir=$(mktemp -d)
-python migrate_3_3.py --source Ressourceplan_3_2.xlsx --output "$build_dir/Ressourceplan_3_3.xlsx"
+python migrate_3_3_1.py --source Ressourceplan_3_3.xlsx --output "$build_dir/Ressourceplan_3_3_1.xlsx"
 python -m unittest discover -s tests -v
 ```
 

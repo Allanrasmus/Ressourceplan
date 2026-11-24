@@ -18,3 +18,15 @@
   efter I ALT er skjult.
 - Projektoversigt med markeret sagsvalg, aktuelt projektnavn, periodetimer og
   årstotal. Genbygning og validering kan køres fra repositoryet.
+
+## Excel 3.3.1
+
+- Betingede farver bruger Excel-kompatibel differentialformatering. Planens
+  tabelstil giver plads til aktivitetsfarver og blå/hvide sagsstriber.
+- Tilføjet workbook-visning og sammenhængende valg i fastlåste ruder.
+- Ressourceoverblikket har bredere overskrifter, farvekoder for kvartal, periode
+  og belægning samt ensartede time- og procentenheder i I ALT.
+- Projektoversigten samler uger og medarbejdere fra venstre og oppefra.
+  Fastlåst projektvalg og totaler pr. medarbejder, uge og periode.
+- Tidligere versionsfiler og plan-/registerdata bevares. Se TESTPLAN.md for
+  automatiske kontroller og manuel accept i Microsoft Excel.

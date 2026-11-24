@@ -37,3 +37,65 @@ timeindtastning, dropdowns, typefarver og skjult tilbudsprocent. Prøv derefter
 samtidig redigering og personlige arkvisninger med to brugere i Teams/SharePoint.
 Strukturtests verificerer filter- og formateringsreglerne i filen. Den visuelle
 gengivelse og brugerinteraktionen i Microsoft Excel kræver denne manuelle accept.
+
+## Testjournal for 3.3.1
+
+Den 24. november 2026 bestod alle 7 nye tests og alle 9 tidligere tests.
+De nye beregningstests omfattede 11 scenarier med LibreOffice Calc 26.8
+(udviklingsbuild) uden celler med formelfejl. De tre nye strukturtests bestod
+desuden med openpyxls alternative XML-skriver uden lxml.
+
+Genbyg med `python migrate_3_3_1.py --output <ny-fil>`. Kør hele testpakken med
+`python -m unittest discover -s tests -v`, eller brug
+`python -m unittest discover -s tests -p test_ressourceplan_3_3_1.py -v` til
+de nye regressionskontroller.
+
+| Kontrol | Dækning |
+| --- | --- |
+| OOXML | ZIP, XML-dele, tabelhenvisninger, vinduesvisninger, valg i frosne ruder, gyldige DXF-indeks og regelprioriteter. Differentialfarver kontrolleres i den rå XML som `patternFill/bgColor` uden `patternType` eller `fgColor`. Den almindelige cellestil er særskilt. |
+| Data og standardvisning | SHA-256 af 3.2 og 3.3. Cellevis sammenligning af plan og registre. Gemt medarbejder- og årsfilter, frossen rude, skjult ID, 12 synlige planrækker og skjulte beregninger. |
+| Aktivitet og belægning | Alle seks aktivitetstyper, Sag → Tilbud → Sag, 0 %, 50 %, 85 %, 100 % og 118 %, samt positiv booking uden kapacitet. Regeludtryk genberegnes på testkopier sammen med kalender og periodemarkering. |
+| Projekt | To sagsnumre, flere medarbejdere, udeladelse af medarbejdere uden periodetimer samt kontrol af medarbejder-, uge- og periodetotal. |
+| Kalender | 2026–2028, alle fire kvartaler, 4/8/12/26 uger, årsskifte og hele året med 52 og 53 uger. Uge 48–51 i de første fire kolonner og blanke værdier efter periodens afslutning. |
+
+### Kontrol af Excel-filens struktur og testkopier
+
+Ved sammenligning med 3.3 blev en manglende workbook-visning fundet, selv om
+arkene henviste til visning 0. 3.3.1 tilføjer visningen og gemmer markeringer i
+de tilsvarende fastlåste ruder. De rapporterede farver var gemt med
+`patternType="solid"` og `fgColor` i DXF. 3.3.1 anvender samme
+baggrundsstruktur som flere af farverne i 3.2 og en uafhængig prøve genereret
+af XlsxWriter 3.2.9. Planens procentregel ligger før
+farvereglerne og tillader, at de kombineres.
+
+En særskilt skemakontrol med Apache POI 5.4.1 og XMLBeans 5.3.0 accepterede
+10 SpreadsheetML-dele i hver af 3.3 og 3.3.1 (workbook, styles, fem ark og tre
+tabeller). Det forklarer, hvorfor XML-skemaet alene kan overse problemet fra
+accepttesten. Den præcise årsag til Excels rapporterede reparationsproblem
+kan først bekræftes med Excel og eventuelt dets reparationslog.
+
+Calc genberegnede og gemte separate kopier. Ved sammenligning ændrede Calc
+blandt andet DXF-mønsteret til `solid` med `fgColor` og ændrede de interne
+XML-filnavne for tabellerne. Udgivelsesfilen kommer direkte fra openpyxl.
+Calc-kopierne bruges til at læse beregnede resultater.
+
+### Manuel accept i Microsoft Excel for 3.3.1
+
+1. Åbn den frigivne fil i Excel Desktop. Kontrollér, at der ikke kommer en
+   reparationsdialog. Hvis Excel tilbyder reparation, gem loggen med
+   oplysninger om den berørte pakkedel. Åbn også filen i Excel Online.
+2. I **Min ressourceplan**, kontrollér startfilter samt direkte indtastning,
+   farver for alle typer og blå/hvide sagsstriber. Skift Sag → Tilbud → Sag
+   i samme række og kontrollér farve og tilbudsprocent ved hvert skift.
+3. I **Ressourceoverblik**, kontrollér belægningsfarverne ved grænserne og ved
+   Over, kvartalsfarver, orange periodemarkering, læsbare overskrifter,
+   procent i ugekolonnernes I ALT og skjulte beregninger.
+4. I **Projektoversigt**, vælg 2026, uge 48 og 4 uger. Kontrollér uge 48–51
+   fra venstre, at medarbejdere uden timer er udeladt, og at timerne summerer.
+   Skift sagsnummer, år og periode og rul vandret for at kontrollere projektvalget.
+5. Kontrollér navn- og sagsopslag fra begge registre, og prøv personlige
+   arkvisninger og samtidig redigering i Teams/SharePoint.
+
+De automatiske resultater dokumenterer pakkestruktur, beregnede værdier og
+betingelsesudtryk. Visuel gengivelse og åbning uden reparationsdialog
+kræver manuel accept i Microsoft Excel.
