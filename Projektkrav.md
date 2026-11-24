@@ -80,3 +80,6 @@ Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud v
   Scriptkoderne kan opdateres på et kompatibelt 3.6-dokument uden at migrere timers data.
 - Kvartals- og medarbejdergrupper leveres separat, indtil filtre, årsændringer
   og samtidige brugeres visning er afprøvet i Microsoft Excel.
+- Den næste milepæl er manuel accept af version 3.6.1 på en kopi af
+  arbejdsfilen samt en separat afprøvning af gruppeprototypen. Merge til
+  `main` kræver manuel godkendelse af 3.6.1. [Aktuel status](STATUS.md)

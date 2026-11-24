@@ -353,3 +353,8 @@ manuel rettelse af Sag-valideringen. Denne accept gælder 3.6.
 Automatiske tests verificerer kode, beregninger og OOXML. Microsoft 365's
 dialoger, knapper, AutoSave og samtidige outline-visninger kræver
 manuel accept før fælles drift med de nye funktioner.
+
+Ved overdragelsen den 24. november 2026 afventer alle manuelle
+acceptpunkter for 3.6.1 fortsat afprøvning. De 48 beståede automatiske
+tests ovenfor gælder kode og Excel-filer fra implementeringscommit
+`bf9bff2`. Overdragelsen ændrer dokumentationen. [Næste trin](STATUS.md)

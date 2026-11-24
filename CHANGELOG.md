@@ -91,3 +91,6 @@
 - Tilføjet opdateringsvejledning for eksisterende Office Scripts og knapper.
 - Leveret separat outline-prototype med kvartaler og medarbejderdetaljer.
   Driftsfilen bevarer de kompakte oversigter og direkte timeindtastning.
+- Den 24. november 2026 bestod 48 automatiske tests. Version 3.6.1
+  afventer manuel accept i Excel Desktop og Online.
+  [Status og overdragelse](STATUS.md)
