@@ -56,3 +56,15 @@
   til 100 medarbejdere. Projektregisteret har plads til 500 projekter.
 - Tilføjet brugervejledning og regressionstest for ekstra rækker, sortering,
   omdøbning, identiske projektnavne og medarbejder nummer 31.
+
+## Excel 3.5.1
+
+- Erstattet direkte tabelreferencer i registerarkenes unikke nøglevalidering
+  med lokale celleområder, som i 3.4. Dropdowns og normtidsvalidering er bevaret.
+- Én synlig medarbejderkolonne til valg og filtrering. Det beregnede ID og
+  navneopslag er skjult og følger den stabile nøgle ved omdøbning.
+- Genskabt 149 manglende standardrækker uden at ændre eksisterende timer.
+  Planstart gør det muligt at foreslå og indsætte manglende rækker for nye
+  medarbejdere eller nye planår.
+- Nye planår tilføjes i Planstart. Alle tidligere planår og den dynamiske
+  plantabel bevares, sammen med projekt- og ressourceoversigterne.

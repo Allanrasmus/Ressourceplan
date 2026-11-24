@@ -1,9 +1,9 @@
 # Ressourceplan
-Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.5 bygger videre på den manuelt testede 3.4. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.5.1 retter fejl fra den manuelle accepttest af 3.5. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
-## Brug version 3.5
+## Brug version 3.5.1
 
-Åbn `Ressourceplan_3_5.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
+Åbn `Ressourceplan_3_5_1.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
 du en personlig arkvisning via **Vis → Arkvisning → Ny**, før du ændrer filtrene.
 Filtre styrer visningen og giver alle med adgang til filen mulighed for at se data.
 Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpilene i
@@ -41,56 +41,67 @@ afkorter perioden ved udgangen af planåret. Projektoversigtens faste ugeperiode
 fortsætter over årsskiftet, når næste planår findes i filen. Kvartaler og
 **Hele året** følger de uger, der hører til det valgte ISO-planår.
 
-### Tilføj en planrække
+### Opret medarbejder og første ressourceplan
 
-1. Højreklik i en synlig datarække **i** tabellen `PlanTimer` på Min ressourceplan.
-   Vælg **Indsæt → Tabelrækker ovenfor**, hvis Excel tilbyder handlingen.
-   Mens filtrene er aktive, skal du stadig vælge nøglefelterne udtrykkeligt.
-2. Udfyld **Planår**, **Medarbejdervalg** og **Type** i den indsatte række.
-   Kontrollér den viste **Medarbejder** og planåret. Vælg eventuelt et projekt
-   under **Projektvalg**, og indtast derefter timerne. Medarbejdervalget viser
-   navn sammen med den stabile kode, så ens navne kan skelnes. Den beregnede
-   ID-kolonne er skjult.
-3. Genanvend de relevante filtre, og kontrollér at rækken kommer frem under
-   korrekt medarbejder og år. Hvis indsættelse er utilgængelig under filter,
-   eller filteret viser nul rækker, så ryd filtrene midlertidigt i din egen
-   arkvisning. Tilføj rækken inde i tabellen. Du kan også bruge
-   **Tabeldesign → Tilpas størrelse på tabel** til at medtage næste datarække
-   på tværs af tabellens fulde bredde til kolonne BM. Genanvend filtrene efter
-   indtastningen.
+1. Åbn **Medarbejdere**. Udfyld en ledig række med navn, område, faggruppe,
+   afdeling og normtid. Behold pladsens forudfyldte ID, eller angiv et nyt,
+   entydigt ID i en række uden ID, f.eks. `p31`.
+2. Åbn **Planstart** og vælg **Planår** og **Medarbejder**. Registerets dropdown
+   viser også personer, der endnu ikke har planrækker. Koden efter navnet
+   gør medarbejdere med samme navn entydige.
+3. Planstart viser kun manglende rækker blandt en ledig **Sag**, **Ferie**,
+   **Fravær**, **Kursus** og **Andet**. **Tilbud** oprettes efter behov.
+   Formlerne viser et forslag. Følg trinnene nedenfor for at oprette de
+   redigerbare rækker. I en delt fil er Planstarts valg fælles, så kontrollér
+   år og medarbejder i de viste rækker, før du kopierer dem.
 
-Sortér hele tabellen med en pil i tabeloverskriften. Hver række bærer sine egne
-nøgler og ugentlige timer. Feltet **Medarbejder** viser det aktuelle navn fra
-registeret. Genanvend eller opdatér medarbejderfilteret efter en omdøbning.
-Planår og medarbejdervalg skal være udfyldt, før en række tæller i oversigterne.
+### Indsæt standardrækker eller opret et nyt planår
 
-### Tilføj en medarbejder eller et projekt
+1. Gør plads til det viste antal tomme datarækker **inde i** `PlanTimer`.
+   Ryd om nødvendigt planens filtre midlertidigt i din egen arkvisning.
+   Højreklik i en datarække og vælg **Indsæt → Tabelrækker ovenfor**.
+2. Kopiér kun de udfyldte **A:B**-celler i Planstarts resultattabel.
+   Indsæt **som værdier** i A:B i de nye planrækker.
+3. Kopiér **D** for de samme hjælperækker. Indsæt **som værdier** i D i
+   de samme planrækker. Lad den skjulte kolonne C være urørt. Planstart
+   viser nu, at standardrækkerne findes.
+4. Genanvend filteret på det valgte planår og medarbejder i planen.
+   Ved et helt nyt år, f.eks. 2032, skal du først tilføje året i en
+   ledig celle under **Tilgængelige planår** på Planstart. Gentag
+   for de medarbejdere, der skal have planen for det nye år.
 
-- **Medarbejdere:** Udfyld en ledig række med et unikt, varigt ID, f.eks.
-  `p31`, og registrér navn, område, faggruppe, afdeling og normtid. Ved brug af
-  en plads med et forudfyldt ID beholdes det ID. Personen fremgår af
-  Medarbejdervalg og af Ressourceoverblik, når filteret passer. Projektoversigt
-  viser personen, når vedkommende har timer på det valgte projekt i perioden.
-- **Projektregister:** Udfyld et nyt, entydigt sagsnummer og et projektnavn
-  i en ledig registerrække. Begge projektvælgere opdaterer listen automatisk.
-  To projekter kan have samme navn, fordi sagsnummeret adskiller dem.
+### Tilføj en ekstra projektrække under filter
 
-Behold registrerede ID'er og sagsnumre, også når navnene ændres. Behold de
-registre, der knytter sig til historiske plantimer. Ændring af normtid og
-øvrige medarbejderoplysninger slår også igennem på historiske år, da de læses
-fra det aktuelle register. Ved kopiering med udklipsholderen er det særligt
-vigtigt at kontrollere de unikke nøgler, da indsætning kan omgå Excels
-datavalidering.
+Højreklik i en synlig datarække i `PlanTimer` og vælg **Indsæt → Tabelrækker
+ovenfor**, hvis Excel tilbyder valget under de aktive filtre. Angiv **Planår**,
+**Medarbejder** og **Type** udtrykkeligt, vælg **Projektvalg**, og indtast
+timerne. Hvis der vises nul rækker eller indsættelse er utilgængelig, ryd
+filtrene i din egen arkvisning. Indsæt i tabellen og filtrér igen bagefter.
+Du kan også bruge **Tabeldesign → Tilpas størrelse på tabel** til at medtage
+næste datarække på tværs af tabellens fulde bredde til kolonne BM.
 
-Planens Excel-tabel kan få flere rækker uden ændring af beregningsformlerne.
-Den leverede formatering og validering dækker 20.000 datarækker. Arbejdsbogen
-har plads til 100 medarbejdere, 500 projekter og planårene 2026–2031. Udvid
-register- og visningskapaciteten i en ny version ved behov. Migreringen bevarer
-indtastningerne fra 3.4 og fjerner de tomme rækker med genkendelig fabriksopsætning.
+Filterpilen viser værdier, der allerede findes i tabelrækkerne. Andre aktive
+filtre kan begrænse listen. Ryd medarbejder- og eventuelle øvrige filtre, og
+behold planåret, når du vil se alle personer med rækker for året. Brug Planstart
+til personer, som endnu ikke har rækker. Sortér hele tabellen fra en tabelpil,
+så medarbejder, projekt og timer følges ad.
 
-Modellen kan flytte eksisterende timer ved at ændre rækkens medarbejdervalg.
-Ændring fra Tilbud til Sag flytter timerne fra tilbudspipeline til booket tid.
-En dedikeret overførselsfunktion kan komme i en senere version.
+### Omdøb medarbejdere og projekter
+
+Behold altid medarbejder-ID og sagsnummer ved omdøbning. Nyoprettede projekter
+og medarbejdere kommer automatisk i dropdown-listerne. Eksisterende
+medarbejdervalg og projektvalg i planen er gemt som tekst, mens beregningerne
+fortsat bruger de stabile nøgler. Oversigterne viser det aktuelle navn.
+Genvælg det nye navn på eksisterende rækker for at opdatere den tekst, som
+planens medarbejderfilter viser. ID-kolonnen og det tekniske navneopslag
+er skjult.
+
+Arbejdsbogen har plads til 100 medarbejdere, 500 projekter og 20 konfigurerbare
+planår. Formatering og validering dækker 20.000 planrækker. De seks oprindelige
+planår 2026–2031 er allerede konfigureret. Behold registre, der knytter sig til
+historiske timer. Ændringer af normtid og øvrige medarbejderoplysninger slår
+igennem på historiske visninger, da de læses fra det aktuelle register.
+Indsætning via udklipsholderen kan omgå Excels datavalidering.
 
 ## Byg og test
 
@@ -101,7 +112,7 @@ python -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 build_dir=$(mktemp -d)
-python migrate_3_5.py --source Ressourceplan_3_4.xlsx --output "$build_dir/Ressourceplan_3_5.xlsx"
+python migrate_3_5_1.py --source Ressourceplan_3_5.xlsx --output "$build_dir/Ressourceplan_3_5_1.xlsx"
 python -m unittest discover -s tests -v
 ```
 

@@ -182,3 +182,61 @@ I de automatiske testkopier udvides tabellens referencer, og Excel-operationer
 som indsættelse, sortering og filtervisning efterlignes i OOXML. Calc læser og
 genberegner kun testkopier. Interaktion, farvegengivelse og åbning uden
 reparation i Microsoft Excel kræver den manuelle accept.
+
+## Testjournal for 3.5.1
+
+Den 24. november 2026 bestod alle 37 automatiske tests, heraf 8 nye og
+29 tidligere. Seks nye scenarier blev genberegnet i separate LibreOffice
+Calc 26.8-kopier uden formelfejl. Apache POI 5.4.1 og XMLBeans 5.3.0
+skemavaliderede 11 centrale OOXML-dele. Version 3.5's hash er uændret.
+
+Version 3.5 fik 40 godkendte punkter, to fejl og ét ikke-testet punkt ved
+brugerens manuelle accept i Excel Desktop. Brug
+`python -m unittest discover -s tests -v` til alle tests eller begræns til
+`-p test_ressourceplan_3_5_1.py`.
+
+### Excel-reparation og AutoSave
+
+| Del | Fund |
+| --- | --- |
+| `sheet3.xml` | Projektregister. Version 3.5 anvendte `SagRegister[Sagsnr.]` direkte i den brugerdefinerede datavalideringsformel. Version 3.4 anvendte en lokal reference i kolonne A. |
+| `sheet5.xml` | Medarbejdere. Version 3.5 tilføjede validering med `PersonRegister[ID]` direkte i formlen. Validering af område, faggruppe og normtid var særskilt. |
+| Reparationen | De direkte strukturerede referencer er den konkrete fælles ændring, der er identificeret som årsag til den Excel-specifikke valideringsregression. 3.5.1 bruger 3.4-formen med lokale, absolutte områder og relativt input i A7. Det bevarer også forskellen mellem `00123` og `123`. Områder og tællere er kontrolleret for overlap og struktur. |
+| AutoSave | XML i 3.4, 3.5 og 3.5.1 indeholder hverken skrivebeskyttelse, læseanbefaling eller eksterne forbindelser. Reparationsloggen viser fjernet validering og giver ikke i sig selv en årsag til AutoSave-tilstanden. Bekræft AutoSave i en reparationsfri kopi, gemt som regneark i OneDrive eller SharePoint, med den relevante Excel-konto. En lokal download kan åbne med AutoSave slået fra. |
+
+Læs om betingelserne for AutoSave hos Microsoft.
+[Hvad er AutoSave?](https://support.microsoft.com/en-us/office/what-is-autosave-6d6bd723-ebfd-4e40-b5f6-ae6e8088f7a5)
+
+### Automatisk dækning
+
+- Sammenlign de fejlramte OOXML-regler med 3.4 og 3.5. Kontrollér de nye
+  valideringsformler, fortsat adskilte områder, navngivne dropdown-kilder
+  og beregnet unikhed ved dubletter og foranstillede nuller.
+- Kontrollér alle 32 tidligere planrækker celle for celle og fem
+  standardaktiviteter for hver af de fem registrerede medarbejdere i seks år.
+  Gennemfør initialisering to gange, og kontrollér nul nye dubletter.
+- Afprøv Planstart med delvist udfyldt plan, medarbejder 5 uden projekt, ny
+  medarbejder 6 og et nyt år. Brug de beregnede værdier som input til
+  efterfølgende testkopier og kontrollér manglende rækker igen.
+- Kontrollér identiske navne, omdøbning, sortering, ekstra projektrækker under
+  gemte filtre og omfordeling med summer i begge oversigter. Kun separate
+  kopier åbnes til genberegning i Calc.
+
+### Manuel accept i Microsoft Excel
+
+1. Åbn den frigivne 3.5.1 i Excel Desktop og Excel Online. Kontrollér, at
+   der ikke vises en reparationsdialog. Prøv dubletter i begge registre
+   og kontrollér område-, faggruppe-, medarbejder- og projektdropdowns.
+2. Gem en separat kopi i Teams/SharePoint, åbn den igen og bekræft AutoSave.
+   Hvis AutoSave fortsat er slået fra, notér Excels forklaring ved kontakten
+   og bekræft konto og placering.
+3. Filtrér 2026 i planen, ryd øvrige filtre og kontrollér medarbejder 5.
+   Opret medarbejder 6 og gennemfør Planstart med værdikopiering. Kontrollér,
+   at medarbejderen nu findes i tabelfilteret, og at en ny kørsel viser nul
+   manglende standardrækker.
+4. Kontrollér én synlig medarbejderkolonne, skjult ID, indsættelse under
+   aktive filtre, farver og fungerende genberegning efter sortering. Prøv
+   et nyt planår og kontrollér gamle timer efter genåbning.
+
+De automatiske kontroller kan påvise strukturelle fejl og regnefejl.
+Excels dialoger, dropdown-interaktion og AutoSave kræver den manuelle accept.

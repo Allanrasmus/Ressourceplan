@@ -32,3 +32,18 @@ Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud v
 - Bevar indtastninger, årshistorik, aktivitetsfarver, direkte indtastning og
   begge kompakte oversigter. Data fra 3.4 er migrationsgrundlag. Rækkens nøgle
   muliggør fremtidig overførsel af samme række med bevarede timer.
+
+## Version 3.5.1 – validering og første ressourceplan
+
+- Nøglevalidering i Projektregister og Medarbejdere bruger lokale cellereferencer.
+  Unikke medarbejder-ID'er og sagsnumre kontrolleres fortsat.
+- Medarbejder vælges og filtreres i samme synlige kolonne. Den gemte tekst
+  indeholder navn og kode. ID-formlen og opslag af aktuelt navn er skjult.
+- Bevar alle eksisterende timer. For hver registreret medarbejder og hvert
+  understøttet planår skal planen som udgangspunkt have en ledig Sag, Ferie,
+  Fravær, Kursus og Andet. Tilbud oprettes manuelt efter behov.
+- Et makrofrit Planstart-ark foreslår kun manglende standardrækker og kan
+  oprette valgmuligheder for nye år. Brugeren indsætter forslag som værdier
+  i den dynamiske plan, uden at ændre historikken.
+- Bevar de godkendte funktioner og kapaciteten fra 3.5. Afprøv åbning,
+  registervalidering og AutoSave i Microsoft Excel med filen i SharePoint.
