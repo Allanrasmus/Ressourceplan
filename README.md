@@ -1,9 +1,9 @@
 # Ressourceplan
-Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.4 bygger videre på den manuelt testede 3.3.1. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.5 bygger videre på den manuelt testede 3.4. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
-## Brug version 3.4
+## Brug version 3.5
 
-Åbn `Ressourceplan_3_4.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
+Åbn `Ressourceplan_3_5.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
 du en personlig arkvisning via **Vis → Arkvisning → Ny**, før du ændrer filtrene.
 Filtre styrer visningen og giver alle med adgang til filen mulighed for at se data.
 Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpilene i
@@ -11,19 +11,15 @@ Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpil
 planår for at se kvartaler og mandagsdatoer. Uge 53 er grå og udeladt af summen i
 år med 52 ISO-uger. Indsætning via udklipsholderen kan omgå Excels datavalidering.
 
-- **Leder** udfylder Type og Sagsnr. i medarbejderens ledige række i det relevante
-  år. En blank tilbudsprocent tæller som 50 %. Angiv `0 %` eksplicit for nul
-  sandsynlighed. Ved typeskift skjules den tidligere procent og ignoreres i
-  beregningerne. Ryd den manuelt, hvis den ikke skal genbruges ved et senere skift
-  tilbage til Tilbud.
-- **Ved vundet tilbud** aftales flytningen med modtageren. Find en ledig række
-  hos modtageren for samme planår. Gem en midlertidig kopi af kildens planår,
-  sagsnummer, procent og ugefelter, så du kan gendanne kilden ved en fejl. Ryd så
-  sagsnummer, procent og timer i kilden, og skift kildens type til **Sag**.
-  Indsæt derefter **kun værdierne** for Sagsnr. (E) og ugefelterne (I–BI) hos
-  modtageren, og vælg typen **Sag** dér. Rydning før indsætning undgår
-  dobbeltregning. Kontrollér i projekt- og ressourceoversigten, at timerne står
-  én gang, som bookede timer hos modtageren. Gentag pr. planår ved behov.
+- **Leder** vælger aktivitetstype og ét **Projektvalg** i formatet
+  `Projektnavn · Sagsnr.`. Sag og Tilbud kan begge vælge et projekt. Ferie,
+  Fravær, Kursus og Andet bruger aktivitetstypen uden projekt. En tom
+  tilbudsprocent betyder 50 %. Ved typeskift gemmes en eventuel tidligere
+  procent, men den indgår kun i beregningen for Tilbud.
+- **Projektvalg** viser den tekst, der blev valgt. Feltet **Projekt / aktivitet**
+  viser det aktuelle projektnavn. Omdøbninger ændrer dropdown-listen og
+  navneopslaget, mens timer stadig følger sagsnummeret. Vælg samme projekt igen,
+  hvis du vil opdatere teksten i selve dropdown-feltet.
 - **Ressourceoverblik** har år, startuge, periode, område, faggruppe og afdeling som
   valg. Nøgletallene viser antal medarbejdere, periodens bookede, disponible, ledige
   og overbelastede timer, tilbud brutto/vægtet samt belægning. Årsoversigten
@@ -45,30 +41,56 @@ afkorter perioden ved udgangen af planåret. Projektoversigtens faste ugeperiode
 fortsætter over årsskiftet, når næste planår findes i filen. Kvartaler og
 **Hele året** følger de uger, der hører til det valgte ISO-planår.
 
-### Rækker, historik og udvidelse
+### Tilføj en planrække
 
-Brug filtrering i Min ressourceplan. Undgå sortering i både Min ressourceplan og
-Medarbejdere. Beregningerne forudsætter faste medarbejderblokke, og den skjulte
-ID-kolonne, planår, opslagsformler og placering må ikke redigeres. Hvis H6 viser
-STOP, skal rækkeplaceringen kontrolleres mod en tidligere intakt fil. Det er
-muligt, at en sortering inden for én medarbejders blok ikke udløser advarslen.
+1. Højreklik i en synlig datarække **i** tabellen `PlanTimer` på Min ressourceplan.
+   Vælg **Indsæt → Tabelrækker ovenfor**, hvis Excel tilbyder handlingen.
+   Mens filtrene er aktive, skal du stadig vælge nøglefelterne udtrykkeligt.
+2. Udfyld **Planår**, **Medarbejdervalg** og **Type** i den indsatte række.
+   Kontrollér den viste **Medarbejder** og planåret. Vælg eventuelt et projekt
+   under **Projektvalg**, og indtast derefter timerne. Medarbejdervalget viser
+   navn sammen med den stabile kode, så ens navne kan skelnes. Den beregnede
+   ID-kolonne er skjult.
+3. Genanvend de relevante filtre, og kontrollér at rækken kommer frem under
+   korrekt medarbejder og år. Hvis indsættelse er utilgængelig under filter,
+   eller filteret viser nul rækker, så ryd filtrene midlertidigt i din egen
+   arkvisning. Tilføj rækken inde i tabellen. Du kan også bruge
+   **Tabeldesign → Tilpas størrelse på tabel** til at medtage næste datarække
+   på tværs af tabellens fulde bredde til kolonne BM. Genanvend filtrene efter
+   indtastningen.
 
-Aktivér en ledig medarbejderplads ved at udfylde navn, område, faggruppe,
-afdeling og normtid på den tildelte ID-række i Medarbejdere. De 12 planrækker
-pr. år er allerede oprettet for alle 30 ID'er. Behold også tidligere medarbejderes
-ID og registerdata, hvis deres historik skal fremgå af rapporterne. Ændringer af
-normtid og andre registerfelter slår igennem i alle år, da registeret kun har ét
-sæt felter pr. medarbejder.
+Sortér hele tabellen med en pil i tabeloverskriften. Hver række bærer sine egne
+nøgler og ugentlige timer. Feltet **Medarbejder** viser det aktuelle navn fra
+registeret. Genanvend eller opdatér medarbejderfilteret efter en omdøbning.
+Planår og medarbejdervalg skal være udfyldt, før en række tæller i oversigterne.
 
-Udvidelse over 30 personer eller 2031 kræver en separat migration med en ny
-versionsfil. Arbejd på en kopi af den aktuelle driftsfil, og match eksisterende
-indtastninger på ID, planår og række inden for året. Opret nye ID'er eller år
-med egne planrækker. Ved flere år udvides hver medarbejders blok, og alle faste
-blokgrænser skal genberegnes. Ved flere medarbejdere udvides register, blokke og
-begge rapporters synlige rækker, totaler og skjulte beregninger. Opdatér også
-tabeller, filtre, årslister, formelområder, valideringer og formatering. Gentag
-tests af databevarelse, sidste eksisterende og første nye ID/år samt uge 53, før
-en ny version tages i brug.
+### Tilføj en medarbejder eller et projekt
+
+- **Medarbejdere:** Udfyld en ledig række med et unikt, varigt ID, f.eks.
+  `p31`, og registrér navn, område, faggruppe, afdeling og normtid. Ved brug af
+  en plads med et forudfyldt ID beholdes det ID. Personen fremgår af
+  Medarbejdervalg og af Ressourceoverblik, når filteret passer. Projektoversigt
+  viser personen, når vedkommende har timer på det valgte projekt i perioden.
+- **Projektregister:** Udfyld et nyt, entydigt sagsnummer og et projektnavn
+  i en ledig registerrække. Begge projektvælgere opdaterer listen automatisk.
+  To projekter kan have samme navn, fordi sagsnummeret adskiller dem.
+
+Behold registrerede ID'er og sagsnumre, også når navnene ændres. Behold de
+registre, der knytter sig til historiske plantimer. Ændring af normtid og
+øvrige medarbejderoplysninger slår også igennem på historiske år, da de læses
+fra det aktuelle register. Ved kopiering med udklipsholderen er det særligt
+vigtigt at kontrollere de unikke nøgler, da indsætning kan omgå Excels
+datavalidering.
+
+Planens Excel-tabel kan få flere rækker uden ændring af beregningsformlerne.
+Den leverede formatering og validering dækker 20.000 datarækker. Arbejdsbogen
+har plads til 100 medarbejdere, 500 projekter og planårene 2026–2031. Udvid
+register- og visningskapaciteten i en ny version ved behov. Migreringen bevarer
+indtastningerne fra 3.4 og fjerner de tomme rækker med genkendelig fabriksopsætning.
+
+Modellen kan flytte eksisterende timer ved at ændre rækkens medarbejdervalg.
+Ændring fra Tilbud til Sag flytter timerne fra tilbudspipeline til booket tid.
+En dedikeret overførselsfunktion kan komme i en senere version.
 
 ## Byg og test
 
@@ -79,7 +101,7 @@ python -m venv .venv
 . .venv/bin/activate
 python -m pip install -r requirements.txt
 build_dir=$(mktemp -d)
-python migrate_3_4.py --source Ressourceplan_3_3_1.xlsx --output "$build_dir/Ressourceplan_3_4.xlsx"
+python migrate_3_5.py --source Ressourceplan_3_4.xlsx --output "$build_dir/Ressourceplan_3_5.xlsx"
 python -m unittest discover -s tests -v
 ```
 

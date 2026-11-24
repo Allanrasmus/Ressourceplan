@@ -138,3 +138,47 @@ testet. Den accept gælder referencefilen.
 
 LibreOffice-kopierne bruges til formelkontrol. Visuel gengivelse,
 dropdown-interaktion og åbning uden reparation for 3.4 skal bekræftes i Excel.
+
+## Testjournal for 3.5
+
+Den 24. november 2026 bestod alle 29 automatiske tests, fordelt på 7 nye
+og 22 tidligere tests. De fem 3.5-scenarier blev genberegnet på separate
+LibreOffice Calc 26.8-kopier uden celler med formelfejl. Apache POI 5.4.1
+og XMLBeans 5.3.0 validerede 10 centrale SpreadsheetML-dele. En
+Calc-forhåndsvisning viste de nye valgfelter og den skjulte ID-kolonne.
+
+Brug `python -m unittest discover -s tests -v`. For kun 3.5 bruges
+`python -m unittest discover -s tests -p test_ressourceplan_3_5.py -v`.
+Version 3.4 er ifølge brugerens manuelle accepttest godkendt på 46 af 47
+punkter uden konstaterede fejl. Punktet om skjult ID blev ikke testet.
+Resultatet gælder referencefilen.
+
+| Kontrol | Dækning |
+| --- | --- |
+| Databevarelse | Sammenlign alle bevarede planinput og registerdata med 3.4, samt SHA-256 af referencefilen. Fjern kun genkendelige standardrækker uden indtastning. |
+| Planrækker | Udvid en kopi af PlanTimer under det gemte medarbejder- og årsfilter. Udfyld eksplicit planår, medarbejder og type, giv én person 25 projektrækker, og genberegn. Test også en ufuldstændig række. |
+| Sortering | Sortér hele testrækker og sammenlign nøgle-/timekombinationer, ressource- og projekttotaler med usorteret kopi. |
+| Projekter og medarbejdere | Nye projekter, samme navn med forskellige sagsnumre, omdøbning af projekt og medarbejder samt tilføjelse af medarbejder 31. |
+| Summer og pakke | Referenceberegninger, ledig kapacitet, overbelastning, tilbud og omfordeling. XML, beregnede tabelkolonner, tabelreferencer, validering, skjult ID og genbygning kontrolleres. |
+
+### Manuel accept i Excel Desktop og Excel Online
+
+1. Åbn 3.5 og kontrollér, at der ikke vises en reparationsdialog. Bekræft
+   standardfilteret, skjult ID, kvartaler, aktivitetstyper og direkte
+   indtastning. Brug to planår og bekræft, at datoer kun vises for ét
+   filtreret år.
+2. Indsæt en tabelrække under det aktive medarbejder-/årsfilter i begge miljøer.
+   Følg README, og kontrollér også reservevejen via egen arkvisning, hvis
+   menuvalget er utilgængeligt. Bekræft, at Excel udfylder de beregnede
+   tabelkolonner og bevarer validering, formatering og valg på den nye række.
+3. Sortér via en tabelpil, og kontrollér projekttid i begge oversigter.
+   Opret og omdøb en medarbejder og et projekt. Genanvend filtre efter
+   navneskift. Kontrollér den opdaterede dropdown og uændrede timers nøgler.
+4. Test en række med nyt planår og en med tilbud. Kontrollér optælling,
+   kapacitet og projekttotaler efter filter og genåbning, samt ved samtidig
+   brug af personlige arkvisninger.
+
+I de automatiske testkopier udvides tabellens referencer, og Excel-operationer
+som indsættelse, sortering og filtervisning efterlignes i OOXML. Calc læser og
+genberegner kun testkopier. Interaktion, farvegengivelse og åbning uden
+reparation i Microsoft Excel kræver den manuelle accept.

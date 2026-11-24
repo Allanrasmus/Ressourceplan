@@ -43,3 +43,16 @@
   kvartals- og belægningsfarver er bevaret.
 - Version 3.3.1 bevares som stabil reference. Dens inputdata og
   beregningsregler er videreført.
+
+## Excel 3.5
+
+- Min ressourceplan har én voksende Excel-tabel, beregnede tabelkolonner og
+  nøgler på hver række. Flytning og sortering af hele rækker bevarer timernes
+  tilknytning. Tomme standardrækker fra 3.4 er fjernet.
+- Medarbejdervalg og projektvalg læses automatisk fra registrene. Det skjulte
+  ID og sagsnummer bruges i beregningerne. Navne kan ændres uden at ændre
+  nøglen.
+- Ressourceoverblik og Projektoversigt medtager de nye planrækker samt op
+  til 100 medarbejdere. Projektregisteret har plads til 500 projekter.
+- Tilføjet brugervejledning og regressionstest for ekstra rækker, sortering,
+  omdøbning, identiske projektnavne og medarbejder nummer 31.

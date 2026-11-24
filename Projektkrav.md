@@ -15,3 +15,20 @@
 5. Bevar skjult ID, synlige filtre, tydeligt projektvalg, eksisterende timer, formler og 30 medarbejderpladser. Undersøg og ret eventuelle regressionsfejl.
 ## Senere
 Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud via stabile nøgler, håndtér helligdage, beskyttelse af formler uden at blokere redigering/filtre, bedre dashboards, eventuel tidsregistreringseksport. Test i Teams/Excel Online og Desktop før drift.
+
+## Version 3.5 – dynamisk administration
+
+- Den tidligere blok med 12 planrækker pr. medarbejder og år erstattes af en
+  voksende, redigerbar Excel-tabel. Hver række bærer et eksplicit planår, en
+  medarbejderidentitet, aktivitetstype og sine timer.
+- Beregningerne bruger hele tabellen og stabile medarbejder- og projektnøgler.
+  Sortering af tabellen bevarer sammenhængen mellem rækker og input.
+- Projektnavn og sagsnummer vælges i samme dropdown. De beregnede felter bruger
+  sagsnummeret og viser det aktuelle navn. Projekter med ens navn adskilles
+  af nummeret. Medarbejdervalg og opslag i registeret bruger et varigt ID.
+- Brug en ledig registerrække til nye medarbejdere og projekter. Den leverede
+  kapacitet er 100 medarbejdere, 500 projekter og 20.000 validerede planrækker.
+  Der forudoprettes ingen planrækker pr. ny medarbejder.
+- Bevar indtastninger, årshistorik, aktivitetsfarver, direkte indtastning og
+  begge kompakte oversigter. Data fra 3.4 er migrationsgrundlag. Rækkens nøgle
+  muliggør fremtidig overførsel af samme række med bevarede timer.
