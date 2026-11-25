@@ -16,10 +16,11 @@ for (const file of files) {
 
   function handles(type) {
     if (type.isUnionOrIntersection()) return type.types.flatMap(handles);
+    if (checker.isArrayType(type)) return checker.getTypeArguments(type).flatMap(handles);
     const symbol = type.getSymbol();
     if (!symbol) return [];
-    if (["Table", "Range", "Worksheet", "Workbook"].includes(symbol.getName()) &&
-        symbol.declarations?.some(item => item.getSourceFile().fileName === declaration)) {
+    if (symbol.declarations?.some(item => ts.isInterfaceDeclaration(item) &&
+        item.getSourceFile().fileName === declaration)) {
       return [symbol.getName()];
     }
     return [];

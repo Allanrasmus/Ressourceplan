@@ -130,3 +130,51 @@ nyt register med tomme kapacitetsrækker. Automatisk ID-tildeling skal
 fortsat se efter både registrerede koder og planhistorik. Eksisterende
 identiteter må ikke omnummereres. Brugte ID'er bør forblive reserverede
 i historikken, også hvis personen ikke længere er aktiv.
+
+## Planrækker og sagsstriber i 3.6.3
+
+**Afdelingsnummer.** Excel kunne fortolke den afleverede tekst som et tal,
+fordi cellen var formateret som Generelt. Opret medarbejder anvender tekstformat
+på de fem tekstceller i den ledige registerrække før skrivning og genlæser
+værdierne med streng sammenligning. Normtid skrives som tal. Sagsnummerets
+registerkolonne var allerede formateret som tekst i referencen, og scripts
+læser sagsnumre som eksakte tekstnøgler, herunder foranstillede nuller.
+Engangsopgraderingen sætter tekstformat for begge registres tekstfelter og
+afdelingsvælgeren uden at konvertere eksisterende celleværdier. Den navngivne
+afdelingsliste og valideringen er bevaret.
+
+**Lokal indsættelse.** Den valgte gruppe afgrænses af det stabile
+medarbejder-ID og planåret. Et nyt projekt placeres bag den relevante
+aktivitetstype ved den første højere aktivitetstype i den fysiske tabel.
+Ved tilføjelse af Sag kan sidste ledige Sag på den relevante plads genbruges.
+Scriptet læser rå ugefelter, tilbudsprocent og projektfelt, så både
+indtastet nul og formler, der giver tom tekst, bevares. Ved genbrug skrives
+kun Projektvalg. Ved indsættelse bruges `Table.addRows` på en bestemt
+position, og kun den nye række får formler. Nye planår og manglende
+standardaktiviteter bruger samme placering. En ældre plan med blandet
+rækkefølge bevarer eksisterende rækker. Den kan sorteres i en særskilt
+vedligeholdelseskørsel efter Planår, skjult ID og aktiviteternes
+brugerdefinerede rækkefølge. [ExcelScript.Table](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.table?view=office-scripts)
+[Arbejdsgang](office-scripts/3.6.3/README.md#ret-tidligere-rækkefølge-efter-behov)
+
+Opslag efter dubletter sker før oprettelse. Rækkeantal samt nøglefelter på
+indsættelsesstedet kontrolleres igen. Scriptet verificerer de nye rækker før
+formelskrivning. Excel-tabellen har ingen transaktionslås mellem kontroller og
+skrivning. Samtidige sorteringer eller ændringer med samme rækkeantal kan
+fortsat ramme mellem kontrollerne. Ved konflikt skal brugeren kontrollere den
+nye række før en genkørsel. De tre scripts ændrer ingen filtre og bruger
+ingen global sortering. Personlige arkvisninger, rækkeindsættelse og AutoSave
+afprøves med to konti før fælles drift.
+
+**Formatering.** Tabellens egne rækkestriber var slået fra. De to Sag-regler
+brugte `MOD(ROW(),2)`. Filtrering skjuler rækker uden at ændre det fysiske
+rækkenummer, så to synlige sager kan få samme farve. Der skrives nu en
+løbende paritet i det skjulte Planstart-ark. `SUBTOTAL(103,INDEX(...))`
+afgør, om en Sag er synlig, og pariteten skifter kun ved en synlig Sag.
+Det giver en referenceopdatering pr. planrække. De to Sag-regler bruger
+pariteten ved visning og bevarer kanter og prioritet. Office Script ændrer
+de to eksisterende regler på plads. Python-referencen bevarer de eksisterende
+DXF-farvefelter. Uge 53 og øvrige regler har samme prioriteter som før.
+Kørselstid og samspillet med samtidige personlige arkvisninger kræver
+afprøvning i Microsoft Excel.
+[Microsoft om SUBTOTAL](https://support.microsoft.com/en-us/office/subtotal-function-7b027003-f060-4ade-9040-e478765b9939)

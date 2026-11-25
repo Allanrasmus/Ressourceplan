@@ -5,3 +5,13 @@ For 3.6.1 og nyere skal Office Scripts genbruge en eksplicit, valideret
 markering eller lokale scriptparametre. Brug ikke fælles indtastningsceller
 som personlig scriptdialog. Bevar tidligere scriptversioner. Hold grupperings-
 prototyper adskilt fra driftsfilen, indtil samtidige arkvisninger er afprøvet.
+
+Hold test- og produktionsscripts i separate Microsoft 365-scriptfiler.
+Produktionsfil og fælles produktionsscripts placeres på sigt på et
+SharePoint-websted med fælles ejerskab, uafhængigt af en personlig OneDrive.
+Brug kun fiktive data i GitHub og Codex. Virkelige medarbejder-, projekt-
+og timedata forbliver i virksomhedens godkendte Microsoft 365-miljø.
+Gem identificerende registerfelter som tekst og timer, planår og procenter
+som tal. Brug lokal tabelindsættelse og kontrollér nøgler og rækkeantal før
+skrivning. Historisk sortering af hele tabellen er en særskilt
+vedligeholdelseshandling, som kræver afprøvning og en eksklusiv arbejdsperiode.

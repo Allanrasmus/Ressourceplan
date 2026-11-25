@@ -1,9 +1,9 @@
 # Ressourceplan
-Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Brug Office Scripts 3.6.2 med Excel-filen fra 3.6 eller 3.6.1. Grupperingen leveres som en særskilt prototype. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Brug 3.6.3-opgraderingen med jeres eksisterende Excel-arbejdsfil fra 3.6 eller 3.6.1. Der findes også en 3.6.3-reference med demonstrationsdata. Grupperingen leveres som en særskilt prototype. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
-## Brug version 3.6.1
+## Brug Ressourceplan med Office Scripts 3.6.3
 
-Åbn `Ressourceplan_3_6_1.xlsx` i Microsoft Excel. I Teams eller SharePoint opretter
+Åbn jeres eksisterende arbejdsfil eller `Ressourceplan_3_6_3.xlsx` som reference i Microsoft Excel. I Teams eller SharePoint opretter
 du en personlig arkvisning via **Vis → Arkvisning → Ny**, før du ændrer filtrene.
 Filtre styrer visningen og giver alle med adgang til filen mulighed for at se data.
 Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpilene i
@@ -46,7 +46,7 @@ fortsætter over årsskiftet, når næste planår findes i filen. Kvartaler og
 Knyt de tre scripts til projektmappen i Excel. Brug derefter knapperne, eller
 kør scripts fra **Automatiser**. De markerede pladser i udgivelsesfilen bliver
 først aktive, når knapperne er tilføjet i Microsoft 365.
-[Opdatér til Office Scripts 3.6.2](office-scripts/3.6.2/README.md)
+[Opgradér arbejdsfil og Office Scripts til 3.6.3](office-scripts/3.6.3/README.md)
 
 - **Opret medarbejder** på fanen Medarbejdere registrerer navn, område,
   faggruppe, afdeling og normtid, tildeler ID og opretter standardrækker
@@ -110,7 +110,8 @@ python -m venv .venv
 python -m pip install -r requirements.txt
 build_dir=$(mktemp -d)
 python migrate_3_6_1.py --source Ressourceplan_3_6.xlsx --output "$build_dir/Ressourceplan_3_6_1.xlsx"
-python office-scripts/3.6.2/build.py
+python migrate_3_6_3.py --source "$build_dir/Ressourceplan_3_6_1.xlsx" --output "$build_dir/Ressourceplan_3_6_3.xlsx"
+python office-scripts/3.6.3/build.py
 python prototype_outline_3_6_1.py --source "$build_dir/Ressourceplan_3_6_1.xlsx" --output "$build_dir/Gruppeprototype.xlsx" --year 2026
 python -m unittest discover -s tests -v
 ```

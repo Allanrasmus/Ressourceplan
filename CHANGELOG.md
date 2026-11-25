@@ -105,5 +105,23 @@
 - Excel-arbejdsfilen og grupperingsprototypen fra 3.6.1 er uændrede.
   Behold arbejdsfilen med jeres data, og gem koden i de eksisterende scripts.
   [Opdateringsvejledning](office-scripts/3.6.2/README.md)
-- Den 25. november 2026 bestod 54 automatiske tests. Accept i Microsoft
-  Excel Desktop og Online udestår. [Resultater](TESTPLAN.md#testjournal-for-362)
+- Den 25. november 2026 bestod 54 automatiske tests. COWI godkendte
+  efterfølgende 26 af 27 punkter i Excel Desktop. Afdelingsfejlen
+  følges op i 3.6.3. [Resultater](TESTPLAN.md#testjournal-for-362)
+
+## Ressourceplan 3.6.3
+
+- Opret medarbejder skriver afdelingskoder som tekst og verificerer den
+  gemte værdi. Punktum og nuller bevares, og normtid forbliver numerisk.
+- Tilføj projekt genbruger en sikker tom sagsrække på den relevante plads
+  eller indsætter Sag og Tilbud lokalt i aktiviteternes rækkefølge.
+  Opret nyt planår og Opret medarbejder bruger samme placeringsprincip
+  til standardrækker. Ukendte projekter henvises til Projektregister.
+- Sagsstriber bruger #EAF2FC og #FFFFFF efter synlige sager. Regler,
+  farver og kanter for øvrige aktiviteter, uge 53 og oversigter bevares.
+- Tilføjet engangsscript til eksisterende filer og en separat Excel-reference
+  med demonstrationsdata. Dokumenteret særskilt sortering af historiske
+  rækker og fremtidig drift på fælles SharePoint.
+  [Opgraderingsvejledning](office-scripts/3.6.3/README.md)
+- 61 automatiske tests bestod, og 11 OOXML-dele blev skemavalideret.
+  Manuel accept i Microsoft Excel udestår. [Testjournal](TESTPLAN.md#testjournal-for-363)

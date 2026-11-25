@@ -5,6 +5,40 @@ declare namespace ExcelScript {
     getTable(key: string): Table | undefined;
     getWorksheet(key: string): Worksheet | undefined;
     getSelectedRange(): Range;
+    getNamedItem(name: string): NamedItem | undefined;
+    addNamedItem(name: string, reference: Range | string, comment?: string): NamedItem;
+  }
+  interface NamedItem {
+    getFormula(): string;
+  }
+  interface ConditionalFormat {
+    getId(): string;
+    getCustom(): CustomConditionalFormat | undefined;
+    getRanges(): RangeAreas;
+  }
+  interface RangeAreas {
+    getAddress(): string;
+    getAreaCount(): number;
+  }
+  interface CustomConditionalFormat {
+    getRule(): ConditionalFormatRule;
+    getFormat(): ConditionalRangeFormat;
+  }
+  interface ConditionalFormatRule {
+    getFormula(): string;
+    setFormula(formula: string): void;
+  }
+  interface ConditionalRangeFormat {
+    getFill(): ConditionalRangeFill;
+  }
+  interface ConditionalRangeFill {
+    setColor(color: string): void;
+  }
+  interface RangeFormat {
+    getFill(): RangeFill;
+  }
+  interface RangeFill {
+    setColor(color: string): void;
   }
   interface Worksheet {
     getRange(address?: string): Range;
@@ -18,6 +52,11 @@ declare namespace ExcelScript {
   }
   interface Range {
     getValues(): (string | number | boolean)[][];
+    getFormulas(): string[][];
+    getFormulasR1C1(): string[][];
+    getConditionalFormats(): ConditionalFormat[];
+    getConditionalFormat(id: string): ConditionalFormat | undefined;
+    getFormat(): RangeFormat;
     getValue(): string | number | boolean;
     getRowIndex(): number;
     getColumnIndex(): number;
@@ -31,6 +70,7 @@ declare namespace ExcelScript {
     getResizedRange(deltaRows: number, deltaColumns: number): Range;
     setValues(values: (string | number | boolean)[][]): void;
     setFormulas(formulas: string[][]): void;
+    setFormulaR1C1(formulaR1C1: string): void;
     setNumberFormat(numberFormat: string): void;
   }
 }

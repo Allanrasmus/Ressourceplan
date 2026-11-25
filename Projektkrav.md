@@ -97,3 +97,33 @@ Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud v
 - Udviklingsplanen omfatter fortsat dynamiske dropdowns i scriptdialogen,
   overførsel af tilbud mellem medarbejdere, masseindtastning af timer,
   produktionsgruppering og ledelsesdashboard. [Aktuel status](STATUS.md)
+
+## Version 3.6.3 – tekst, rækkefølge og sagsstriber
+
+- Medarbejder-ID, medarbejdernavn, område, faggruppe, afdelingsnummer,
+  sagsnummer og projektnavn behandles som tekst. Normtid, planår, planlagte
+  timer og tilbudsprocent er numeriske. Bevar allerede registrerede værdier
+  og datavalidering.
+- Vis Sag, Tilbud, Ferie, Fravær, Kursus og Andet i den rækkefølge pr.
+  medarbejder og år. Genbrug en sikkert tom sagsrække på relevant plads.
+  Brug ellers lokal tabelindsættelse. Eksisterende fejlplacering korrigeres
+  separat med hele planlægningstabellen og stabile ID'er.
+- Sagsstriberne bruger #EAF2FC og #FFFFFF for skiftevis synlige sager.
+  Særlige aktivitetsfarver, kanter, kvartaler, belægning og totaler bevares.
+- Tilføj projekt henter altid et eksisterende projekt fra Projektregister.
+  **Opret projekt** er et senere, særskilt script i Projektregister, der
+  skal validere sagsnummer og navn, afvise dubletter og gøre nye projekter
+  tilgængelige i de eksisterende vælgere.
+- Brug den eksisterende arbejdsfil med opdaterede scripts og en særskilt
+  opgradering af formateringen. Godkend 3.6.3 manuelt før merge til `main`.
+  [Opgraderingsvejledning](office-scripts/3.6.3/README.md)
+
+## Fremtidig drift i Microsoft 365
+
+Produktionsfilen placeres på sigt på fælles SharePoint. Produktionsscripts
+placeres så vidt muligt samme sted med fælles ejerskab. Driften skal være
+uafhængig af en enkelt medarbejders personlige OneDrive. Test og produktion
+bruger separate scriptfiler. GitHub og Codex er til udvikling og
+versionsstyring med fiktive data. Virkelige medarbejdere, projekter og timer
+forbliver i virksomhedens godkendte Microsoft 365-miljø. Afprøvning og
+godkendelse af driftsstrukturen udestår.

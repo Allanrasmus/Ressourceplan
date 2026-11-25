@@ -363,7 +363,8 @@ tests ovenfor gælder kode og Excel-filer fra implementeringscommit
 
 Den 25. november 2026 bestod 54 automatiske tests. De 48 historiske
 tests og seks nye blev kørt. `sha256` for arbejdsfilen og prototypen
-matcher 3.6.1. Manuel accept af 3.6.2 i Microsoft Excel udestår.
+matcher 3.6.1. I den efterfølgende Excel Desktop-accept godkendte COWI
+26 af 27 punkter. Afdelingsfejlen følges op i 3.6.3.
 
 ### Rapporterede fejl og ændringer
 
@@ -431,3 +432,63 @@ de seks nye tests alene. `TSC` kan angive stien til kompilatoren.
    en kopi i Teams/SharePoint. Kontrollér konfliktbeskeder, gemte filtre,
    AutoSave og versionshistorik. Afprøv grupperingsprototypen separat
    som beskrevet i testjournalen for 3.6.1.
+
+## Testjournal for 3.6.3
+
+COWIs manuelle Excel Desktop-test af version 3.6.2 godkendte 26 af 27
+punkter. Alle punkter blev afprøvet. Afdelingsnummer med punktum kunne
+blive tolket som decimaltal og vist med komma. Knapper, AutoSave,
+standardrækker, markering, projektopslag og oversigter fungerede i testen.
+
+Den 25. november 2026 bestod 61 automatiske tests. De 54 tidligere tests
+og syv nye kontroller blev kørt. Apache POI 5.4.1 og XMLBeans 5.3.0
+skemavaliderede 11 SpreadsheetML-dele i Excel-referencen. En særskilt
+Calc-prøve med 20.000 syntetiske planrækker gav den forventede paritet
+i alle rækker, også efter skjulte rækker. Kørsel og visning i Microsoft
+Excel afventer manuel accept af 3.6.3.
+
+### Automatiske kontroller
+
+Kør `python -m unittest discover -s tests -v` med Node, TypeScript 4.0.3
+og LibreOffice Calc. Brug `-p test_ressourceplan_3_6_3.py` for at køre
+de nye tests alene. `TSC` kan angive kompilerens sti.
+
+| Kontrol | Omfang |
+| --- | --- |
+| TypeScript | Fire selvstændige scripts kompileres i streng tilstand mod de dokumenterede ExcelScript-signaturer. |
+| Statisk kompatibilitet | Kontrol for de tidligere aliasing-mønstre omfatter de nye typer til betinget formatering og navngivne områder. Den eksisterende regression genfinder alle tre fejlsteder i 3.6.1. |
+| Simuleret ExcelScript | Lagring af `7134.01`, `1734.03`, `7134.10` og `01734.03` under simuleret lokal talfortolkning. Genbrug af ledig Sag, beskyttelse af formler og rå timer, fem sager, flere tilbud, filtre, flere personer og år, stabile nøgler, ukendt projekt, dubletter og ændret indsættelsessted. |
+| Opgradering | Genkørsel og afvisning ved eksisterende brugerdata i Planstart. Kontrol af tekstformat, eksisterende værdier, regler, kanter og validering. |
+| Beregning | Separate LibreOffice-kopier med skjulte rækker, sorteret rækkefølge, udskiftede rækker og afdelingsfiltre. Beregnet sagsparitet, tilbud, kapacitet og oversigter kontrolleres. |
+| Excel-reference | Reproducerbar XML, pakkeintegritet, originale værdier og formler, tabeller, filtre, valideringer, sagsfarver, øvrige aktivitetsfarver og prioriteter. Tidligere fil og grupperingsprototype har samme SHA-256. |
+
+De statiske kontroller dækker kendte mønstre. Simulatoren afprøver logik og
+kald, mens Calc efterprøver formler i testkopier. Microsoft Excels
+kørsel, visning og samredigering vurderes via den manuelle accept.
+
+### Manuel accept i Microsoft Excel
+
+1. Brug en kopi af arbejdsfilen og separate testscripts. Kør
+   [opgraderingen](office-scripts/3.6.3/README.md) to gange. Kontrollér
+   åbning, AutoSave, knapper, tidsdata, stamdata, valideringer og filtre.
+   Gem og kør alle tre driftsscripts både fra knap og **Automatiser**.
+2. Brug dansk regional indstilling. Opret testprofiler med de fire
+   afdelingskoder ovenfor. Kontrollér tekstværdien i redigeringslinjen og
+   med Excels teksttest. Brug afdelingsdropdownen i Ressourceoverblik.
+   Afprøv også ID/sagsnummer med foranstillet nul og kontrollér numerisk
+   normtid, timer, planår og tilbudsprocent. Gentag i Excel Online.
+3. Brug aktive medarbejder- og årsfiltre. Genbrug en tom Sag, tilføj fem
+   forskellige sager og to tilbud i blandet rækkefølge til en medarbejder.
+   Prøv en medarbejder med tidligere projekter, en uden projekter og et
+   nyt år. Afprøv dublet, ukendt projekt, markering, blank og 0 %
+   tilbudsprocent. Indtast og genlæs timer, og kontrollér begge oversigter.
+4. Kontrollér synlige blå/hvide sager med varierende skjulte rækker,
+   aktivitetsfarver, kanter, uge 53, kvartaler, belægning og totaler.
+   Indsæt og slet en ledig tabelrække. Sortér en særskilt testkopi med
+   hele PlanTimer efter vejledningen, og bekræft timer, stabile nøgler,
+   formler, valideringer og format efter genåbning.
+5. Prøv to brugere med personlige arkvisninger i Teams/SharePoint.
+   Afprøv samtidige tilføjelser og filtre, og kontrollér, at sagsstriberne
+   følger hver visning, og at timer og nøgler forbliver intakte. Kontrollér
+   AutoSave, versionshistorik, eventuelle Office Scripts-advarsler og
+   kørselstid ved op til 20.000 rækker. Godkend før merge og fælles drift.
