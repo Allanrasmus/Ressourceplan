@@ -1,6 +1,12 @@
 # Ressourceplan
 Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.6.3 leveres som en komplet Excel-fil med demonstrationsdata, tre driftsscripts og et opgraderingsscript til eksisterende arbejdsfiler. Grupperingen leveres som en særskilt prototype. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
+## Office Scripts 3.6.4
+
+Office Scripts 3.6.4 retter indsættelse i en filtreret PlanTimer-tabel.
+Behold Excel 3.6.3, og udskift de tre driftsscripts efter
+[opdateringsvejledningen](office-scripts/3.6.4/README.md).
+
 ## Brug Ressourceplan med Office Scripts 3.6.3
 
 Hent [den komplette 3.6.3-pakke](Ressourceplan_3_6_3.zip) til en ny

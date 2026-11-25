@@ -186,3 +186,32 @@ DXF-farvefelter. Uge 53 og øvrige regler har samme prioriteter som før.
 Kørselstid og samspillet med samtidige personlige arkvisninger kræver
 afprøvning i Microsoft Excel.
 [Microsoft om SUBTOTAL](https://support.microsoft.com/en-us/office/subtotal-function-7b027003-f060-4ade-9040-e478765b9939)
+
+## Filtreret rækkeindsættelse i Office Scripts 3.6.4
+
+De tre driftsscripts deler rækkeindsættelsen i `common.ts`. Ved indsættelse
+før en eksisterende række med aktive PlanTimer-filtre læser koden kriterierne
+med `Table.getAutoFilter().getCriteria()` og kontrollerer den aktive arkvisning
+på tabellens ark med `Worksheet.getActiveNamedSheetView()`. En midlertidig
+arkvisning kan have tomt navn. Hvis Excel ikke leverer en læsbar aktiv
+arkvisning, standser indsættelsen før ændring af filtre eller planrækker.
+
+`AutoFilter.clearColumnCriteria()` rydder de aktive kolonner enkeltvis, så
+sorteringstilstanden bevares. Microsoft dokumenterer, at `clearCriteria()`
+også fjerner sorteringstilstanden. Efter rydningen kontrolleres rækkeantal og
+placering. `Table.addRows()` indsætter rækkerne med formler, og scriptet
+kontrollerer de skrevne rækker og udfører den eksisterende formelskrivning og
+procentformatering. En `finally`-blok forsøger at genanvende alle berørte
+kriterier med `AutoFilter.apply()` på det aktuelle tabelområde, også hvis
+rydning eller indsættelse fejlede. Koden rapporterer indsættelsesfejlen og
+eventuelle fejl ved genskabelse i samme fejlbesked.
+[AutoFilter](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.autofilter?view=office-scripts)
+[FilterCriteria](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.filtercriteria?view=office-scripts)
+[Table](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.table?view=office-scripts)
+[Worksheet](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.worksheet?view=office-scripts)
+[NamedSheetView](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.namedsheetview?view=office-scripts)
+
+API-referencen fastlægger metoderne og kriteriernes struktur. Samspillet
+mellem aktiv arkvisning, tabelfiltre og samtidig redigering efterprøves i
+Microsoft Excel. Kontrollerne kan opdage nogle ændringer mellem læsning og
+skrivning. De giver ingen transaktionslås på PlanTimer.

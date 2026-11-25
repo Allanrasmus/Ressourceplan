@@ -43,13 +43,129 @@ declare namespace ExcelScript {
   interface Worksheet {
     getRange(address?: string): Range;
     getName(): string;
+    getActiveNamedSheetView(): NamedSheetView;
+  }
+  interface NamedSheetView {
+    getName(): string;
   }
   interface Table {
+    getAutoFilter(): AutoFilter;
+    getRange(): Range;
+    getWorksheet(): Worksheet;
     getHeaderRowRange(): Range;
     getRangeBetweenHeaderAndTotal(): Range;
     getRowCount(): number;
     addRows(index?: number, values?: (boolean | string | number)[][]): void;
   }
+  interface AutoFilter {
+    apply(range: Range | string, columnIndex?: number, criteria?: FilterCriteria): void;
+    clearColumnCriteria(columnIndex: number): void;
+    getCriteria(): FilterCriteria[];
+    getIsDataFiltered(): boolean;
+  }
+  enum FilterOn {
+    bottomItems = "bottomItems",
+    bottomPercent = "bottomPercent",
+    cellColor = "cellColor",
+    custom = "custom",
+    dynamic = "dynamic",
+    fontColor = "fontColor",
+    icon = "icon",
+    topItems = "topItems",
+    topPercent = "topPercent",
+    values = "values",
+  }
+  enum FilterOperator {
+    and = "and",
+    or = "or",
+  }
+  enum DynamicFilterCriteria {
+    aboveAverage = "aboveAverage",
+    allDatesInPeriodApril = "allDatesInPeriodApril",
+    allDatesInPeriodAugust = "allDatesInPeriodAugust",
+    allDatesInPeriodDecember = "allDatesInPeriodDecember",
+    allDatesInPeriodFebruary = "allDatesInPeriodFebruary",
+    allDatesInPeriodJanuary = "allDatesInPeriodJanuary",
+    allDatesInPeriodJuly = "allDatesInPeriodJuly",
+    allDatesInPeriodJune = "allDatesInPeriodJune",
+    allDatesInPeriodMarch = "allDatesInPeriodMarch",
+    allDatesInPeriodMay = "allDatesInPeriodMay",
+    allDatesInPeriodNovember = "allDatesInPeriodNovember",
+    allDatesInPeriodOctober = "allDatesInPeriodOctober",
+    allDatesInPeriodQuarter1 = "allDatesInPeriodQuarter1",
+    allDatesInPeriodQuarter2 = "allDatesInPeriodQuarter2",
+    allDatesInPeriodQuarter3 = "allDatesInPeriodQuarter3",
+    allDatesInPeriodQuarter4 = "allDatesInPeriodQuarter4",
+    allDatesInPeriodSeptember = "allDatesInPeriodSeptember",
+    belowAverage = "belowAverage",
+    lastMonth = "lastMonth",
+    lastQuarter = "lastQuarter",
+    lastWeek = "lastWeek",
+    lastYear = "lastYear",
+    nextMonth = "nextMonth",
+    nextQuarter = "nextQuarter",
+    nextWeek = "nextWeek",
+    nextYear = "nextYear",
+    thisMonth = "thisMonth",
+    thisQuarter = "thisQuarter",
+    thisWeek = "thisWeek",
+    thisYear = "thisYear",
+    today = "today",
+    tomorrow = "tomorrow",
+    unknown = "unknown",
+    yearToDate = "yearToDate",
+    yesterday = "yesterday",
+  }
+  enum FilterDatetimeSpecificity {
+    day = "day",
+    hour = "hour",
+    minute = "minute",
+    month = "month",
+    second = "second",
+    year = "year",
+  }
+  enum IconSet {
+    fiveArrows = "fiveArrows",
+    fiveArrowsGray = "fiveArrowsGray",
+    fiveBoxes = "fiveBoxes",
+    fiveQuarters = "fiveQuarters",
+    fiveRating = "fiveRating",
+    fourArrows = "fourArrows",
+    fourArrowsGray = "fourArrowsGray",
+    fourRating = "fourRating",
+    fourRedToBlack = "fourRedToBlack",
+    fourTrafficLights = "fourTrafficLights",
+    invalid = "invalid",
+    threeArrows = "threeArrows",
+    threeArrowsGray = "threeArrowsGray",
+    threeFlags = "threeFlags",
+    threeSigns = "threeSigns",
+    threeStars = "threeStars",
+    threeSymbols = "threeSymbols",
+    threeSymbols2 = "threeSymbols2",
+    threeTrafficLights1 = "threeTrafficLights1",
+    threeTrafficLights2 = "threeTrafficLights2",
+    threeTriangles = "threeTriangles",
+  }
+  type FilterCriteria = {
+    color?: string;
+    criterion1?: string;
+    criterion2?: string;
+    dynamicCriteria?: DynamicFilterCriteria;
+    filterOn: FilterOn;
+    icon?: Icon;
+    operator?: FilterOperator;
+    subField?: string;
+    values?: Array<string | FilterDatetime>;
+  };
+  type FilterDatetime = {
+    date: string;
+    specificity: FilterDatetimeSpecificity;
+  };
+  type Icon = {
+    index: number;
+    set: IconSet;
+  };
   interface Range {
     getValues(): (string | number | boolean)[][];
     getFormulas(): string[][];

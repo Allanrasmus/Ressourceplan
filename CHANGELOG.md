@@ -132,3 +132,15 @@ eksisterende demonstrationsrækker står i den aftalte rækkefølge fra start.
 Version 3.6.3 vises på alle seks faner. ZIP-pakken indeholder Excel-filen,
 de tre driftsscripts, engangsscriptet og vejledningen til installation og
 opgradering. [Samlet pakke](Ressourceplan_3_6_3.zip)
+
+## Office Scripts 3.6.4
+
+- Indsættelse før eksisterende PlanTimer-rækker rydder midlertidigt aktive
+  kolonnefiltre i den aktive personlige arkvisning. Kriterierne forsøges
+  genskabt efter både succes og fejl. Genbrug og tilføjelse nederst
+  ændrer ingen filtre.
+- De tre driftsscripts bruger den fælles rettelse til `InsertDeleteConflict`.
+  Ved afvist genskabelse angiver fejlbeskeden de berørte kolonner.
+- Excel-filen og de tidligere scriptversioner er bevaret. Manuel
+  flerbrugeraccept på SharePoint udestår.
+  [Opdateringsvejledning](office-scripts/3.6.4/README.md)

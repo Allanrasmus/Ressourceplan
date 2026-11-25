@@ -500,3 +500,46 @@ direkte timeindtastning og oversigter.
    følger hver visning, og at timer og nøgler forbliver intakte. Kontrollér
    AutoSave, versionshistorik, eventuelle Office Scripts-advarsler og
    kørselstid ved op til 20.000 rækker. Godkend før merge og fælles drift.
+
+## Testjournal for Office Scripts 3.6.4
+
+Den 25. november 2026 bestod alle 72 automatiske tests uden udeladelser.
+Kørslen brugte Python 3.12.14, openpyxl 3.1.5, Node 24.22.3, TypeScript 4.0.3
+og LibreOffice Calc 25.2.3.2. De 63 eksisterende tests og ni nye tests bestod.
+
+Kør hele suiten med `python -m unittest discover -s tests -v` og LibreOffice
+Calc, Node og TypeScript 4.0.3. De tidligere 63 tests bevares. Ni nye tests
+kontrollerer genbygning, statisk API-kompatibilitet og scriptkørsel med en
+simuleret Excel-tabel baseret på Excel 3.6.3-demodata.
+
+| Scenarie | Automatisk kontrol |
+| --- | --- |
+| Filtreret indsættelse | Simuleringen afviser 3.6.3 med `InsertDeleteConflict`. 3.6.4 rydder kolonnefiltrene, indsætter en Sag efter eksisterende sager og før Tilbud og standardaktiviteter, bevarer eksisterende data og genskaber værdilister og brugerdefinerede kriterier. |
+| Øvrige indgange | Begge standardrækkescripts afprøves ved filtreret indsættelse. Genbrug, tilføjelse nederst og indsættelse uden aktive filtre afprøves uden filterændringer. |
+| Visning og fejl | Standardvisning uden en personlig visning og manglende kriteriedata afviser ændringen. Fejl ved rydning, indsættelse, rækkeverifikation og genskabelse af kriterier testes. Fejl i én kolonne afbryder ikke genskabelsen af de øvrige. |
+
+Metodesignaturer er sammenholdt med Microsofts Office Scripts-reference,
+og de tre færdigsamlede scripts kontrolleres med TypeScript og repositoryets
+Office Scripts-kildekontrol. Simuleringen verificerer rækkefølgen af API-kald,
+diagnostikken og planrækkerne. Afvikling i Microsoft Excel kræver manuel accept.
+
+### Manuel accept i Excel Desktop og Online
+
+1. Brug en acceptkopi af 3.6.3 og tre særskilte 3.6.4-testscripts. På
+   **Min ressourceplan** prøves en gemt og en midlertidig arkvisning med mindst
+   planårs- og medarbejderfilter. Afprøv først genbrug af en ledig Sag og
+   derefter en ekstra Sag midt i PlanTimer. Kontrollér de oprindelige
+   kriterier, rækkefølge, formler, værdier, timer og sagsstriber.
+2. Prøv standardvisningen med aktive filtre. Kontrollér, at en egentlig
+   indsættelse før eksisterende rækker giver vejledning, og at planrækker
+   og filtre bevares. Prøv også tilføjelse nederst og genbrug med aktive filtre.
+3. Prøv de øvrige to scripts ved henholdsvis en ny medarbejder og et nyt
+   planår. Prøv derefter genkørsel på en eksisterende medarbejder og et år med
+   en manglende standardaktivitet midt i PlanTimer. Kontrollér rækker og filtre.
+4. Brug to konti på SharePoint med forskellige aktive arkvisninger. Kør ét
+   script fra den ene konto, og kontrollér den anden kontos filtre,
+   de fælles rækker, data og AutoSave efter genåbning. Prøv kontrolleret
+   overlap på acceptkopien, og registrér filtre, eventuelle konflikter og
+   delvise skrivninger. Arkvisninger giver ingen transaktionslås.
+
+Manuel flerbrugeraccept på SharePoint udestår.
