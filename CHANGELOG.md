@@ -91,6 +91,19 @@
 - Tilføjet opdateringsvejledning for eksisterende Office Scripts og knapper.
 - Leveret separat outline-prototype med kvartaler og medarbejderdetaljer.
   Driftsfilen bevarer de kompakte oversigter og direkte timeindtastning.
-- Den 24. november 2026 bestod 48 automatiske tests. Version 3.6.1
-  afventer manuel accept i Excel Desktop og Online.
-  [Status og overdragelse](STATUS.md)
+- Den 24. november 2026 bestod 48 automatiske tests. Den efterfølgende
+  manuelle Excel Desktop-test fandt tre aliasing-fejl, som følges op i 3.6.2.
+
+## Office Scripts 3.6.2
+
+- Rettet de tre fejlsteder i Tilføj projekt og Opret nyt planår, hvor
+  et Excel-tabelobjekt fra `Plan.table` blev givet videre til en
+  hjælpefunktion. Alle tre scripts er bygget fra den rettede fælleskode.
+- Samlet læsninger af planens nøglekolonner, valgt række og rå ugefelter.
+  Formelkolonner skrives i sammenhængende blokke. Dublet- og
+  konfliktkontroller før skrivning er bevaret.
+- Excel-arbejdsfilen og grupperingsprototypen fra 3.6.1 er uændrede.
+  Behold arbejdsfilen med jeres data, og gem koden i de eksisterende scripts.
+  [Opdateringsvejledning](office-scripts/3.6.2/README.md)
+- Den 25. november 2026 bestod 54 automatiske tests. Accept i Microsoft
+  Excel Desktop og Online udestår. [Resultater](TESTPLAN.md#testjournal-for-362)

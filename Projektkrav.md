@@ -83,3 +83,17 @@ Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud v
 - Den næste milepæl er manuel accept af version 3.6.1 på en kopi af
   arbejdsfilen samt en separat afprøvning af gruppeprototypen. Merge til
   `main` kræver manuel godkendelse af 3.6.1. [Aktuel status](STATUS.md)
+
+## Version 3.6.2 – kompatibilitetsrettelse til Office Scripts
+
+- Ret Excel-editorens aliasing-fejl i den fælles kildekode. Hjælperne
+  henter Excel-objekter gennem ExcelScript og udveksler almindelige
+  værdier, tabelnavne og indekser. Læs data i blokke, og behold
+  dublet- og konfliktkontroller før skrivning.
+- Fortsæt med eksisterende arbejdsfiler, scriptknapper, inputmuligheder og
+  kapacitet på 100 medarbejdere, 500 projekter og 20.000 planrækker.
+  Bevar den separate 3.6.1-grupperingsprototype. Afprøv begge Excel-klienter
+  før merge til `main`. [Acceptpunkter](TESTPLAN.md#testjournal-for-362)
+- Udviklingsplanen omfatter fortsat dynamiske dropdowns i scriptdialogen,
+  overførsel af tilbud mellem medarbejdere, masseindtastning af timer,
+  produktionsgruppering og ledelsesdashboard. [Aktuel status](STATUS.md)

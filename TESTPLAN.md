@@ -358,3 +358,76 @@ Ved overdragelsen den 24. november 2026 afventer alle manuelle
 acceptpunkter for 3.6.1 fortsat afprøvning. De 48 beståede automatiske
 tests ovenfor gælder kode og Excel-filer fra implementeringscommit
 `bf9bff2`. Overdragelsen ændrer dokumentationen. [Næste trin](STATUS.md)
+
+## Testjournal for 3.6.2
+
+Den 25. november 2026 bestod 54 automatiske tests. De 48 historiske
+tests og seks nye blev kørt. `sha256` for arbejdsfilen og prototypen
+matcher 3.6.1. Manuel accept af 3.6.2 i Microsoft Excel udestår.
+
+### Rapporterede fejl og ændringer
+
+Excel Desktop markerede `selectedRecord(plan.table, …)` i
+`add_project.ts` på linje 32, kolonne 34, og linje 282, kolonne 22,
+samt i `initialize_plan_year.ts` på linje 244, kolonne 22. Fællesårsagen
+var at gemme et `ExcelScript.Table`-objekt på `Plan.table` og videregive
+objektet via den egenskab. Det mønster bestod almindelig TypeScript, men
+Excels scripteditor meldte en aliasing-fejl. `Plan` indeholder nu
+kolonnenavne og formelskabeloner. Hjælperne henter tabeller og områder
+direkte via ExcelScript og udveksler celleværdier, kolonne- og rækkeindekser
+samt tabelnavne. Samme gennemgang er udført for Opret medarbejder.
+[Microsofts TypeScript-begrænsninger](https://learn.microsoft.com/en-us/office/dev/scripts/develop/typescript-restrictions)
+
+Excel advarede yderligere om læsning i løkker på linje 161 og 283 i
+det gamle planårsscript. Ved 20.000 planrækker er en læsning af planens
+nøglefelter reduceret fra 20 blokke med ni kolonner til fem med fem
+kolonner. En markeret planrække læses én gang for medarbejder, år og
+projekt. For at kende en ledig Sag kontrolleres de rå ugetimer for
+relevante rækker i blokke på op til 500 rækker. Uge 53 og værdier,
+der udligner hinanden, kan være skjult af den beregnede rækkesum.
+Syv individuelle formelskrivninger er samlet i fire blokke. Formel- og
+procentformatering udføres efter kontrol af de indsatte værdier.
+
+Læsning i blokløkker kan stadig udløse editorens læseadvarsel. Blokkene
+begrænser svartørrelsen, og kontroller umiddelbart før og efter
+indsættelse beskytter mod dubletter og synlige konflikter. Optællingerne
+kommer fra kode og simulering. Kørselstid og faktiske advarsler skal
+måles i Excel. [Microsofts vejledning om ydeevne](https://learn.microsoft.com/en-us/office/dev/scripts/develop/web-client-performance)
+
+### Automatiske resultater
+
+| Kontrol | Resultat |
+| --- | --- |
+| Almindelig TypeScript | Alle tre selvstændige filer kompilerede i streng tilstand med TypeScript 4.0.3 mod et udsnit af Microsofts API-typer. |
+| Statisk kompatibilitetskontrol | Kontrollen genfandt alle tre rapporterede kald i 3.6.1 og accepterede de tre nye scripts. Den kontrollerer, hvor ExcelScript-objekter lagres, tildeles og videregives. |
+| Simuleret ExcelScript | Testene dækkede eksplicitte parametre, medarbejdervalg med ens navne, markering i planen og projektregisteret, ugyldig markering, aktivt filter, historik, Sag, tom og eksplicit 0 % ved Tilbud, dubletter og genkørsel. |
+| Simuleret stor tabel | 20.000 rækker blev behandlet med fem læsninger af nøglefelter pr. opslag og højst 41 bloklæsninger af rå timer i det simulerede scenarie. En ændring af rækkeantallet før indsættelse afbrød skrivningen. |
+| Beregning og build | En separat LibreOffice-kopi gav 28 bookede timer i det testede ressourceoverblik, 36 timer i den testede projektperiode og ingen formelfejl. Genbygning af scripts matcher de publicerede filer. |
+
+TypeScript kontrollerer typer og syntaks. Den statiske kontrol dækker de
+konkrete risikomønstre. Simulatoren afprøver scriptlogikken, og Calc
+beregner den særskilte testkopi. Microsofts Excel-editor og faktiske
+runtime skal kontrolleres i den manuelle accept nedenfor.
+
+Kør `python -m unittest discover -s tests -v` med Node, TypeScript 4.0.3
+og LibreOffice Calc. Brug `-p test_ressourceplan_3_6_2.py` til at køre
+de seks nye tests alene. `TSC` kan angive stien til kompilatoren.
+
+### Manuel accept i Excel Desktop og Excel Online
+
+1. Gem alle tre scripts i Microsofts editor, og start dem fra både
+   **Automatiser** og eksisterende knapper på en prøvekopi. Registrér
+   Excel-klient, fejl og eventuelle læseadvarsler.
+   [Opdateringsvejledning](office-scripts/3.6.2/README.md)
+2. Opret en medarbejder på første sikre plads med aktivt filter og
+   kontrollér ID, historiske timer og standardaktiviteter. Tilføj Sag
+   og Tilbud med eksplicitte input og markering i både plan og
+   projektregister. Prøv tom procent og 0 %, samt ugyldig markering og
+   to ens medarbejdernavne. Kontrollér direkte timeindtastning og summer.
+3. Opret et nyt planår fra en markeret medarbejderrække. Kør samme
+   handling igen. Kontrollér filtre, dubletter, projekter og gamle timer.
+   Afprøv en stor testkopi og registrér kørselstid for planår og projekt.
+4. Prøv separate arkvisninger og kontrollerede samtidige oprettelser på
+   en kopi i Teams/SharePoint. Kontrollér konfliktbeskeder, gemte filtre,
+   AutoSave og versionshistorik. Afprøv grupperingsprototypen separat
+   som beskrevet i testjournalen for 3.6.1.
