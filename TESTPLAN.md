@@ -543,3 +543,62 @@ diagnostikken og planrækkerne. Afvikling i Microsoft Excel kræver manuel accep
    delvise skrivninger. Arkvisninger giver ingen transaktionslås.
 
 Manuel flerbrugeraccept på SharePoint udestår.
+
+## Testjournal for Office Scripts 3.6.5
+
+Den 25. november 2026 bestod alle 79 automatiske tests uden udeladelser.
+Hele suiten blev kørt med Python 3.12.14, openpyxl 3.1.5, Node 24.22.3,
+TypeScript 4.0.3 og LibreOffice Calc 25.2.3.2. De 72 eksisterende og
+syv nye tests bestod, herunder kontrollen af 3.6.4-fejlmønsteret,
+filterprøven, kriteriernes felter, indsættelses- og gendannelsesfejl
+samt reproduktion af ZIP-filen.
+
+Excel Desktop rapporterede `Aliasing or assignment of Office Scripts APIs is not allowed`
+ved `autoFilter.apply(table.getRange(), filter.column, filter.criteria)` på
+linje 411 i **Opret medarbejder** og linje 391 i **Tilføj projekt**.
+Kildegennemgang fandt samme konstruktion på linje 350 i **Opret nyt planår**.
+
+3.6.4 gemte et element fra `getCriteria()` som en `ExcelScript.FilterCriteria`-property
+i et lokalt objektarray. Ved gendannelse gik denne property direkte
+tilbage til `AutoFilter.apply()`. Excel markerede dette argument.
+Den gamle statiske kontrol genkendte navngivne interfaces i den lokale
+reference, hvor `FilterCriteria` var modelleret som et typealias. Den
+undersøgte heller ikke API-typer inde i sammensatte objekter eller direkte
+overførsel af en kriterieproperty til et ExcelScript-kald.
+
+3.6.5 læser API-arrayet med et direkte getter-kald, kopierer de dokumenterede
+felter, herunder dato- og ikonfelter, og gemmer lokale objekter med skalare
+værdier. Ved gendannelse henter koden tabelområdet i en lokal variabel
+direkte fra API'et og bruger et nyt kriterieobjekt ved kaldet. Denne form
+følger mønsteret i Microsofts eksempel. Excel-editorens interne behandling
+af hver konstruktion kan først verificeres med filterprøven og driftsscriptene.
+[TypeScript-begrænsninger](https://learn.microsoft.com/en-us/office/dev/scripts/develop/typescript-restrictions)
+[AutoFilter](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.autofilter)
+[FilterCriteria](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.filtercriteria)
+
+Den skærpede kontrol aktiveres med `--strict-office` for 3.6.5 og
+de negative regressioner. Historiske testkald bruger deres oprindelige
+regler. Den nye kontrol følger typealiaser, arrays, tupler og objektfelter.
+Den markerer kendte mønstre ved lagring, tildeling og videregivelse af
+API-typer samt eksplicit `any` og almindelige array-callbacks, som ikke er
+arrow-funktioner. Den analyserer kendte mønstre ud fra en lokal API-reference
+og følger eksempelvis ikke alle dataflow gennem biblioteks- og generiske
+kald. TypeScript og simuleringen kan verificere statiske mønstre, API-kald,
+kriterier og fejlforløb. Kompatibilitet med Excels egen editor og runtime
+afgøres ved manuel afprøvning.
+
+### Manuel accept i Excel og på SharePoint
+
+1. Kør [den særskilte filterprøve](office-scripts/3.6.5/README.md) på en
+   acceptkopi i Excel Desktop og Online. Prøv flere PlanTimer-kolonner og
+   både værdilister og brugerdefinerede kriterier. Kontrollér, at
+   kriterier og synlige rækker svarer til udgangspunktet. Stop accepten og
+   registrér fejltekst, linje og kolonne, hvis Excel afviser prøven.
+2. Efter bestået filterprøve, prøv alle tre driftsscripts i begge
+   Excel-klienter. Følg 3.6.4-punkterne for genbrug, indsættelse midt i
+   PlanTimer, tilføjelse nederst, rækkefølge, dubletter, timer og striber.
+3. Gentag 3.6.4-flerbrugerprøven på SharePoint med to separate konti og
+   personlige arkvisninger. Kontrollér begge brugeres filtre, data og
+   AutoSave. Arkvisninger giver ingen transaktionslås.
+
+Manuel accept i Excel Desktop, Excel Online og på SharePoint udestår.

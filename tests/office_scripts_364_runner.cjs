@@ -4,10 +4,10 @@ const path = require("node:path");
 const vm = require("node:vm");
 const { Range, testBook } = require("./office_scripts_mock.cjs");
 
-const [compiled, fixture, scenario] = process.argv.slice(2);
+const [compiled, fixture, scenario, version = "3.6.4"] = process.argv.slice(2);
 const initial = JSON.parse(fs.readFileSync(fixture, "utf8"));
-const load = (name, version = "3.6.4") => vm.runInNewContext(
-  fs.readFileSync(path.join(compiled, version, name + ".js"), "utf8") + "\nmain;",
+const load = (name, scriptVersion = version) => vm.runInNewContext(
+  fs.readFileSync(path.join(compiled, scriptVersion, name + ".js"), "utf8") + "\nmain;",
   { console: { log() {} } },
 );
 
@@ -28,7 +28,9 @@ function setup(options = {}) {
   const book = testBook(initial);
   const table = book.tables.PlanTimer;
   const events = [];
-  const active = structuredClone(options.unfiltered ? [] : criteria);
+  const original = options.criteria ?? criteria;
+  const active = structuredClone(options.unfiltered ? [] : original);
+  let exposed;
   const isFiltered = () => active.some(item => item.filterOn);
   const worksheet = {
     getActiveNamedSheetView() {
@@ -42,11 +44,19 @@ function setup(options = {}) {
     getIsDataFiltered: isFiltered,
     getCriteria() {
       events.push("criteria");
-      return structuredClone(options.incomplete ? [{}, {}] : active);
+      exposed = structuredClone(options.incomplete ? [{}, {}] : active);
+      return exposed;
     },
     clearColumnCriteria(column) {
       events.push("clear:" + column);
       active[column] = {};
+      // Model native data that becomes invalid while Excel clears the criteria.
+      if (options.invalidateRead) {
+        const previous = exposed[column];
+        if (previous.values) previous.values.length = 0;
+        if (previous.icon) previous.icon.index = 99;
+        previous.filterOn = "invalidated";
+      }
       if (options.failClear === column) throw new Error("Rydning fejlede efter ændring");
     },
     apply(range, column, filter) {
@@ -55,7 +65,7 @@ function setup(options = {}) {
       assert.equal(range.height, table.rows.length + 1);
       assert.equal(range.width, table.headers.length);
       if (options.failRestore === column) throw new Error("Excel kunne ikke anvende kriteriet");
-      active[column] = structuredClone(filter);
+      active[column] = JSON.parse(JSON.stringify(filter));
     },
   });
   const originalAdd = table.addRows.bind(table);
@@ -170,6 +180,36 @@ switch (scenario) {
       assert.deepEqual(events, ["criteria", "view", ...restored]);
       assert.equal(table.rows.length, initial.tables.PlanTimer.rows.length + (failInsert ? 0 : 1));
     }
+    break;
+  }
+  case "snapshot": {
+    const allTypes = [
+      { filterOn: "values", values: ["2026", { date: "2026-11-01", specificity: "month" }] },
+      { filterOn: "icon", icon: { index: 0, set: "threeFlags" } },
+      { filterOn: "fontColor", color: "#123456" },
+      { filterOn: "custom", criterion1: "=Sag", criterion2: "=Tilbud", operator: "or" },
+      { filterOn: "dynamic", dynamicCriteria: "thisYear" },
+      { filterOn: "bottomItems", criterion1: "5", subField: "Værdi" },
+    ];
+    const options = { criteria: allTypes, invalidateRead: true };
+    const insert = setup(options);
+    assert.match(addOffer(insert.book), /tilføjet/);
+    assert.deepEqual(insert.active, allTypes);
+    const probe = setup(options);
+    assert.match(load("filter_probe")(probe.book), /Ryddede og genskabte 6 kolonnefiltre/);
+    assert.deepEqual(probe.active, allTypes);
+    assert.deepEqual(probe.table.rows, initial.tables.PlanTimer.rows);
+    assert.equal(probe.events.includes("insert"), false);
+    break;
+  }
+  case "restore-setup": {
+    const { book, table } = setup({ failInsert: true });
+    table.getRange = () => { throw new Error("Tabelområdet kunne ikke hentes"); };
+    assert.throws(() => addOffer(book), error => {
+      assert.match(error.message, /InsertDeleteConflict/);
+      assert.match(error.message, /Tabelområdet kunne ikke hentes/);
+      return true;
+    });
     break;
   }
   default:

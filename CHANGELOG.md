@@ -144,3 +144,14 @@ opgradering. [Samlet pakke](Ressourceplan_3_6_3.zip)
 - Excel-filen og de tidligere scriptversioner er bevaret. Manuel
   flerbrugeraccept på SharePoint udestår.
   [Opdateringsvejledning](office-scripts/3.6.4/README.md)
+
+## Office Scripts 3.6.5
+
+- Retter filteraliasing i den delte kode til alle tre driftsscripts.
+  Kriterier kopieres feltvis og rekonstrueres ved anvendelse. Filtreret
+  rækkeindsættelse bevarer rydning pr. kolonne og gendannelse ved fejl.
+- Skærper den statiske kontrol for sammensatte API-typer, aliasing og
+  objektproperties videregivet til API-kald. Tilføjer en selvstændig
+  filterprøve og en ZIP-fil med de tre driftsscripts og vejledningen.
+- Genbruger Excel 3.6.3. Manuel accept i Excel Desktop, Online og på
+  SharePoint udestår. [Installation](office-scripts/3.6.5/README.md)
