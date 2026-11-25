@@ -440,10 +440,11 @@ punkter. Alle punkter blev afprøvet. Afdelingsnummer med punktum kunne
 blive tolket som decimaltal og vist med komma. Knapper, AutoSave,
 standardrækker, markering, projektopslag og oversigter fungerede i testen.
 
-Den 25. november 2026 bestod de ni 3.6.3-kontroller af den samlede
-leverance. De omfatter syv tidligere kontroller fra 3.6.3 og to nye
-kontroller af pakken og den sorterede Excel-fil. Apache POI 5.4.1 og
-XMLBeans 5.3.0 skemavaliderede 11 SpreadsheetML-dele i Excel-filen. En særskilt
+Den 25. november 2026 bestod alle 63 automatiske tests for den samlede
+leverance, herunder ni 3.6.3-kontroller og de 54 tidligere tests.
+Calc-tests, der ramte tidsgrænsen under parallel afvikling, bestod ved
+genkørsel. Apache POI 5.4.1 og XMLBeans 5.3.0 skemavaliderede 11
+SpreadsheetML-dele i Excel-filen. En særskilt
 Calc-prøve med 20.000 syntetiske planrækker gav den forventede paritet
 i alle rækker, også efter skjulte rækker. Kørsel og visning i Microsoft
 Excel afventer manuel accept af 3.6.3.

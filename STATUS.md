@@ -27,8 +27,8 @@ resterende fejl var konverteringen af et afdelingsnummer fra punktum til komma.
 
 ## Gennemførte og afventende tests
 
-De ni 3.6.3-kontroller af den samlede leverance bestod. Testjournalen
-dækker scriptkode, afdelingskoder, lokale indsættelser, pakkens indhold
+Alle 63 automatiske tests bestod, herunder ni kontroller af den samlede
+3.6.3-leverance. Testjournalen dækker scriptkode, lokale indsættelser, pakkens indhold
 samt filtre, farveregler og beregninger i separate LibreOffice-kopier. Manuel accept af 3.6.3 i Excel
 Desktop med dansk formatering og i Excel Online udestår.
 [Testresultater og manuel accept](TESTPLAN.md#testjournal-for-363)
