@@ -656,3 +656,62 @@ direkte. Den afprøves særskilt ved manuel accept.
    Arkvisninger giver ingen transaktionslås.
 
 Manuel accept af driftsscriptene i Desktop, Online og på SharePoint udestår.
+
+## Testjournal for 3.6.7
+
+Den 25. november 2026 bestod alle 85 eksisterende og syv nye automatiske
+tests uden udeladelser i to kørsler. Miljøet brugte Python 3.12.14,
+openpyxl 3.1.5, Node 24.22.3, TypeScript 4.0.3 og LibreOffice Calc 25.2.3.2.
+I den automatiske referenceberegning var F8/G8 20/10 og H8 33/860
+(ca. 3,8 %). Kombinationer af filtre, uger, år og fire procentinput blev
+afprøvet. En sammenligning af projektmappernes indhold fandt ændringer i
+5.300 beregningsceller, seks versionsoverskrifter og filens metadata.
+
+Brugerens manuelle test i Excel Desktop dækkede **Tilføj projekt** med
+direkte sammenligning mod `ExcelScript.FilterOn.custom` og fjernelse af
+`getActiveNamedSheetView()` og `NamedSheetView.getName()`. Brugeren
+observerede korrekt placering, sagsstriber, tilbudsfarve, filtergendannelse,
+dubletbeskyttelse og timer i begge oversigter. Afprøvningen gik forud for
+den samlede 3.6.7-leverance.
+
+3.6.7 bruger samme filterkald og bekræfter brugerens eget valg af personlig
+arkvisning via en boolesk parameter. Microsoft dokumenterer
+`NamedSheetView` som metoden til at læse arkvisningen. Række- og
+filtersynlighed kan opstå i både standardvisning og personlig visning og
+kan derfor ikke bruges til at bekræfte visningstypen. Manuel bekræftelse
+giver ingen teknisk kontrol af den aktive visning eller lås mod samtidige
+ændringer. [NamedSheetView](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.namedsheetview)
+[Platformbegrænsninger](https://learn.microsoft.com/en-us/office/dev/scripts/testing/platform-limits)
+
+**Bruttotilbud.** F8 summerer F590:F689. Hver F-celle summerer ugerne
+H:BH med periodemasken i række 223. Medarbejder-ID, område, faggruppe og
+afdeling filtreres i medarbejderpladserne, og planåret læses via B185.
+I de ugentlige bruttoceller var typebetingelsen et separat boolesk
+SUMPRODUCT-argument. Excel behandler ikke-numeriske arrayelementer som
+nul. 3.6.7 konverterer specifikt denne maske med `--(PlanTimer[Type]="Tilbud")`.
+De øvrige masker, F8, de vægtede beregninger og belægningen er bevaret.
+[Microsoft om SUMPRODUCT](https://support.microsoft.com/en-us/excel/functions/sumproduct-function)
+
+**Procent.** I 3.6.6 returnerede det tomme scriptinput en tom celle, mens
+arbejdsbogen brugte en beregnet standard på 50 %. Derfor kunne den
+observerede tomme celle opstå ved den planlagte adfærd. 3.6.7 gemmer
+standarden som 0,5 ved oprettelse og bevarer arbejdsbogens beregnede
+standard for eksisterende tomme tilbudsceller.
+
+### Manuel accept
+
+1. Afprøv opgraderingsscriptet på en kopi af 3.6.3 med eksisterende data.
+   Kontrollér versionsoverskrifter, planrækker, registre og F8/G8 før og
+   efter. Gentag opgraderingen på kopien. Afprøv også en ny 3.6.7-fil.
+2. Kør hvert driftsscript fra knap og Automatiser i Excel Desktop og Online.
+   Kontrollér manuel bekræftelse med og uden filtreret indsættelse, begge
+   filtres gendannelse, succes- og fejlbeskeder, nye rækker, timer, striber
+   og tilbudsprocenter. Prøv et ukendt sagsnummer og en dublet.
+3. Efterprøv 2026, uge 1–4, alle medarbejderfiltre åbne og testtilbud 99999.
+   Ved 33 bookede timer, 860 disponible timer og tilbud på 20 timer til
+   50 % skal F8 vise 20, G8 vise 10 og H8 vise ca. 3,8 %.
+4. Brug to konti på SharePoint i separate arkvisninger. Kontrollér begge
+   brugeres filtre, AutoSave og fælles tabeldata efter genåbning.
+
+Den samlede 3.6.7-leverance afventer manuel accept i Excel Desktop,
+Excel Online og med samtidige brugere på SharePoint.

@@ -130,3 +130,14 @@ bruger separate scriptfiler. GitHub og Codex er til udvikling og
 versionsstyring med fiktive data. Virkelige medarbejdere, projekter og timer
 forbliver i virksomhedens godkendte Microsoft 365-miljø. Afprøvning og
 godkendelse af driftsstrukturen udestår.
+
+## Ressourceplan 3.6.7 og senere projektadministration
+
+Bruttotilbud summerer periodens tilbudstimer uden vægtning. Vægtede tilbud
+summerer timer gange tilbuddets procent. Et nyt tilbud får 50 % som
+standard, og eksplicit 0 % bevares. Begge tilbudstal beregnes særskilt fra
+bookede timer og almindelig belægning.
+
+Projektregister er fortsat forudsætningen for både Sag og Tilbud. En
+statuskolonne og et særskilt script til oprettelse af projekter og tilbud
+i Projektregister hører til den fremtidige udviklingsplan.

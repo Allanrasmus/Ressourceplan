@@ -1,14 +1,16 @@
 # Ressourceplan – status og overdragelse
 
-**25. november 2026 · Office Scripts 3.6.6 afventer manuel accept**
+**25. november 2026 · Ressourceplan 3.6.7 afventer manuel accept**
 
-Excel Desktop afviste 3.6.5 med yderligere aliasingfejl. Brugeren afprøvede
-derefter direkte kolonnefiltre på en kopi af Excel 3.6.3. Testen ryddede to
-Custom-lighedsfiltre, indsatte én tabelrække og genskabte begge kriterier i
-den personlige arkvisning. 3.6.6 integrerer metoden i alle tre driftsscripts
-og bruger fortsat Excel 3.6.3-projektmappen.
+Brugerens manuelt rettede **Tilføj projekt** kunne indsætte rækker i Excel
+Desktop med aktive filtre. 3.6.7 integrerer den direkte enum-sammenligning
+og erstatter kald til NamedSheetView med en manuel bekræftelse ved
+filtreret indsættelse. Bruttotilbud bruger en eksplicit numerisk
+aktivitetsmaske. Nye tilbud uden angivet procent gemmes med 50 %.
 
-Alle 85 automatiske tests bestod. Driftsscriptene skal afprøves i Excel Desktop og Online samt med to konti
-på SharePoint. Den tidligere manuelle afprøvning dækkede testscriptet.
-[Installation](office-scripts/3.6.6/README.md)
-[Testjournal](TESTPLAN.md#testjournal-for-office-scripts-366)
+Alle 92 automatiske tests bestod. Excel-filen og driftsscriptene leveres sammen med et separat
+opgraderingsscript til 3.6.3-arbejdsfiler. Før produktionsbrug afprøves
+den fulde leverance i Excel Desktop, Excel Online og med to konti på
+SharePoint.
+[Installation og opgradering](office-scripts/3.6.7/README.md)
+[Testjournal](TESTPLAN.md#testjournal-for-367)

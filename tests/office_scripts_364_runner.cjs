@@ -8,7 +8,7 @@ const [compiled, fixture, scenario, version = "3.6.4"] = process.argv.slice(2);
 const initial = JSON.parse(fs.readFileSync(fixture, "utf8"));
 const load = (name, scriptVersion = version) => vm.runInNewContext(
   fs.readFileSync(path.join(compiled, scriptVersion, name + ".js"), "utf8") + "\nmain;",
-  { console: { log() {} } },
+  { console: { log() {} }, ExcelScript: { FilterOn: { custom: "custom" } } },
 );
 
 const create = load("create_employee");
@@ -348,6 +348,87 @@ switch (scenario) {
       assert.deepEqual(events.slice(-3), ["clear:0", "insert", "apply:0"]);
       assert.deepEqual(active, [filter]);
     }
+    break;
+  }
+  case "confirmed-367": {
+    const criteria = [
+      { filterOn: "custom", criterion1: "=2026" },
+      { filterOn: "custom", criterion1: "=Medarbejder 1 · p01" },
+    ];
+    const { book, table, active, events } = setup({ criteria, defaultView: true });
+    const before = structuredClone(table.rows);
+    assert.throws(() => addOffer(book), /bekræft valget/);
+    assert.deepEqual(table.rows, before);
+    assert.ok(events.every(event => event.startsWith("read:")));
+    assert.match(add(book, "p01", "2026", "24048", "Sag", "100"), /^Projektet er tilføjet/);
+    assert.equal(group(table)[3][7], "");
+    assert.match(add(book, "p01", "2026", "24051", "Sag", undefined, true), /^Projektet er tilføjet/);
+    assert.deepEqual(events.slice(-5), ["clear:0", "clear:1", "insert", "apply:0", "apply:1"]);
+    assert.deepEqual(active, criteria);
+    const after = structuredClone(table.rows);
+    assert.throws(() => addCase(book), /findes allerede.*Ingen ændringer er foretaget/);
+    assert.throws(() => add(book, "p01", "2026", "Ukendt"), /findes ikke i Projektregister/);
+    assert.deepEqual(table.rows, after);
+    assert.deepEqual(after.filter(row => !["Belysningsprojekt · 24048", "Sikringsprojekt · 24051"].includes(row[4]) ||
+      row[1] !== "Medarbejder 1 · p01" || row[0] !== 2026),
+      before.filter(row => row !== before[3]));
+
+    for (const action of [
+      (book, confirm) => initialize(book, "p01", "2026", confirm),
+      (book, confirm) => create(book, ...book.tables.PersonRegister.rows[0].slice(1), 2026, confirm),
+    ]) {
+      const item = setup({ criteria });
+      const row = group(item.table).find(row => row[3] === "Ferie");
+      item.table.rows.splice(item.table.rows.indexOf(row), 1);
+      assert.throws(() => action(item.book, false), /bekræft valget/);
+      assert.match(action(item.book, true), /1 standardrækker oprettet/);
+      assert.deepEqual(item.active, criteria);
+    }
+    break;
+  }
+  case "probabilities-367": {
+    const { book, table } = setup({ unfiltered: true });
+    const cases = [["24022", undefined, 0.5], ["24031", "50", 0.5], ["24048", "0", 0],
+      ["24051", "100", 1]];
+    for (const [id, input, expected] of cases) {
+      assert.match(add(book, "p01", "2026", id, "Tilbud", input), /^Projektet er tilføjet/);
+      const index = table.rows.findIndex(row => row[0] === 2026 && row[1].endsWith(" · p01") &&
+        row[3] === "Tilbud" && row[4].endsWith(" · " + id));
+      assert.equal(table.rows[index][7], expected);
+      assert.equal(table.getRangeBetweenHeaderAndTotal().getCell(index, 7).getNumberFormat(), "0%");
+    }
+    break;
+  }
+  case "upgrade-367": {
+    const workbook = () => {
+      let block = structuredClone(initial.upgrade.formulas);
+      const banners = { ...initial.upgrade.banners };
+      let writes = 0;
+      return {
+        getWorksheet: name => ({
+          getRange: address => ({
+            getValue: () => banners[name],
+            setValues: ([[value]]) => { banners[name] = value; writes++; },
+            getFormulas: () => address === "F8" ? [["=SUM(F590:F689)"]] : structuredClone(block),
+            setFormulas: values => { block = structuredClone(values); writes++; },
+          }),
+        }),
+        read: () => ({ block, banners, writes }),
+        alter: () => { block[99][52] = "=1"; },
+      };
+    };
+    const run = load("upgrade_workbook");
+    const copy = workbook();
+    assert.match(run(copy), /3.6.7/);
+    assert.deepEqual(copy.read().block, initial.upgrade.expected);
+    assert.ok(Object.values(copy.read().banners).every(value => value.endsWith("3.6.7")));
+    assert.equal(copy.read().writes, 7);
+    run(copy);
+    assert.equal(copy.read().writes, 7);
+    const custom = workbook();
+    custom.alter();
+    assert.throws(() => run(custom), /BH689 afviger/);
+    assert.equal(custom.read().writes, 0);
     break;
   }
   default:

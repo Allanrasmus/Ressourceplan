@@ -166,3 +166,15 @@ opgradering. [Samlet pakke](Ressourceplan_3_6_3.zip)
   filter, og fejldiagnostikken viser både indsættelses- og gendannelsesfejl.
 - Tre driftsscripts og installationsvejledning leveres i ZIP-format.
   Excel 3.6.3 genbruges. [Installation](office-scripts/3.6.6/README.md)
+
+## Ressourceplan 3.6.7
+
+- Bruger direkte `ExcelScript.FilterOn.custom`-sammenligning. De tre
+  driftsscripts beder om manuel bekræftelse før filtreret indsættelse,
+  så de afviste NamedSheetView-kald kan fjernes.
+- Bruttotilbud bruger en numerisk Tilbud-maske i de ugentlige
+  beregningsformler. Nye tilbud får eksplicit 50 % ved tomt felt.
+  Tilføj projekt giver tydeligere meddelelser om succes, dublet og manglende
+  projekt.
+- Ny Excel-fil og samlet ZIP med opgraderingsscript. 3.6.3 er bevaret.
+  [Installation og opgradering](office-scripts/3.6.7/README.md)
