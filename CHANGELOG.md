@@ -155,3 +155,14 @@ opgradering. [Samlet pakke](Ressourceplan_3_6_3.zip)
   filterprøve og en ZIP-fil med de tre driftsscripts og vejledningen.
 - Genbruger Excel 3.6.3. Manuel accept i Excel Desktop, Online og på
   SharePoint udestår. [Installation](office-scripts/3.6.5/README.md)
+
+## Office Scripts 3.6.6
+
+- Integrerer den manuelt afprøvede kolonnemetode. Lokale indsættelser
+  kan midlertidigt rydde og genskabe simple Custom-lighedsfiltre på
+  Medarbejder og Planår.
+- Validerer PlanTimer-kolonnerne før en tabelændring. Andre kriterier
+  stopper oprettelse og genbrug, før tabellen ændres. Gendannelse forsøges for hvert berørt
+  filter, og fejldiagnostikken viser både indsættelses- og gendannelsesfejl.
+- Tre driftsscripts og installationsvejledning leveres i ZIP-format.
+  Excel 3.6.3 genbruges. [Installation](office-scripts/3.6.6/README.md)

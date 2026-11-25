@@ -68,6 +68,26 @@ function setup(options = {}) {
       active[column] = JSON.parse(JSON.stringify(filter));
     },
   });
+  table.getColumnByName = name => {
+    const column = table.headers.indexOf(name);
+    if (column < 0) return undefined;
+    return { getFilter: () => ({
+      getCriteria() {
+        events.push("read:" + name);
+        return active[column];
+      },
+      clear() {
+        events.push("clear:" + column);
+        active[column] = {};
+        if (options.failClear === column) throw new Error("Rydning fejlede efter ændring");
+      },
+      applyCustomFilter(criterion1) {
+        events.push("apply:" + column);
+        if (options.failRestore === column) throw new Error("Excel kunne ikke anvende kriteriet");
+        active[column] = { filterOn: original[column].filterOn, criterion1 };
+      },
+    }) };
+  };
   const originalAdd = table.addRows.bind(table);
   table.addRows = (index, rows) => {
     events.push(index < 0 ? "append" : "insert");
@@ -210,6 +230,124 @@ switch (scenario) {
       assert.match(error.message, /Tabelområdet kunne ikke hentes/);
       return true;
     });
+    break;
+  }
+  case "custom-columns": {
+    const year = { filterOn: "Custom", criterion1: "=2026" };
+    const employee = { filterOn: "custom", criterion1: "=Medarbejder 1 · p01" };
+    for (const activeFilters of [[], [year], [{}, employee], [year, employee]]) {
+      const { book, table, active, events } = setup({ criteria: activeFilters, viewName: "" });
+      assert.match(add(book, "p01", "2026", "24048", "Sag"), /tilføjet/);
+      assert.deepEqual(events, activeFilters.length ? table.headers.map(name => "read:" + name) : []);
+      events.length = 0;
+      const before = structuredClone(table.rows);
+      assert.match(addCase(book), /tilføjet/);
+      const added = group(table)[4];
+      assert.equal(added[4], "Sikringsprojekt · 24051");
+      assert.equal(added[1], "Medarbejder 1 · p01");
+      assert.equal(added[0], 2026);
+      assert.equal(group(table)[5][3], "Tilbud");
+      assert.deepEqual(table.rows.filter(row => row !== added), before);
+      for (const index of [2, 5, 6, 8, 62]) assert.match(added[index], /^=/);
+      assert.equal(table.getRangeBetweenHeaderAndTotal().getCell(4, 7).getNumberFormat(), "0%");
+      assert.deepEqual(active, activeFilters);
+      const columns = activeFilters.flatMap((criteria, column) => criteria.filterOn ? [column] : []);
+      const writes = [...columns.map(column => "clear:" + column), "insert",
+        ...columns.map(column => "apply:" + column)];
+      assert.deepEqual(events, columns.length ? [
+        ...table.headers.map(name => "read:" + name), "view", ...writes,
+      ] : writes);
+      assert.match(addCase(book), /findes allerede/);
+      assert.equal(events.filter(event => event === "insert").length, 1);
+    }
+    break;
+  }
+  case "custom-refusal": {
+    const year = { filterOn: "custom", criterion1: "=2026" };
+    for (const activeFilters of [
+      [year, { filterOn: "values", values: ["Medarbejder 1 · p01"] }],
+      [year, { filterOn: "custom", criterion1: "=Medarbejder*" }],
+      [{ filterOn: "custom", criterion1: ">2025" }],
+      [{ filterOn: "custom", criterion1: "=2026", criterion2: "=2027" }],
+      [{ filterOn: "custom", criterion1: "=2026", subField: "tekst" }],
+      [year, {}, {}, { filterOn: "custom", criterion1: "=Sag" }],
+      [year, {}, {}, {}, { filterOn: "fontColor", color: "#123456" }],
+    ]) {
+      const { book, table, active, events } = setup({ criteria: activeFilters });
+      assert.throws(() => addOffer(book), /kan ikke genskabes sikkert/);
+      assert.deepEqual(active, activeFilters);
+      assert.deepEqual(table.rows, initial.tables.PlanTimer.rows);
+      assert.ok(events.every(event => event.startsWith("read:")));
+    }
+    for (const options of [
+      { criteria: [year, {}, {}, { filterOn: "custom", criterion1: "=Sag" }] },
+      { criteria: [year], defaultView: true },
+    ]) {
+      const mixed = setup(options);
+      const employeeRows = group(mixed.table);
+      const otherRows = mixed.table.rows.filter(row => !employeeRows.includes(row));
+      const remaining = employeeRows.filter(row => !["Ferie", "Andet"].includes(row[3]));
+      mixed.table.rows.splice(0, mixed.table.rows.length, ...otherRows, ...remaining);
+      const before = structuredClone(mixed.table.rows);
+      assert.throws(() => initialize(mixed.book, "p01", "2026"),
+        /kan ikke genskabes sikkert|personlig arkvisning/);
+      assert.deepEqual(mixed.table.rows, before);
+      assert.ok(mixed.events.every(event => event.startsWith("read:") || event === "view"));
+    }
+    const standard = setup({ criteria: [year], defaultView: true });
+    assert.throws(() => addOffer(standard.book), /personlig arkvisning/);
+    assert.deepEqual(standard.active, [year]);
+    assert.deepEqual(standard.table.rows, initial.tables.PlanTimer.rows);
+    const supportedAppend = setup({ criteria: [year], defaultView: true });
+    assert.match(create(supportedAppend.book, "Testperson", "Vest", "EL", "1734.03", 31, 2026), /5 standardrækker/);
+    assert.ok(supportedAppend.events.slice(0, -1).every(event => event.startsWith("read:")));
+    assert.equal(supportedAppend.events.at(-1), "append");
+    assert.deepEqual(supportedAppend.active, [year]);
+    const unsupported = setup({ criteria: [{ filterOn: "values", values: ["2026"] }] });
+    const beforeWrites = structuredClone(unsupported.book.state);
+    assert.throws(() => create(unsupported.book, "Testperson", "Vest", "EL", "1734.03", 31, 2032),
+      /kan ikke genskabes sikkert/);
+    assert.throws(() => add(unsupported.book, "p01", "2026", "24048", "Sag"), /kan ikke genskabes sikkert/);
+    assert.deepEqual(unsupported.book.state, beforeWrites);
+    assert.ok(unsupported.events.every(event => event.startsWith("read:")));
+    break;
+  }
+  case "custom-failure": {
+    const activeFilters = [
+      { filterOn: "Custom", criterion1: "=2026" },
+      { filterOn: "Custom", criterion1: "=Medarbejder 1 · p01" },
+    ];
+    for (const options of [{ failClear: 1 }, { failInsert: true }, { failInsert: true, failRestore: 0 },
+      { failRestore: 0 }]) {
+      const { book, table, active, events } = setup({ criteria: activeFilters, ...options });
+      assert.throws(() => addOffer(book), error => {
+        assert.match(error.message, /Ændringer kan være delvist gennemført/);
+        if (options.failInsert) assert.match(error.message, /InsertDeleteConflict/);
+        if (options.failRestore === 0) assert.match(error.message, /Genskabelse.*Planår/);
+        if (options.failClear) assert.match(error.message, /Rydning fejlede/);
+        return true;
+      });
+      assert.deepEqual(events.slice(-2), ["apply:0", "apply:1"]);
+      assert.deepEqual(active, options.failRestore === 0 ? [{}, activeFilters[1]] : activeFilters);
+      assert.equal(table.rows.length, initial.tables.PlanTimer.rows.length +
+        (options.failInsert || options.failClear ? 0 : 1));
+    }
+    break;
+  }
+  case "custom-standard": {
+    for (const action of [
+      book => initialize(book, "p01", "2026"),
+      book => create(book, ...book.tables.PersonRegister.rows[0].slice(1), 2026),
+    ]) {
+      const filter = { filterOn: "custom", criterion1: "=2026" };
+      const { book, table, active, events } = setup({ criteria: [filter] });
+      const vacation = group(table).find(row => row[3] === "Ferie");
+      table.rows.splice(table.rows.indexOf(vacation), 1);
+      assert.match(action(book), /1 standardrækker oprettet/);
+      assert.ok(group(table).some(row => row[3] === "Ferie"));
+      assert.deepEqual(events.slice(-3), ["clear:0", "insert", "apply:0"]);
+      assert.deepEqual(active, [filter]);
+    }
     break;
   }
   default:

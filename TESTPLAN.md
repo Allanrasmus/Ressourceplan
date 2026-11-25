@@ -602,3 +602,57 @@ afgøres ved manuel afprøvning.
    AutoSave. Arkvisninger giver ingen transaktionslås.
 
 Manuel accept i Excel Desktop, Excel Online og på SharePoint udestår.
+
+## Testjournal for Office Scripts 3.6.6
+
+Den 25. november 2026 bestod alle 85 automatiske tests uden udeladelser,
+inklusive de 79 eksisterende og seks nye. Suiten blev kørt med Python 3.12.14,
+openpyxl 3.1.5, Node 24.22.3, TypeScript 4.0.3 og LibreOffice Calc 25.2.3.2.
+
+### Brugerens manuelle afprøvning af kolonnemetoden
+
+På en kopi af Excel 3.6.3 i Microsoft Excel Desktop viste de almindelige
+enkeltvalg sig som Custom-filtre med `criterion1` og lighed. Testscriptet
+brugte `getColumnByName().getFilter()`, læste `getCriteria().criterion1`,
+ryddede begge filtre med `Filter.clear()` og genskabte dem med
+`Filter.applyCustomFilter()`. Kriterierne var
+`=Medarbejder 6 · p06` og `=2026`. Tabelantallet gik fra 191 til 192,
+og rækken lå efter Hospital Nord og før Ferie, Fravær, Kursus og Andet.
+Begge filtre var aktive bagefter, og den personlige arkvisning blev bevaret.
+
+### Integration og automatiske kontroller
+
+De tre fulde scripts beholder den eksisterende rækkeoprettelse og bruger
+kolonnens filterobjekt direkte. Kun kolonnenavn og kriterietekst gemmes til
+gendannelse. Et samlet aktivitetsflag fra tabellens AutoFilter bruges til
+at springe aflæsningen over uden filtre og til at kontrollere rydningen.
+Alle PlanTimer-kolonner kontrolleres før tabelændringer. Værdilister,
+jokertegn, sammensatte kriterier og andre filterkolonner afvises før
+skrivning. Genbrug og tilføjelse nederst berører ingen filtre og kræver
+intet visningsskift ved understøttede kriterier.
+[Microsofts Filter-reference](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.filter)
+
+Regressionerne dækker de tre indgange, begge filterkolonner hver for sig
+og sammen, ufiltreret indsættelse, rækkefølge, genbrug, dubletter, formler,
+tilknytning, timer, afvisning og delvise fejl. Den statiske kildekontrol
+afprøver kendte aliasingmønstre mod den lokale API-reference. Den og
+simuleringen kan ikke afgøre, om Excel-editoren accepterer driftsscriptene.
+Kontrollen af personlig arkvisning bruger fortsat
+`Worksheet.getActiveNamedSheetView()` og `NamedSheetView.getName()`
+direkte. Den afprøves særskilt ved manuel accept.
+
+### Manuel accept af de fulde 3.6.6-scripts
+
+1. Kør alle tre scripts i Excel Desktop og Online på en acceptkopi.
+   Afprøv ingen filtre, Medarbejder alene, Planår alene, begge og et
+   ikke-understøttet filter. Prøv både en gemt og en midlertidig
+   personlig arkvisning og standardvisningen.
+2. Kontrollér genbrug og indsættelse midt i PlanTimer samt tilføjelse
+   nederst. Kontrollér begge filtre bagefter, rækkeplacering, formler,
+   medarbejder-ID, projektvalg, datavalidering, striber, timer og
+   afdelingsnummer med punktum og indledende nul.
+3. Prøv to konti med separate arkvisninger på SharePoint. Kontrollér
+   AutoSave, begge brugeres filtre og fælles tabeldata efter genåbning.
+   Arkvisninger giver ingen transaktionslås.
+
+Manuel accept af driftsscriptene i Desktop, Online og på SharePoint udestår.

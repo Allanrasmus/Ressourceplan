@@ -48,7 +48,16 @@ declare namespace ExcelScript {
   interface NamedSheetView {
     getName(): string;
   }
+  interface TableColumn {
+    getFilter(): Filter;
+  }
+  interface Filter {
+    getCriteria(): FilterCriteria;
+    clear(): void;
+    applyCustomFilter(criteria1: string, criteria2?: string, oper?: FilterOperator): void;
+  }
   interface Table {
+    getColumnByName(key: string): TableColumn | undefined;
     getAutoFilter(): AutoFilter;
     getRange(): Range;
     getWorksheet(): Worksheet;

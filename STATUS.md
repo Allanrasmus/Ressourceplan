@@ -1,15 +1,14 @@
 # Ressourceplan – status og overdragelse
 
-**25. november 2026 · Office Scripts 3.6.5 afventer manuel accept**
+**25. november 2026 · Office Scripts 3.6.6 afventer manuel accept**
 
-Excel Desktop afviste den fælles 3.6.4-filterkode i **Opret medarbejder** og
-**Tilføj projekt** med en aliasingfejl. **Opret nyt planår** havde samme kald
-i den færdigsamlede kode. 3.6.5 gemmer kriterier som lokale dataværdier og
-opbygger kriterieargumentet direkte ved gendannelse. Excel 3.6.3-projektmappen
-genbruges.
+Excel Desktop afviste 3.6.5 med yderligere aliasingfejl. Brugeren afprøvede
+derefter direkte kolonnefiltre på en kopi af Excel 3.6.3. Testen ryddede to
+Custom-lighedsfiltre, indsatte én tabelrække og genskabte begge kriterier i
+den personlige arkvisning. 3.6.6 integrerer metoden i alle tre driftsscripts
+og bruger fortsat Excel 3.6.3-projektmappen.
 
-Alle 79 automatiske tests bestod. Kør den særskilte filterprøve i Excel før accept af driftsscriptene.
-Automatiske testresultater og vejledning til manuel accept i Excel Desktop,
-Excel Online og med to konti på SharePoint står i testjournalen.
-[Download og installation](office-scripts/3.6.5/README.md)
-[Testjournal](TESTPLAN.md#testjournal-for-office-scripts-365)
+Alle 85 automatiske tests bestod. Driftsscriptene skal afprøves i Excel Desktop og Online samt med to konti
+på SharePoint. Den tidligere manuelle afprøvning dækkede testscriptet.
+[Installation](office-scripts/3.6.6/README.md)
+[Testjournal](TESTPLAN.md#testjournal-for-office-scripts-366)
