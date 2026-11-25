@@ -440,9 +440,10 @@ punkter. Alle punkter blev afprøvet. Afdelingsnummer med punktum kunne
 blive tolket som decimaltal og vist med komma. Knapper, AutoSave,
 standardrækker, markering, projektopslag og oversigter fungerede i testen.
 
-Den 25. november 2026 bestod 61 automatiske tests. De 54 tidligere tests
-og syv nye kontroller blev kørt. Apache POI 5.4.1 og XMLBeans 5.3.0
-skemavaliderede 11 SpreadsheetML-dele i Excel-referencen. En særskilt
+Den 25. november 2026 bestod de ni 3.6.3-kontroller af den samlede
+leverance. De omfatter syv tidligere kontroller fra 3.6.3 og to nye
+kontroller af pakken og den sorterede Excel-fil. Apache POI 5.4.1 og
+XMLBeans 5.3.0 skemavaliderede 11 SpreadsheetML-dele i Excel-filen. En særskilt
 Calc-prøve med 20.000 syntetiske planrækker gav den forventede paritet
 i alle rækker, også efter skjulte rækker. Kørsel og visning i Microsoft
 Excel afventer manuel accept af 3.6.3.
@@ -460,13 +461,19 @@ de nye tests alene. `TSC` kan angive kompilerens sti.
 | Simuleret ExcelScript | Lagring af `7134.01`, `1734.03`, `7134.10` og `01734.03` under simuleret lokal talfortolkning. Genbrug af ledig Sag, beskyttelse af formler og rå timer, fem sager, flere tilbud, filtre, flere personer og år, stabile nøgler, ukendt projekt, dubletter og ændret indsættelsessted. |
 | Opgradering | Genkørsel og afvisning ved eksisterende brugerdata i Planstart. Kontrol af tekstformat, eksisterende værdier, regler, kanter og validering. |
 | Beregning | Separate LibreOffice-kopier med skjulte rækker, sorteret rækkefølge, udskiftede rækker og afdelingsfiltre. Beregnet sagsparitet, tilbud, kapacitet og oversigter kontrolleres. |
-| Excel-reference | Reproducerbar XML, pakkeintegritet, originale værdier og formler, tabeller, filtre, valideringer, sagsfarver, øvrige aktivitetsfarver og prioriteter. Tidligere fil og grupperingsprototype har samme SHA-256. |
+| Excel-fil og ZIP-pakke | Reproducerbar XML og ZIP, alle seks versionsoverskrifter, de tre knappladser og identiske scriptfiler i pakken. Kontrol af komplette rækker før og efter sortering, tabeller, filtre, valideringer, farver og prioriteter. Tidligere fil og grupperingsprototype har samme SHA-256. |
+| Ny installation | Simulering med den pakkede Excel-fil genbruger den ledige Sag og indsætter Tilbud før standardaktiviteterne. Calc sammenligner summer og filtre med 3.6.1 efter sortering og kontrollerer de synlige sagsstriber. |
 
 De statiske kontroller dækker kendte mønstre. Simulatoren afprøver logik og
 kald, mens Calc efterprøver formler i testkopier. Microsoft Excels
 kørsel, visning og samredigering vurderes via den manuelle accept.
 
 ### Manuel accept i Microsoft Excel
+
+Afprøv også en ny installation fra ZIP-pakken. Åbn Excel-filen,
+kontrollér 3.6.3 på de synlige faner, og tilknyt alle tre scripts i de
+klargjorte pladser. Kør hver knap og kontrollér sagsrækkefølge, striber,
+direkte timeindtastning og oversigter.
 
 1. Brug en kopi af arbejdsfilen og separate testscripts. Kør
    [opgraderingen](office-scripts/3.6.3/README.md) to gange. Kontrollér

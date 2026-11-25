@@ -4,7 +4,7 @@ const path = require("node:path");
 const vm = require("node:vm");
 const { Range, testBook } = require("./office_scripts_mock.cjs");
 
-const [compiled, fixture, result] = process.argv.slice(2);
+const [compiled, fixture, result, packaged] = process.argv.slice(2);
 const initial = JSON.parse(fs.readFileSync(fixture, "utf8"));
 initial.locale = "da-DK";
 const load = name => vm.runInNewContext(
@@ -67,6 +67,18 @@ assert.deepEqual(activity(group(book, "p06", 2032)), ["Sag", "Ferie", "Fravær",
 assert.deepEqual(activity(group(book, "p07", 2026)), ["Sag", "Ferie", "Fravær", "Kursus", "Andet"]);
 assert.deepEqual(plan.filters, oldFilters);
 assert.deepEqual(plan.rows.slice(0, originalPlan.length), originalPlan);
+
+const installed = testBook(JSON.parse(fs.readFileSync(packaged, "utf8")));
+const installedCount = installed.tables.PlanTimer.rows.length;
+const installedPlan = group(installed, "p01", 2026);
+assert.deepEqual(activity(installedPlan), ["Sag", "Sag", "Sag", "Sag", "Tilbud", "Ferie", "Fravær", "Kursus", "Andet"]);
+assert.equal(installedPlan[3][4], "");
+assert.match(add(installed, "Medarbejder 1", "2026", "24048", "Sag"), /24048/);
+assert.equal(installed.tables.PlanTimer.rows.length, installedCount);
+assert.equal(installedPlan[3][4], "Belysningsprojekt · 24048");
+assert.match(add(installed, "Medarbejder 1", "2026", "24051", "Tilbud"), /24051/);
+assert.deepEqual(activity(group(installed, "p01", 2026)),
+  ["Sag", "Sag", "Sag", "Sag", "Tilbud", "Tilbud", "Ferie", "Fravær", "Kursus", "Andet"]);
 
 const existing = testBook(initial);
 const vacant = group(existing, "p02", 2026).find(row => row[3] === "Sag" && row[4] === "");

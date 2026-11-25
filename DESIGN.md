@@ -157,6 +157,14 @@ vedligeholdelseskørsel efter Planår, skjult ID og aktiviteternes
 brugerdefinerede rækkefølge. [ExcelScript.Table](https://learn.microsoft.com/en-us/javascript/api/office-scripts/excelscript/excelscript.table?view=office-scripts)
 [Arbejdsgang](office-scripts/3.6.3/README.md#ret-tidligere-rækkefølge-efter-behov)
 
+I den nye 3.6.3-projektmappe er demonstrationsrækkerne samlet efter
+medarbejder-ID og planår og ordnet efter aktivitet. Ved bygning fra Excel
+3.6.1 flytter hver hel tabelrække med formler, værdier, celleformater og
+rækkevisning. Tabelområdet og de aktive filtre bevares. Knappladser og
+versionsoverskrifter er klargjort i filen. Brugeren tilknytter de tre
+Office Scripts i Microsoft 365. Opgradering af en eksisterende
+arbejdsfil ændrer formatering og bevarer dens rækkeplacering.
+
 Opslag efter dubletter sker før oprettelse. Rækkeantal samt nøglefelter på
 indsættelsesstedet kontrolleres igen. Scriptet verificerer de nye rækker før
 formelskrivning. Excel-tabellen har ingen transaktionslås mellem kontroller og

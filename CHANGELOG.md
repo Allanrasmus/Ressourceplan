@@ -125,3 +125,10 @@
   [Opgraderingsvejledning](office-scripts/3.6.3/README.md)
 - 61 automatiske tests bestod, og 11 OOXML-dele blev skemavalideret.
   Manuel accept i Microsoft Excel udestår. [Testjournal](TESTPLAN.md#testjournal-for-363)
+
+
+Den samlede udgave supplerer opgraderingsvejen med en Excel-fil, hvor de
+eksisterende demonstrationsrækker står i den aftalte rækkefølge fra start.
+Version 3.6.3 vises på alle seks faner. ZIP-pakken indeholder Excel-filen,
+de tre driftsscripts, engangsscriptet og vejledningen til installation og
+opgradering. [Samlet pakke](Ressourceplan_3_6_3.zip)

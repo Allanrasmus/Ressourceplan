@@ -114,9 +114,12 @@ Udvid medarbejderpladser og år sikkert, forbedr direkte omfordeling af tilbud v
   **Opret projekt** er et senere, særskilt script i Projektregister, der
   skal validere sagsnummer og navn, afvise dubletter og gøre nye projekter
   tilgængelige i de eksisterende vælgere.
-- Brug den eksisterende arbejdsfil med opdaterede scripts og en særskilt
-  opgradering af formateringen. Godkend 3.6.3 manuelt før merge til `main`.
-  [Opgraderingsvejledning](office-scripts/3.6.3/README.md)
+- Lever en komplet `Ressourceplan_3_6_3.xlsx` bygget fra Excel 3.6.1
+  sammen med de tre driftsscripts videreudviklet fra 3.6.2. Fanerne viser
+  3.6.3, og Excel-filen har sagsstriber, ordnet PlanTimer og tre klargjorte
+  knappladser. En særskilt opgradering af eksisterende arbejdsfiler bevarer
+  timer, stamdata og scriptidentiteter. Godkend 3.6.3 manuelt før merge til
+  `main`. [Installations- og opgraderingsvejledning](office-scripts/3.6.3/README.md)
 
 ## Fremtidig drift i Microsoft 365
 

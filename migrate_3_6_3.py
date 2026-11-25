@@ -1,4 +1,4 @@
-"""Byg en 3.6.3-referencefil. Brug Office Script til arbejdsfiler med knapper."""
+"""Byg den komplette 3.6.3-projektmappe fra demonstrationsfilen i repositoryet."""
 
 from argparse import ArgumentParser
 from copy import copy, deepcopy
@@ -8,12 +8,14 @@ from openpyxl import load_workbook
 from openpyxl.utils.cell import range_boundaries
 from openpyxl.workbook.defined_name import DefinedName
 
+from migrate_3_4 import SEPARATOR
 from migrate_3_5 import PLAN_STYLE_LAST
 
 PLAN_AREA = f"A10:BJ{PLAN_STYLE_LAST}"
 STRIPE_NAME = "PlanSagsstribe"
 STRIPE_REFERENCE = f"'Planstart'!$R$10:$R${PLAN_STYLE_LAST}"
 BLUE = "EAF2FC"
+ACTIVITIES = ("Sag", "Tilbud", "Ferie", "Fravær", "Kursus", "Andet")
 
 
 def stripe_rule(parity):
@@ -24,6 +26,37 @@ def stripe_formula(row):
     activity = "INDEX(PlanTimer[Type],ROW()-9)"
     return (f'=IF(ROW()>PlanSidsteRaekke,0,MOD(N(R{row-1})+'
             f'IF({activity}="Sag",SUBTOTAL(103,{activity}),0),2))')
+
+
+def order_demo_plan(sheet):
+    """Gruppér demonstrationsrækker uden at ændre celleværdier eller filtre."""
+    table = sheet.tables["PlanTimer"]
+    left, header, right, last = range_boundaries(table.ref)
+    formulas = {column.id: "=" + column.calculatedColumnFormula.attr_text
+                for column in table.tableColumns if column.calculatedColumnFormula}
+    groups = {}
+    rows = sheet.iter_rows(min_row=header + 1, max_row=last, min_col=left, max_col=right)
+    for row in rows:
+        year, employee, _, activity = (cell.value for cell in row[:4])
+        if not isinstance(year, int) or not isinstance(employee, str) or activity not in ACTIVITIES:
+            raise ValueError("Demonstrationsplanen indeholder en ukendt type, medarbejder eller et ugyldigt år.")
+        key = employee.rpartition(SEPARATOR)[2]
+        if any(cell.hyperlink or cell.comment or
+               (cell.data_type == "f" and cell.value != formulas.get(cell.column))
+               for cell in row):
+            raise ValueError("Planen indeholder tilpassede celler. Brug Office Script til arbejdsfiler.")
+        cells = [(cell.value, cell.data_type, cell._style) for cell in row]
+        groups.setdefault((year, key), []).append((activity, cells, copy(sheet.row_dimensions[row[0].row])))
+
+    target = header + 1
+    for group in groups.values():
+        for _, cells, dimension in sorted(group, key=lambda row: ACTIVITIES.index(row[0])):
+            for number, (value, data_type, style) in enumerate(cells, left):
+                cell = sheet.cell(target, number)
+                cell.value, cell.data_type, cell._style = value, data_type, style
+            dimension.index = target
+            sheet.row_dimensions[target] = dimension
+            target += 1
 
 
 def migrate(source, output):
@@ -38,6 +71,7 @@ def migrate(source, output):
         config.cell(row, 18).value is not None for row in range(9, PLAN_STYLE_LAST + 1)
     ):
         raise ValueError("Planstart-kolonnen eller planstribernes navn er allerede i brug.")
+    order_demo_plan(plan)
     rules = plan.conditional_formatting[PLAN_AREA]
     for parity, color in ((1, BLUE), (0, "FFFFFF")):
         old_formula = f'AND($D10="Sag",MOD(ROW(),2)={parity})'

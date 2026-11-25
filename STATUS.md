@@ -18,15 +18,18 @@ resterende fejl var konverteringen af et afdelingsnummer fra punktum til komma.
 - **Opret nyt planår** indsætter manglende standardaktiviteter i samme
   rækkefølge. De tre driftsscripts genbruger de eksisterende scriptknapper.
 - Engangsscriptet opdaterer registerformater og synlige sagsstriber i
-  den eksisterende fil. Sagsfarverne er #EAF2FC og #FFFFFF. Den separate
-  [3.6.3-reference](Ressourceplan_3_6_3.xlsx) indeholder demonstrationsdata.
-  [Opgraderingsvejledning](office-scripts/3.6.3/README.md)
+  den eksisterende fil. Sagsfarverne er #EAF2FC og #FFFFFF.
+- Den [samlede 3.6.3-pakke](Ressourceplan_3_6_3.zip) indeholder Excel-filen
+  med demonstrationsdata, versionsoverskrifter, sorteret PlanTimer og
+  tre klargjorte knappladser. Pakken indeholder også de fire scripts og
+  installationsvejledningen.
+  [Installér eller opgradér](office-scripts/3.6.3/README.md)
 
 ## Gennemførte og afventende tests
 
-61 automatiske tests bestod. Testjournalen dækker scriptkode, simuleret afdelingskonvertering
-og lokale indsættelser, Excel-pakkens struktur samt filtre, farveregler og
-beregninger i separate LibreOffice-kopier. Manuel accept af 3.6.3 i Excel
+De ni 3.6.3-kontroller af den samlede leverance bestod. Testjournalen
+dækker scriptkode, afdelingskoder, lokale indsættelser, pakkens indhold
+samt filtre, farveregler og beregninger i separate LibreOffice-kopier. Manuel accept af 3.6.3 i Excel
 Desktop med dansk formatering og i Excel Online udestår.
 [Testresultater og manuel accept](TESTPLAN.md#testjournal-for-363)
 
@@ -53,6 +56,6 @@ Desktop med dansk formatering og i Excel Online udestår.
 Start på `ressourceplan-3.6.3` og læs [AGENTS.md](AGENTS.md). Kør
 `python office-scripts/3.6.3/build.py` og
 `python -m unittest discover -s tests -v` med Node, TypeScript 4.0.3 og
-LibreOffice. Sæt `TSC` efter behov. Godkend først opgraderingen og
-knapperne på en acceptkopi med separate testscripts. Registrér
+LibreOffice. Sæt `TSC` efter behov. Godkend både en ny installation og opgraderingen på en acceptkopi med
+separate testscripts. Registrér
 resultaterne i testjournalen, før driftsopsætning eller merge.

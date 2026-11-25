@@ -1,9 +1,13 @@
 # Ressourceplan
-Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Brug 3.6.3-opgraderingen med jeres eksisterende Excel-arbejdsfil fra 3.6 eller 3.6.1. Der findes også en 3.6.3-reference med demonstrationsdata. Grupperingen leveres som en særskilt prototype. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
+Excel-baseret ressourceplanlægning for medarbejdere, ledere og projektledere. HTML v2.8 er design- og funktionsreference. Version 3.6.3 leveres som en komplet Excel-fil med demonstrationsdata, tre driftsscripts og et opgraderingsscript til eksisterende arbejdsfiler. Grupperingen leveres som en særskilt prototype. Se AGENTS.md, Projektkrav.md, DESIGN.md, TESTPLAN.md og CHANGELOG.md. Brug kun fiktive data og godkendte tjenester.
 
 ## Brug Ressourceplan med Office Scripts 3.6.3
 
-Åbn jeres eksisterende arbejdsfil eller `Ressourceplan_3_6_3.xlsx` som reference i Microsoft Excel. I Teams eller SharePoint opretter
+Hent [den komplette 3.6.3-pakke](Ressourceplan_3_6_3.zip) til en ny
+installation. Åbn `Ressourceplan_3_6_3.xlsx` i Microsoft Excel, og tilknyt
+de tre scripts efter [installationsvejledningen](office-scripts/3.6.3/README.md).
+Opgradér en eksisterende arbejdsfil med samme vejledning, hvis den indeholder
+jeres registrerede timer og stamdata. I Teams eller SharePoint opretter
 du en personlig arkvisning via **Vis → Arkvisning → Ny**, før du ændrer filtrene.
 Filtre styrer visningen og giver alle med adgang til filen mulighed for at se data.
 Ved første åbning er planen filtreret på Medarbejder 1 og 2026. Brug tabelpilene i
@@ -46,7 +50,7 @@ fortsætter over årsskiftet, når næste planår findes i filen. Kvartaler og
 Knyt de tre scripts til projektmappen i Excel. Brug derefter knapperne, eller
 kør scripts fra **Automatiser**. De markerede pladser i udgivelsesfilen bliver
 først aktive, når knapperne er tilføjet i Microsoft 365.
-[Opgradér arbejdsfil og Office Scripts til 3.6.3](office-scripts/3.6.3/README.md)
+[Installér eller opgradér til 3.6.3](office-scripts/3.6.3/README.md)
 
 - **Opret medarbejder** på fanen Medarbejdere registrerer navn, område,
   faggruppe, afdeling og normtid, tildeler ID og opretter standardrækker

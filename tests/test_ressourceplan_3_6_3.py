@@ -2,10 +2,13 @@
 
 import json
 import os
+import runpy
 import subprocess
 import tempfile
 import unittest
+from collections import Counter
 from copy import deepcopy
+from itertools import groupby
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
@@ -13,7 +16,7 @@ from zipfile import ZipFile
 from openpyxl import load_workbook
 from openpyxl.formula.translate import Translator
 
-from migrate_3_6_3 import PLAN_AREA, STRIPE_REFERENCE, migrate, stripe_rule
+from migrate_3_6_3 import ACTIVITIES, PLAN_AREA, STRIPE_REFERENCE, migrate, stripe_rule
 from test_ressourceplan_3_3_1 import digest
 from test_ressourceplan_3_6 import CALC, NODE, NAMES, ROOT, TESTS, TSC, pack, replay
 from test_ressourceplan_3_6_1 import PROTOTYPE, RELEASE as PREVIOUS
@@ -27,7 +30,12 @@ class WorkbookTests(unittest.TestCase):
     def test_reference_preserves_data_input_validations_filters_and_outline(self):
         old, new = load_workbook(PREVIOUS), load_workbook(RELEASE)
         before, after = pack(old), pack(new)
-        self.assertEqual(before["tables"], after["tables"])
+        for name in ("PersonRegister", "SagRegister"):
+            self.assertEqual(before["tables"][name], after["tables"][name])
+        old_plan = before["tables"]["PlanTimer"]
+        new_plan = after["tables"]["PlanTimer"]
+        self.assertEqual(old_plan["headers"], new_plan["headers"])
+        self.assertEqual(Counter(map(tuple, old_plan["rows"])), Counter(map(tuple, new_plan["rows"])))
         self.assertEqual(before["settings"][1:], after["settings"][1:])
         self.assertEqual(digest(PREVIOUS), "373220dcd439666fcdad4d9d36b98fa0b7dc24c4ac71f94fd49011be5d028331")
         self.assertEqual(digest(PROTOTYPE), "b51a94ea20c4d1834bd682d6cbe464dbd5ff619611a554ba632cddc17c58e2d3")
@@ -38,8 +46,19 @@ class WorkbookTests(unittest.TestCase):
             self.assertEqual(before.sheet_state, after.sheet_state)
             for row in before:
                 for cell in row:
+                    if before.title == "Min ressourceplan" and cell.row >= 10:
+                        continue
                     if cell.value is not None and cell.coordinate != "A1":
                         self.assertEqual(cell.value, after[cell.coordinate].value)
+        plan = new["Min ressourceplan"]
+        seen = set()
+        for key, group in groupby(new_plan["rows"], key=lambda row: (row[0], row[1])):
+            self.assertNotIn(key, seen)
+            seen.add(key)
+            kinds = [row[3] for row in group]
+            self.assertEqual(kinds, sorted(kinds, key=ACTIVITIES.index))
+        visible = [row for row in range(10, 10 + len(new_plan["rows"])) if not plan.row_dimensions[row].hidden]
+        self.assertEqual(visible, list(range(10, 19)))
         employee = new["Medarbejdere"]
         self.assertTrue(all(cell.number_format == "@" for row in employee["A7:E106"] for cell in row))
         self.assertEqual(employee["E7"].data_type, "s")
@@ -48,6 +67,56 @@ class WorkbookTests(unittest.TestCase):
         self.assertEqual(new["Projektregister"]["A7"].data_type, "s")
         self.assertTrue(all(cell.number_format == "@" for row in new["Projektregister"]["A7:B506"] for cell in row))
         self.assertEqual(new["Ressourceoverblik"]["F6"].number_format, "@")
+
+    def test_complete_package_has_current_excel_banners_and_button_spaces(self):
+        workbook = load_workbook(RELEASE)
+        for sheet in workbook:
+            self.assertEqual(sheet["A1"].value, "COWI  |  Ressourceplan 3.6.3")
+        for sheet, area, label in (
+            ("Medarbejdere", "A5:B5", "Opret medarbejder"),
+            ("Min ressourceplan", "A2:B2", "Tilføj projekt"),
+            ("Min ressourceplan", "D2:F2", "Opret nyt planår"),
+        ):
+            self.assertIn(area, workbook[sheet].merged_cells)
+            self.assertEqual(workbook[sheet][area.split(":")[0]].value, label)
+        package = ROOT / "Ressourceplan_3_6_3.zip"
+        expected = {RELEASE.name: RELEASE, "INSTALLATION.md": SCRIPTS / "README.md",
+                    **{f"{name}.ts": SCRIPTS / f"{name}.ts" for name in SCRIPT_NAMES}}
+        with ZipFile(package) as archive:
+            self.assertIsNone(archive.testzip())
+            self.assertEqual(set(archive.namelist()), set(expected))
+            for name, path in expected.items():
+                self.assertEqual(archive.read(name), path.read_bytes())
+        with tempfile.TemporaryDirectory() as folder:
+            rebuilt = Path(folder) / package.name
+            runpy.run_path(str(SCRIPTS / "build.py"))["package"](rebuilt)
+            self.assertEqual(digest(package), digest(rebuilt))
+
+    @unittest.skipUnless(CALC, "LibreOffice Calc er påkrævet")
+    def test_reordered_packaged_workbook_preserves_baseline_overview_and_visible_hours(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            result = subprocess.run(
+                [CALC, f"-env:UserInstallation={(folder / 'profile').as_uri()}", "--headless",
+                 "--convert-to", "xlsx", "--outdir", str(folder), str(PREVIOUS), str(RELEASE)],
+                capture_output=True, check=True, text=True, timeout=180,
+                env=dict(os.environ, XDG_CACHE_HOME=str(folder / "cache")),
+            )
+            files = [folder / path.name for path in (PREVIOUS, RELEASE)]
+            self.assertTrue(all(path.is_file() for path in files), result.stdout + result.stderr)
+            before, after = (load_workbook(path, data_only=True) for path in files)
+            for name, cells in (
+                ("Min ressourceplan", ("G6", "H8", "BE6", "BF6", "BG6", "BH6")),
+                ("Ressourceoverblik", tuple(f"{column}8" for column in "ABCDEFGH")),
+                ("Projektoversigt", ("A15", "G15", "A16", "G16")),
+            ):
+                self.assertEqual([before[name][cell].value for cell in cells],
+                                 [after[name][cell].value for cell in cells])
+            self.assertEqual([after["Planstart"][f"R{row}"].value for row in range(10, 15)],
+                             [1, 0, 1, 0, 0])
+            for sheet in after:
+                self.assertFalse([cell.coordinate for row in sheet for cell in row if cell.data_type == "e"],
+                                 sheet.title)
 
     def test_rule_fills_borders_and_priorities_preserve_activity_calendar_and_overview(self):
         old, new = load_workbook(PREVIOUS), load_workbook(RELEASE)
@@ -132,11 +201,12 @@ class ScriptExecutionTests(unittest.TestCase):
             result = subprocess.run(command, capture_output=True, text=True)
             if result.returncode:
                 raise AssertionError(result.stdout + result.stderr)
-        fixture, output = cls.folder / "fixture.json", cls.folder / "result.json"
+        fixture, packaged, output = (cls.folder / name for name in ("fixture.json", "packaged.json", "result.json"))
         cls.old = pack(load_workbook(PREVIOUS))
         fixture.write_text(json.dumps(cls.old))
+        packaged.write_text(json.dumps(pack(load_workbook(RELEASE))))
         result = subprocess.run(
-            [NODE, str(TESTS / "office_scripts_363_runner.cjs"), str(compiled), str(fixture), str(output)],
+            [NODE, str(TESTS / "office_scripts_363_runner.cjs"), str(compiled), str(fixture), str(output), str(packaged)],
             text=True, capture_output=True,
         )
         if result.returncode:
@@ -200,7 +270,7 @@ class ScriptExecutionTests(unittest.TestCase):
         result = subprocess.run(
             [CALC, f"-env:UserInstallation={(self.folder / 'profile').as_uri()}", "--headless",
              "--convert-to", "xlsx", "--outdir", str(output), *inputs],
-            capture_output=True, check=True, text=True, timeout=120,
+            capture_output=True, check=True, text=True, timeout=180,
             env=dict(os.environ, XDG_CACHE_HOME=str(self.folder / "cache")),
         )
         for name, cases, department in scenarios:
